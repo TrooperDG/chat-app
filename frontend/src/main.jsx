@@ -1,29 +1,25 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
-} from "react-router-dom";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
-
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <>
-      <Route path="/" element={<App />}>
-        <Route path="" element={<h1>This is Home</h1>} />
-        <Route path="/login" element={<h1>This is Login</h1>} />
-        <Route path="/signup" element={<h1>This is SIgnUp</h1>} />
-      </Route>
-      <Route path="*" element={<h1>404 not found</h1>} />
-    </>
-  )
-);
+import { HomePage, LoginPage, SignUpPage } from "./pages";
+import { store } from "./store/store.js";
+import { Provider } from "react-redux";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>
+  <Provider store={store}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route path="" element={<HomePage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<SignUpPage />} />
+        </Route>
+        <Route
+          path="*"
+          element={<h1 className="text-4xl text-red-400">404 not found</h1>}
+        />
+      </Routes>
+    </BrowserRouter>
+  </Provider>
 );

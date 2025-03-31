@@ -2,12 +2,15 @@ import { useState } from "react";
 
 import "./App.css";
 import { Outlet } from "react-router-dom";
-
+import { ThemeChanger } from "./components";
+import { useSelector } from "react-redux";
 function App() {
   return (
     <>
-      <h1 className="text-blue-500">hello </h1>
-      <button className="btn btn-accent btn-outline">Three</button>
+      <ThemeChanger />
+      {/* <Kipu /> */}
+      <h1 className="text-blue-500">navigation ............... </h1>
+
       <Outlet />
     </>
   );
