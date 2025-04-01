@@ -3,13 +3,14 @@ import { useState } from "react";
 import "./App.css";
 import { Outlet } from "react-router-dom";
 import { ThemeChanger } from "./components";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { loginUserThunk } from "./store/slices/user/user.thunk";
 function App() {
+  const dispatch = useDispatch();
+  dispatch(loginUserThunk());
   return (
     <>
-      <ThemeChanger />
-      {/* <Kipu /> */}
-      <h1 className="text-blue-500">navigation ............... </h1>
+      {/* <ThemeChanger /> */}
 
       <Outlet />
     </>
