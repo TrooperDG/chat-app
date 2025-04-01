@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUserThunk } from "./user.thunk";
+import { loginUserThunk } from "./user.thunk.js";
 
 const initialState = {
   isAuthenticated: false,
