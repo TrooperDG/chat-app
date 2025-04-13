@@ -1,101 +1,86 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { asyncHandler } from "../utilities/asyncHandler.utility.js";
 import { errorHandler } from "../utilities/errorHandler.utility.js";
+import { COOKIE_EXPIRE, JWT_EXPIRE } from "../constants.js";
+import {
+  cookieSender,
+  tokenGenerator,
+} from "../utilities/cookieHandler.utility.js";
 
 const login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
+  //checki valid inputs
   if (!email || !password) {
-    // return res.send("<h1>All fields are required</h1>");
     return next(new errorHandler("All fields are required!", 400));
   }
 
+  //check if user exists
   const user = await User.findOne({ email });
-  if (!user) return res.send("<h1>email or password is invalid</h1>");
+  if (!user)
+    return next(new errorHandler("Email or Password is Invalid!", 401));
 
   const isValidPassword = await bcrypt.compare(password, user.password);
 
+  //send response
   if (isValidPassword) {
-    res.send("<h1>logged in successfully</h1>");
+    const token = tokenGenerator(user._id);
+    cookieSender(res, token);
+    res.status(200).json({
+      success: true,
+      responseData: {
+        user,
+        token,
+      },
+    });
   } else {
-    return res.send("<h1>email or password is invalid</h1>");
+    return next(new errorHandler("Email or Password is Invalid!", 401));
   }
 });
 
-// async function login(req, res) {
-//   const { email, password } = req.body;
-//   if (!email || !password) {
-//     return res.send("<h1>All fields are required</h1>");
-//   }
-
-//   try {
-//     const user = await User.findOne({ email });
-//     if (!user) return res.send("<h1>email or password is invalid</h1>");
-
-//     const isValidPassword = await bcrypt.compare(password, user.password);
-
-//     if (isValidPassword) {
-//       res.send("<h1>logged in successfully</h1>");
-//     } else {
-//       return res.send("<h1>email or password is invalid</h1>");
-//     }
-//   } catch (error) {
-//     res.send("something went wrong");
-//     console.log(error);
-//   }
-// }
-
 const register = asyncHandler(async (req, res, next) => {
-  const { username, email, password } = req.body;
-  if (!username || !email || !password) {
+  const { username, email, password, gender } = req.body;
+
+  //check valid inputs
+  if (!username || !email || !password || !gender) {
     return next(new errorHandler("All fields are required!", 400));
   }
 
+  //check if user already exists
   const user = await User.findOne({ email });
   if (user) {
-    return next(new errorHandler("User already exists!", 400));
+    return next(new errorHandler("User already exists!", 409));
   }
 
-  //hashing password
+  //hash password
   const passwordHash = await bcrypt.hash(password, 10);
-  const createdUser = await User.create({
+
+  //avatar generate
+  const avatarType = gender === "male" ? "boy" : "girl";
+  const avatarURL = `https://avatar.iran.liara.run/public/${avatarType}?username=${email}`;
+
+  //create new user
+  const newUser = await User.create({
     username,
     email,
     password: passwordHash,
+    avatar: avatarURL,
+    gender,
   });
 
-  if (createdUser) res.send("user created");
-  // console.log(createdUser);
+  //send respsonse and cookie
+  if (newUser) {
+    const token = tokenGenerator(newUser._id);
+    cookieSender(res, token);
+    res.status(200).json({
+      success: true,
+      responseData: {
+        newUser,
+        token,
+      },
+    });
+  }
 });
-
-// async function register(req, res) {
-//   const { username, email, password } = req.body;
-//   if (!username || !email || !password) {
-//     return res.send("<h1>All fields are required</h1>");
-//   }
-//   try {
-//     const user = await User.findOne({ email });
-//     if (user) {
-//       return res.send("<h1>user already exists</h1>");
-//     }
-
-//     //hashing password
-//     const passwordHash = await bcrypt.hash(password, 10);
-
-//     const createdUser = await User.create({
-//       username,
-//       email,
-//       password: passwordHash,
-//     });
-
-//     if (createdUser) res.send("user created");
-//     // console.log(createdUser);
-//   } catch (error) {
-//     res.send("something went wrong");
-//     console.log(error);
-//   }
-
-//   // console.log(req.body);
-// }
 
 export { login, register };
