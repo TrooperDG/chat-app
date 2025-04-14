@@ -1,6 +1,11 @@
-const responseHandler = (res, statusCode = 200, resposeData = {}) => {
+export const responseHandler = (
+  res,
+  statusCode = 200,
+  resposeData = {},
+  success = true
+) => {
   res.status(statusCode).json({
-    success: true,
-    responseData,
+    success: success,
+    responseData: resposeData,
   });
 };

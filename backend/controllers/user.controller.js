@@ -1,13 +1,12 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { asyncHandler } from "../utilities/asyncHandler.utility.js";
-import { errorHandler } from "../utilities/errorHandler.utility.js";
-import { COOKIE_EXPIRE, JWT_EXPIRE } from "../constants.js";
 import {
+  asyncHandler,
+  errorHandler,
   cookieSender,
   tokenGenerator,
-} from "../utilities/cookieHandler.utility.js";
+  responseHandler,
+} from "../utilities/index.js";
 
 const login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
@@ -27,13 +26,7 @@ const login = asyncHandler(async (req, res, next) => {
   if (isValidPassword) {
     const token = tokenGenerator(user._id);
     cookieSender(res, token);
-    res.status(200).json({
-      success: true,
-      responseData: {
-        user,
-        token,
-      },
-    });
+    responseHandler(res, 200, { user, token });
   } else {
     return next(new errorHandler("Email or Password is Invalid!", 401));
   }
@@ -73,13 +66,7 @@ const register = asyncHandler(async (req, res, next) => {
   if (newUser) {
     const token = tokenGenerator(newUser._id);
     cookieSender(res, token);
-    res.status(200).json({
-      success: true,
-      responseData: {
-        newUser,
-        token,
-      },
-    });
+    responseHandler(res, 201, { newUser, token });
   }
 });
 
