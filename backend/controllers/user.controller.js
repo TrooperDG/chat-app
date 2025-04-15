@@ -70,4 +70,20 @@ const register = asyncHandler(async (req, res, next) => {
   }
 });
 
-export { login, register };
+const getProfile = asyncHandler(async (req, res, next) => {
+  const userData = await User.findById(req.userId);
+  if (userData) responseHandler(res, 200, userData);
+});
+
+const logout = asyncHandler(async (req, res, next) => {
+  cookieSender(res, "", true);
+  responseHandler(res, 200, "Logged out");
+});
+
+const getOtherUsers = asyncHandler(async (req, res, next) => {
+  const otherUsers = await User.find({ _id: { $ne: req.userId } });
+
+  responseHandler(res, 200, otherUsers);
+});
+
+export { login, register, getProfile, logout, getOtherUsers };
