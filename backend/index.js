@@ -3,9 +3,16 @@ configDotenv();
 import express from "express";
 import connectDB from "./db/connection_1.db.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 connectDB();
 const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:5173", // your frontend
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 const PORT = 8000;
