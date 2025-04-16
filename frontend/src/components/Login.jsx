@@ -1,24 +1,37 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUserThunk } from "../store/slices/user/user.thunk";
 
 function Login() {
   const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  // console.log(loading);
 
-  function submit(data) {
-    console.log(data);
+  async function submit(loginData) {
+    setLoading(true);
+    const response = await dispatch(loginUserThunk(loginData));
+    console.log(response.payload.success);
+    if (response.payload.success) {
+      navigate("/");
+    }
+
+    setLoading(false);
   }
   return (
-    <div className="w-full flex flex-col justify-center items-center ">
+    <div className=" w-md flex flex-col justify-center items-center bg-base-300 p-6 rounded-2xl">
       <h1
-        className="text-2xl font-semibold text-gray-6
-      00 dark:text-gray-300"
+        className="text-3xl font-semibold text-gray-6
+      00 dark:text-gray-300 mb-2.5"
       >
         Login
       </h1>
-      <form className="flex gap-2 flex-col w-md px-10 py-2 " action="">
+      <form className="flex gap-2 flex-col w-full">
         <div>
-          <label className="input validator w-full">
+          <label className="input validator w-full ">
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -67,10 +80,9 @@ function Login() {
               type="password"
               required
               placeholder="Password"
-              minLength="8"
-              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              minLength="1"
               autoComplete="current-password"
-              title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
+              title="Can not be empty"
               {...register("password", { required: true })}
             />
           </label>
@@ -89,7 +101,11 @@ function Login() {
           type="submit"
           className="btn  btn-primary"
         >
-          Login
+          {loading ? (
+            <span className="loading loading-spinner loading-xs"></span>
+          ) : (
+            "Login"
+          )}
         </button>
 
         <p className="text-gray-700 dark:text-gray-300 text-center">

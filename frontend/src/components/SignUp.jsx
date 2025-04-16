@@ -1,23 +1,31 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
+import { useDispatch, useSelector } from "react-redux";
+import { registerUserThunk } from "../store/slices/user/user.thunk";
 function SignUp() {
   const { register, handleSubmit } = useForm();
-
-  function submit(data) {
-    console.log(data);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const loading = useSelector((state) => state.user.buttonLoading);
+  // console.log(loading);
+  async function submit(signUpData) {
+    const response = await dispatch(registerUserThunk(signUpData));
+    console.log(response.payload.success);
+    if (response.payload.success) {
+      navigate("/");
+    }
   }
   return (
-    <div className="w-full flex flex-col justify-center items-center ">
+    <div className="w-md flex flex-col justify-center items-center bg-base-300 p-6 rounded-2xl">
       <h1
-        className="text-2xl font-semibold text-gray-6
-      00 dark:text-gray-300"
+        className="text-3xl font-semibold text-gray-6
+      00 dark:text-gray-300 mb-2.5"
       >
         Sign up
       </h1>
-      <form className="flex gap-2 flex-col w-md px-10 py-2 " action="">
-        <div className=" ">
+      <form className="flex gap-2 flex-col w-full ">
+        <div>
           <label className="input validator  w-full">
             <svg
               className="h-[1em] opacity-50"
@@ -52,6 +60,7 @@ function SignUp() {
             containing only letters, numbers or dash
           </p>
         </div>
+
         <div>
           <label className="input validator w-full">
             <svg
@@ -77,7 +86,7 @@ function SignUp() {
               {...register("email", { required: true })}
             />
           </label>
-          <div className="validator-hint hidden">Enter valid email address</div>
+          <p className="validator-hint hidden">Enter valid email address</p>
         </div>
 
         <div>
@@ -118,6 +127,40 @@ function SignUp() {
             <br />
             At least one uppercase letter
           </p>
+        </div>
+
+        <div className="flex gap-5">
+          <label className="">
+            <input
+              type="radio"
+              name="gender"
+              value="male"
+              className="radio radio-primary mr-1"
+              defaultChecked
+              {...register("gender", { required: true })}
+            />
+            male
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="gender"
+              value="female"
+              className="radio radio-primary mr-1"
+              {...register("gender", { required: true })}
+            />
+            female
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="gender"
+              value="other"
+              className="radio radio-primary mr-1"
+              {...register("gender", { required: true })}
+            />
+            other
+          </label>
         </div>
         <button
           onClick={handleSubmit(submit)}

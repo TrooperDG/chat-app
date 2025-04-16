@@ -3,7 +3,7 @@ import { SignUp } from "../../components";
 
 function SignUpPage() {
   return (
-    <div>
+    <div className="w-full h-screen flex justify-center items-center">
       <SignUp />
     </div>
   );
