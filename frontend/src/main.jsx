@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import { HomePage, LoginPage, SignUpPage } from "./pages";
 import { store } from "./store/store.js";
 import { Provider } from "react-redux";
+import Kipu from "./store/slices/Kipu.jsx";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
@@ -14,6 +15,7 @@ createRoot(document.getElementById("root")).render(
           <Route path="" element={<HomePage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="signup" element={<SignUpPage />} />
+          <Route path="kipu" element={<Kipu />} />
         </Route>
         <Route
           path="*"
