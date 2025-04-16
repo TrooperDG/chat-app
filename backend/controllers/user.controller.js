@@ -66,7 +66,7 @@ const register = asyncHandler(async (req, res, next) => {
   if (newUser) {
     const token = tokenGenerator(newUser._id);
     cookieSender(res, token);
-    responseHandler(res, 201, { newUser, token });
+    responseHandler(res, 201, { user: newUser, token });
   }
 });
 
