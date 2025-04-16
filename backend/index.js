@@ -13,9 +13,10 @@ app.use(
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
-const PORT = 8000;
+const PORT = process.env.PORT;
 
 app.get("/", (req, res) => {
   res.send(`<h1>Welcome to home </h1>`);
@@ -31,4 +32,6 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1/message", messageRouter);
 app.use(errorMiddleware);
 
-app.listen(PORT, () => console.log("server running at http://localhost:5000"));
+app.listen(PORT, () =>
+  console.log(`server running at http://localhost:${PORT}`)
+);

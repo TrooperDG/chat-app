@@ -6,7 +6,7 @@ const cookieSender = (res, token, isRemove = false) => {
       isRemove ? Date.now() : Date.now() + COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     sameSite: "None",
   });
 };
