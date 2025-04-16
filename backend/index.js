@@ -8,7 +8,7 @@ connectDB();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-const PORT = 5000;
+const PORT = 8000;
 
 app.get("/", (req, res) => {
   res.send(`<h1>Welcome to home </h1>`);
@@ -20,8 +20,8 @@ import userRouter from "./routes/user.route.js";
 import { errorMiddleware } from "./middlewares/error.middleware.js";
 import messageRouter from "./routes/message.route.js";
 
-app.use("/user", userRouter);
-app.use("/message", messageRouter);
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/message", messageRouter);
 app.use(errorMiddleware);
 
 app.listen(PORT, () => console.log("server running at http://localhost:5000"));
