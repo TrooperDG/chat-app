@@ -6,15 +6,37 @@ import { HomePage, LoginPage, SignUpPage } from "./pages";
 import { store } from "./store/store.js";
 import { Provider } from "react-redux";
 import Kipu from "./store/slices/Kipu.jsx";
+import { Protected } from "./components";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route path="" element={<HomePage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="signup" element={<SignUpPage />} />
+          <Route
+            path=""
+            element={
+              <Protected>
+                <HomePage />
+              </Protected>
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <Protected authentication={false}>
+                <LoginPage />
+              </Protected>
+            }
+          />
+          <Route
+            path="signup"
+            element={
+              <Protected authentication={false}>
+                <SignUpPage />
+              </Protected>
+            }
+          />
           <Route path="kipu" element={<Kipu />} />
         </Route>
         <Route

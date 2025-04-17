@@ -8,7 +8,7 @@ function Logout() {
     <div>
       <button
         onClick={() => dispatch(logoutUserThunk())}
-        class="btn btn-soft btn-primary"
+        className="btn btn-soft btn-primary"
       >
         Logout
       </button>
