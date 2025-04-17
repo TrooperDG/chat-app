@@ -4,7 +4,10 @@ import "./App.css";
 import { Outlet } from "react-router-dom";
 import { ThemeChanger } from "./components";
 import { useDispatch } from "react-redux";
-import { getUserThunk } from "./store/slices/user/user.thunk";
+import {
+  getOtherUsersThunk,
+  getUserThunk,
+} from "./store/slices/user/user.thunk";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -15,6 +18,7 @@ function App() {
     const getUser = async () => {
       setLoading(true);
       await dispatch(getUserThunk());
+      await dispatch(getOtherUsersThunk());
       setLoading(false);
     };
     getUser();

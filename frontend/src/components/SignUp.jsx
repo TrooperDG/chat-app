@@ -7,7 +7,7 @@ function SignUp() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const loading = useSelector((state) => state.user.buttonLoading);
+  // const loading = useSelector((state) => state.userReducer.buttonLoading);
   // console.log(loading);
   async function submit(signUpData) {
     const response = await dispatch(registerUserThunk(signUpData));

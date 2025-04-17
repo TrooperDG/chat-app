@@ -8,14 +8,10 @@ const loginUserThunk = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await api.post("/user/login", { email, password });
-
-      console.log(response?.data);
-
       toast.success("Logged in succesfully");
       return response?.data || null;
     } catch (error) {
       const errMessage = error?.response?.data?.errorMessage;
-      toast.error(errMessage);
       return rejectWithValue(errMessage || "something went wrong");
     }
   }
@@ -30,9 +26,6 @@ const registerUserThunk = createAsyncThunk(
         password,
         gender,
       });
-
-      console.log(response?.data);
-
       toast.success("Registered in succesfully");
       return response?.data || null;
     } catch (error) {
@@ -47,13 +40,9 @@ const getUserThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("/user/get-user");
-
-      console.log(response?.data);
-
       return response?.data || null;
     } catch (error) {
       const errMessage = error?.response?.data?.errorMessage;
-      console.log(errMessage);
       return rejectWithValue(errMessage || "something went wrong");
     }
   }
@@ -63,31 +52,31 @@ const logoutUserThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.post("/user/logout");
-
       toast.success("Logged out succesfully");
       return response?.data || null;
     } catch (error) {
       const errMessage = error?.response?.data?.errorMessage;
-      toast.error(errMessage);
       return rejectWithValue(errMessage || "something went wrong");
     }
   }
 );
 const getOtherUsersThunk = createAsyncThunk(
-  "user/getUser",
+  "user/getOtherUsers",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get("/user/get-user");
-
-      console.log(response?.data);
-
+      const response = await api.get("/user/get-other-users");
       return response?.data || null;
     } catch (error) {
       const errMessage = error?.response?.data?.errorMessage;
-      console.log(errMessage);
       return rejectWithValue(errMessage || "something went wrong");
     }
   }
 );
 
-export { loginUserThunk, registerUserThunk, logoutUserThunk, getUserThunk };
+export {
+  loginUserThunk,
+  registerUserThunk,
+  logoutUserThunk,
+  getUserThunk,
+  getOtherUsersThunk,
+};
