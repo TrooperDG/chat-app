@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import ChatUser from "./ChatUser";
+import { useSelector } from "react-redux";
 
 function Sidebar() {
+  // const [otherUsers, setOtherUsers] = useState(null);
+  const { otherUsersData } = useSelector((state) => state.userReducer);
   return (
     <div className="w-full max-w-[20rem] p-3 flex flex-col border-r border-r-gray-300 dark:border-r-gray-700 gap-2">
       <div>
@@ -25,53 +28,17 @@ function Sidebar() {
           <input type="search" required placeholder="Search" />
         </label>
       </div>
-      <div className="h-full overflow-y-auto pt-1 flex flex-col">
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-        <div className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2">
-          <ChatUser />
-        </div>
-      </div>
+      <ul className="h-full overflow-y-auto pt-1 flex flex-col">
+        {otherUsersData &&
+          otherUsersData.map((user) => (
+            <li
+              key={user._id}
+              className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2"
+            >
+              <ChatUser userData={user} />
+            </li>
+          ))}
+      </ul>
     </div>
   );
 }
