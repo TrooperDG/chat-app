@@ -73,5 +73,21 @@ const logoutUserThunk = createAsyncThunk(
     }
   }
 );
+const getOtherUsersThunk = createAsyncThunk(
+  "user/getUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/user/get-user");
+
+      console.log(response?.data);
+
+      return response?.data || null;
+    } catch (error) {
+      const errMessage = error?.response?.data?.errorMessage;
+      console.log(errMessage);
+      return rejectWithValue(errMessage || "something went wrong");
+    }
+  }
+);
 
 export { loginUserThunk, registerUserThunk, logoutUserThunk, getUserThunk };

@@ -14,6 +14,6 @@ userRouter.post("/login", login);
 userRouter.post("/register", register);
 userRouter.get("/get-user", isAuthenticated, getProfile);
 userRouter.post("/logout", isAuthenticated, logout);
-userRouter.get("/other-users", isAuthenticated, getOtherUsers);
+userRouter.get("/get-other-users", isAuthenticated, getOtherUsers);
 
 export default userRouter;
