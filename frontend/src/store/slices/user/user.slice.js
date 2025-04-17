@@ -3,6 +3,7 @@ import {
   loginUserThunk,
   registerUserThunk,
   logoutUserThunk,
+  getUserThunk,
 } from "./user.thunk.js";
 
 const initialState = {
@@ -24,15 +25,15 @@ export const userSlice = createSlice({
     //Login Thunk
     builder.addCase(loginUserThunk.pending, (state, action) => {
       console.log("pending");
-      state.buttonLoading = true;
+      // state.buttonLoading = true;
     });
     builder.addCase(loginUserThunk.fulfilled, (state, action) => {
       console.log("fulfilled");
-      state.buttonLoading = false;
+      state.isAuthenticated = true;
     });
     builder.addCase(loginUserThunk.rejected, (state, action) => {
       console.log("rejected");
-      state.buttonLoading = false;
+      // state.buttonLoading = false;
     });
 
     //Register Thunk
@@ -41,6 +42,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(registerUserThunk.fulfilled, (state, action) => {
       console.log("R-fulfilled");
+      state.isAuthenticated = true;
     });
     builder.addCase(registerUserThunk.rejected, (state, action) => {
       console.log("R-rejected");
@@ -52,9 +54,22 @@ export const userSlice = createSlice({
     });
     builder.addCase(logoutUserThunk.fulfilled, (state, action) => {
       console.log("L-fulfilled");
+      state.isAuthenticated = false;
     });
     builder.addCase(logoutUserThunk.rejected, (state, action) => {
       console.log("L-rejected");
+    });
+
+    //getUser Thunk
+    builder.addCase(getUserThunk.pending, (state, action) => {
+      console.log("G-pending");
+    });
+    builder.addCase(getUserThunk.fulfilled, (state, action) => {
+      console.log("G-fulfilled");
+      state.isAuthenticated = true;
+    });
+    builder.addCase(getUserThunk.rejected, (state, action) => {
+      console.log("G-rejected");
     });
   },
 });

@@ -42,6 +42,22 @@ const registerUserThunk = createAsyncThunk(
     }
   }
 );
+const getUserThunk = createAsyncThunk(
+  "user/getUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/user/get-user");
+
+      console.log(response?.data);
+
+      return response?.data || null;
+    } catch (error) {
+      const errMessage = error?.response?.data?.errorMessage;
+      console.log(errMessage);
+      return rejectWithValue(errMessage || "something went wrong");
+    }
+  }
+);
 const logoutUserThunk = createAsyncThunk(
   "user/logout",
   async (_, { rejectWithValue }) => {
@@ -58,4 +74,4 @@ const logoutUserThunk = createAsyncThunk(
   }
 );
 
-export { loginUserThunk, registerUserThunk, logoutUserThunk };
+export { loginUserThunk, registerUserThunk, logoutUserThunk, getUserThunk };
