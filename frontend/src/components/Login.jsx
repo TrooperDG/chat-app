@@ -80,21 +80,11 @@ function Login() {
               type="password"
               required
               placeholder="Password"
-              minLength="1"
               autoComplete="current-password"
               title="Can not be empty"
               {...register("password", { required: true })}
             />
           </label>
-          <p className="validator-hint hidden">
-            Must be more than 8 characters, including
-            <br />
-            At least one number
-            <br />
-            At least one lowercase letter
-            <br />
-            At least one uppercase letter
-          </p>
         </div>
         <button
           onClick={handleSubmit(submit)}
