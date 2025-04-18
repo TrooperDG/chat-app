@@ -32,7 +32,7 @@ const sendMessage = asyncHandler(async (req, res, next) => {
       $push: { messages: newMessage._id },
     },
     { new: true }
-  );
+  ).populate("messages");
 
   //creating new conversation
   if (!conversation) {
@@ -63,7 +63,9 @@ const getMessages = asyncHandler(async (req, res, next) => {
         new mongoose.Types.ObjectId(otherParticipantId),
       ],
     },
-  }).select("messages");
+  })
+    .select("messages")
+    .populate("messages");
 
   responseHandler(res, 200, conversation);
 });
