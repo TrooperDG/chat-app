@@ -1,16 +1,19 @@
 import React from "react";
 
-function ChatBubble({ side }) {
+function ChatBubble({ message = "", side = "end" }) {
   return (
-    <div className={`chat chat-${side}`}>
-      <div
-        className={`chat-bubble chat-bubble-${
-          side === "start" ? "neutral" : "primary"
-        }`}
-      >
-        What kind of nonsense is this
+    message.length > 0 && (
+      <div className={`chat chat-${side}`}>
+        <div
+          className={`chat-bubble chat-bubble-${
+            side === "start" ? "neutral" : "primary"
+          }`}
+          // className={`chat-bubble chat-bubble-primary`}
+        >
+          {message}
+        </div>
       </div>
-    </div>
+    )
   );
 }
 

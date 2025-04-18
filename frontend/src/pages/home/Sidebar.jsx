@@ -30,13 +30,8 @@ function Sidebar() {
       </div>
       <ul className="h-full overflow-y-auto pt-1 flex flex-col">
         {otherUsersData &&
-          otherUsersData.map((user) => (
-            <li
-              key={user._id}
-              className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2"
-            >
-              <ChatUser userData={user} />
-            </li>
+          otherUsersData.map((userData) => (
+            <ChatUser key={userData?._id} userData={userData} />
           ))}
       </ul>
     </div>
