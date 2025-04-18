@@ -17,8 +17,11 @@ function App() {
   useEffect(() => {
     const getUser = async () => {
       setLoading(true);
-      await dispatch(getUserThunk());
-      await dispatch(getOtherUsersThunk());
+      const user = await dispatch(getUserThunk());
+      if (user?.payload?.success) {
+        await dispatch(getOtherUsersThunk());
+      }
+
       setLoading(false);
     };
     getUser();

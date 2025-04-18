@@ -12,8 +12,7 @@ const initialState = {
   userData: null,
   otherUsersData: null,
   selectedUserData: null,
-  buttonLoading: false,
-  screenLoading: false,
+  userLoading: false,
 };
 
 export const userSlice = createSlice({
@@ -22,74 +21,78 @@ export const userSlice = createSlice({
   reducers: {
     setSelectedUser: (state, action) => {
       state.selectedUserData = action.payload;
-      console.log(state.selectedUserData);
     },
   },
   extraReducers: (builder) => {
     //Login Thunk
     builder.addCase(loginUserThunk.pending, (state, action) => {
-      console.log("pending");
-      // state.buttonLoading = true;
+      state.userLoading = true;
     });
     builder.addCase(loginUserThunk.fulfilled, (state, action) => {
       state.userData = action.payload.responseData;
       state.isAuthenticated = true;
-      console.log(state.userData);
+      state.userLoading = false;
     });
     builder.addCase(loginUserThunk.rejected, (state, action) => {
-      console.log("rejected", action.payload);
+      state.userLoading = false;
+      console.log(" login-rejected", action.payload);
     });
 
     //Register Thunk
     builder.addCase(registerUserThunk.pending, (state, action) => {
-      console.log("R-pending");
+      state.userLoading = true;
     });
     builder.addCase(registerUserThunk.fulfilled, (state, action) => {
       state.userData = action.payload.responseData;
       state.isAuthenticated = true;
-      console.log(state.userData);
+      state.userLoading = false;
     });
     builder.addCase(registerUserThunk.rejected, (state, action) => {
-      console.log("R-rejected", action.payload);
+      state.userLoading = false;
+      console.log("register-rejected", action.payload);
     });
 
     //Logout Thunk
     builder.addCase(logoutUserThunk.pending, (state, action) => {
-      console.log("L-pending");
+      state.userLoading = true;
     });
     builder.addCase(logoutUserThunk.fulfilled, (state, action) => {
       state.isAuthenticated = false;
       state.userData = null;
       state.otherUsersData = null;
+      state.userLoading = false;
       console.log("L-Logged Out");
     });
     builder.addCase(logoutUserThunk.rejected, (state, action) => {
-      console.log("L-rejected", action.payload);
+      state.userLoading = false;
+      console.log("logout-rejected", action.payload);
     });
 
     //getUser Thunk
     builder.addCase(getUserThunk.pending, (state, action) => {
-      console.log("G-pending");
+      state.userLoading = true;
     });
     builder.addCase(getUserThunk.fulfilled, (state, action) => {
       state.isAuthenticated = true;
       state.userData = action.payload.responseData;
-      console.log(state.userData);
+      state.userLoading = false;
     });
     builder.addCase(getUserThunk.rejected, (state, action) => {
-      console.log("G-rejected", action.payload);
+      state.userLoading = false;
+      console.log("get-user-rejected", action.payload);
     });
 
     //getOtherUsers Thunk
     builder.addCase(getOtherUsersThunk.pending, (state, action) => {
-      console.log("O-pending");
+      state.userLoading = true;
     });
     builder.addCase(getOtherUsersThunk.fulfilled, (state, action) => {
       state.otherUsersData = action.payload.responseData;
-      // console.log(state.otherUsersData);
+      state.userLoading = false;
     });
     builder.addCase(getOtherUsersThunk.rejected, (state, action) => {
-      console.log("O-rejected");
+      state.userLoading = false;
+      console.log("get-other-users-rejected", action.payload);
     });
   },
 });

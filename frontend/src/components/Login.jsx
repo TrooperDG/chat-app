@@ -14,7 +14,6 @@ function Login() {
   async function submit(loginData) {
     setLoading(true);
     const response = await dispatch(loginUserThunk(loginData));
-    console.log(response.payload.success);
     if (response.payload.success) {
       navigate("/");
     }

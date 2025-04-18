@@ -11,7 +11,6 @@ function SignUp() {
   // console.log(loading);
   async function submit(signUpData) {
     const response = await dispatch(registerUserThunk(signUpData));
-    console.log(response.payload.success);
     if (response.payload.success) {
       navigate("/");
     }
