@@ -11,7 +11,7 @@ const initialState = {
   isAuthenticated: false,
   userData: null,
   otherUsersData: null,
-  selectedUserData: null,
+  selectedUserData: JSON.parse(localStorage.getItem("selectedUserData")),
   userLoading: false,
 };
 
@@ -21,6 +21,7 @@ export const userSlice = createSlice({
   reducers: {
     setSelectedUser: (state, action) => {
       state.selectedUserData = action.payload;
+      localStorage.setItem("selectedUserData", JSON.stringify(action.payload));
     },
   },
   extraReducers: (builder) => {
@@ -61,6 +62,7 @@ export const userSlice = createSlice({
       state.userData = null;
       state.otherUsersData = null;
       state.userLoading = false;
+      state.selectedUserData = null;
       console.log("L-Logged Out");
     });
     builder.addCase(logoutUserThunk.rejected, (state, action) => {

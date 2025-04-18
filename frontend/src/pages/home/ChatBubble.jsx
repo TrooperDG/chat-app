@@ -1,8 +1,13 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-function ChatBubble({ message = "", side = "end" }) {
+function ChatBubble({ messageDetails }) {
+  const { userData } = useSelector((state) => state.userReducer);
+  const side = userData?._id === messageDetails?.senderId ? "end" : "start";
+
   return (
-    message.length > 0 && (
+    messageDetails &&
+    messageDetails.message && (
       <div className={`chat chat-${side}`}>
         <div
           className={`chat-bubble chat-bubble-${
@@ -10,7 +15,7 @@ function ChatBubble({ message = "", side = "end" }) {
           }`}
           // className={`chat-bubble chat-bubble-primary`}
         >
-          {message}
+          {messageDetails.message}
         </div>
       </div>
     )
