@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { Outlet } from "react-router-dom";
 import { ThemeChanger } from "./components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getOtherUsersThunk,
   getUserThunk,
