@@ -4,7 +4,7 @@ import { sendMessageThunk, getMessagesThunk } from "./message.thunk.js";
 const initialState = {
   messages: null,
   // buttonLoading: false,
-  screenLoading: false,
+  messageLoading: false,
 };
 
 export const messageSlice = createSlice({
@@ -19,31 +19,29 @@ export const messageSlice = createSlice({
   extraReducers: (builder) => {
     //sendMessage Thunk
     builder.addCase(sendMessageThunk.pending, (state, action) => {
-      console.log("m-pending");
-      // state.buttonLoading = true;
+      state.messageLoading = true;
     });
     builder.addCase(sendMessageThunk.fulfilled, (state, action) => {
-      state.messages = action.payload?.responseData?.conversation?.messages;
-      console.log(
-        "m-fullfiled",
-        action.payload?.responseData?.conversation?.messages
-      );
+      state.messages =
+        action.payload?.responseData?.conversation?.messages || null;
+      state.messageLoading = false;
     });
     builder.addCase(sendMessageThunk.rejected, (state, action) => {
-      console.log("m-rejected");
+      state.messageLoading = false;
+      console.log("send-message-rejected", action.payload);
     });
 
     //getMessages thunk
     builder.addCase(getMessagesThunk.pending, (state, action) => {
-      console.log("gm-pending");
-      // state.buttonLoading = true;
+      state.messageLoading = true;
     });
     builder.addCase(getMessagesThunk.fulfilled, (state, action) => {
       state.messages = action.payload?.responseData?.messages;
-      console.log("gm-fullfiled", action.payload?.responseData?.messages);
+      state.messageLoading = false;
     });
     builder.addCase(getMessagesThunk.rejected, (state, action) => {
-      console.log("m-rejected");
+      state.messageLoading = false;
+      console.log("get-messages-rejected", action.payload);
     });
   },
 });
