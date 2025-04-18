@@ -14,6 +14,7 @@ function SignUp() {
     if (response.payload.success) {
       navigate("/");
     }
+    dispatch(getOtherUsersThunk());
   }
   return (
     <div className="w-md flex flex-col justify-center items-center bg-base-300 p-6 rounded-2xl">

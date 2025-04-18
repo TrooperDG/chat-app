@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUserThunk } from "../store/slices/user/user.thunk";
+import {
+  getOtherUsersThunk,
+  loginUserThunk,
+} from "../store/slices/user/user.thunk";
 
 function Login() {
   const { register, handleSubmit } = useForm();
@@ -17,7 +20,7 @@ function Login() {
     if (response.payload.success) {
       navigate("/");
     }
-
+    dispatch(getOtherUsersThunk());
     setLoading(false);
   }
   return (
