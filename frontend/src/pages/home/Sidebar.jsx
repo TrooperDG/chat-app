@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import ChatUser from "./ChatUser";
 import { useSelector } from "react-redux";
 
 function Sidebar() {
-  // const [otherUsers, setOtherUsers] = useState(null);
   const { otherUsersData } = useSelector((state) => state.userReducer);
+
   return (
     <div className="w-full max-w-[20rem] p-3 flex flex-col border-r border-r-gray-300 dark:border-r-gray-700 gap-2">
       <div>
