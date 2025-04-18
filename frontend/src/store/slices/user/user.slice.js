@@ -11,6 +11,7 @@ const initialState = {
   isAuthenticated: false,
   userData: null,
   otherUsersData: null,
+  selectedUserData: null,
   buttonLoading: false,
   screenLoading: false,
 };
@@ -19,8 +20,9 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    Login: (state, action) => {
-      console.log("hellow reducer");
+    setSelectedUser: (state, action) => {
+      state.selectedUserData = action.payload;
+      console.log(state.selectedUserData);
     },
   },
   extraReducers: (builder) => {
@@ -84,7 +86,7 @@ export const userSlice = createSlice({
     });
     builder.addCase(getOtherUsersThunk.fulfilled, (state, action) => {
       state.otherUsersData = action.payload.responseData;
-      console.log(state.otherUsersData);
+      // console.log(state.otherUsersData);
     });
     builder.addCase(getOtherUsersThunk.rejected, (state, action) => {
       console.log("O-rejected");
@@ -92,5 +94,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { Login } = userSlice.actions;
+export const { setSelectedUser } = userSlice.actions;
 export default userSlice.reducer;
