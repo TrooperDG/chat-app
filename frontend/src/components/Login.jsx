@@ -20,7 +20,7 @@ function Login() {
     if (response.payload.success) {
       navigate("/");
     }
-    dispatch(getOtherUsersThunk());
+    // dispatch(getOtherUsersThunk());
     setLoading(false);
   }
   return (
