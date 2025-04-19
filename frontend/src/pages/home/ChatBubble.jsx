@@ -8,10 +8,10 @@ function ChatBubble({ messageDetails }) {
   return (
     messageDetails &&
     messageDetails.message && (
-      <div className={`chat chat-${side}`}>
+      <div className={`chat ${side === "start" ? "chat-start" : "chat-end"}`}>
         <div
-          className={`chat-bubble chat-bubble-${
-            side === "start" ? "neutral" : "primary"
+          className={`chat-bubble ${
+            side === "start" ? "chat-bubble-neutral" : "chat-bubble-primary"
           }`}
           // className={`chat-bubble chat-bubble-primary`}
         >
