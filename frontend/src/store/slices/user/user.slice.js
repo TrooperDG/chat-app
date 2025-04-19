@@ -63,6 +63,7 @@ export const userSlice = createSlice({
       state.otherUsersData = null;
       state.userLoading = false;
       state.selectedUserData = null;
+      localStorage.clear(); // clear selectedUserData
       console.log("L-Logged Out");
     });
     builder.addCase(logoutUserThunk.rejected, (state, action) => {

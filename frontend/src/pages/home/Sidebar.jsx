@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ChatUser from "./ChatUser";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getOtherUsersThunk } from "../../store/slices/user/user.thunk";
 
 function Sidebar() {
   const { otherUsersData } = useSelector((state) => state.userReducer);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    (async () => {
+      await dispatch(getOtherUsersThunk());
+    })();
+  }, []);
 
   return (
     <div className="w-full max-w-[20rem] p-3 flex flex-col border-r border-r-gray-300 dark:border-r-gray-700 gap-2">
