@@ -22,6 +22,11 @@ function SendMessage() {
         onChange={(e) => {
           setMessage(e.target.value);
         }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && message.trim().length > 0) {
+            handleSendMessage();
+          }
+        }}
         value={message}
         type="text"
         placeholder="Type here"
