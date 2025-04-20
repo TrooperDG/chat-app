@@ -18,7 +18,7 @@ export const socketConnection = (httpServer) => {
     io.emit("onlineUsers", Array.from(socketUserMap.keys()));
 
     socket.on("disconnect", () => {
-      delete socketUserMap[userId];
+      socketUserMap.delete(userId);
       io.emit("onlineUsers", Array.from(socketUserMap.keys()));
     });
 
