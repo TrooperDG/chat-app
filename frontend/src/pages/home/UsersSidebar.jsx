@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import ChatUser from "./ChatUser";
+import MessageUser from "./MessageUser";
 import { useDispatch, useSelector } from "react-redux";
 import { getOtherUsersThunk } from "../../store/slices/user/user.thunk";
 
-function Sidebar() {
+function UsersSidebar() {
   const { otherUsersData } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -38,11 +38,11 @@ function Sidebar() {
       <ul className="h-full overflow-y-auto pt-1 flex flex-col">
         {otherUsersData &&
           otherUsersData.map((userData) => (
-            <ChatUser key={userData?._id} userData={userData} />
+            <MessageUser key={userData?._id} userData={userData} />
           ))}
       </ul>
     </div>
   );
 }
 
-export default Sidebar;
+export default UsersSidebar;

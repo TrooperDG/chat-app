@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-function ChatBubble({ messageDetails }) {
+function MessageBubble({ messageDetails }) {
   const { userData } = useSelector((state) => state.userReducer);
   const side = userData?._id === messageDetails?.senderId ? "end" : "start";
 
@@ -22,4 +22,4 @@ function ChatBubble({ messageDetails }) {
   );
 }
 
-export default ChatBubble;
+export default MessageBubble;

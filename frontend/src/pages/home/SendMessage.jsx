@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sendMessageThunk } from "../../store/slices/message/message.thunk";
 
-function ChatInput() {
+function SendMessage() {
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
   const { selectedUserData } = useSelector((state) => state.userReducer);
@@ -38,4 +38,4 @@ function ChatInput() {
   );
 }
 
-export default ChatInput;
+export default SendMessage;

@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import ChatUser from "./ChatUser";
-import ChatBubble from "./ChatBubble";
 import { useDispatch, useSelector } from "react-redux";
 
-import ChatInput from "./ChatInput";
-import Chats from "./Chats";
+import SendMessage from "./SendMessage";
+import Messages from "./Messages";
 import { getMessagesThunk } from "../../store/slices/message/message.thunk";
 import { setSelectedUser } from "../../store/slices/user/user.slice";
 
-function ChatBox() {
+function MessageContainer() {
   const { selectedUserData } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -50,8 +48,8 @@ function ChatBox() {
           </button>
         </div>
       </div>
-      <Chats />
-      <ChatInput />
+      <Messages />
+      <SendMessage />
     </div>
   ) : (
     <div className="h-full w-full flex justify-center items-center ">
@@ -62,4 +60,4 @@ function ChatBox() {
   );
 }
 
-export default ChatBox;
+export default MessageContainer;

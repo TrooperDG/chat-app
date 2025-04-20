@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import Sidebar from "./Sidebar";
-import ChatBox from "./ChatBox";
+import UsersSidebar from "./UsersSidebar";
+import MessageContainer from "./MessageContainer";
 import { Logout } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -42,8 +42,8 @@ function HomePage() {
         <Logout />
       </div>
       <main className="flex w-full h-full overflow-auto">
-        <Sidebar />
-        <ChatBox />
+        <UsersSidebar />
+        <MessageContainer />
       </main>
     </div>
   );

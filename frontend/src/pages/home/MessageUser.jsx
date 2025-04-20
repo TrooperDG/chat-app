@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedUser } from "../../store/slices/user/user.slice";
 
-function ChatUser({ userData = {} }) {
+function MessageUser({ userData = {} }) {
   const dispatch = useDispatch();
   const { onlineUsers } = useSelector((state) => state.socketReducer);
 
@@ -36,4 +36,4 @@ function ChatUser({ userData = {} }) {
   );
 }
 
-export default ChatUser;
+export default MessageUser;

@@ -1,8 +1,8 @@
 import React from "react";
-import ChatBubble from "./ChatBubble";
+import MessageBubble from "./MessageBubble";
 import { useSelector } from "react-redux";
 
-function Chats() {
+function Messages() {
   const { messages } = useSelector((state) => state.messageReducer);
 
   return (
@@ -12,7 +12,7 @@ function Chats() {
         [...messages]
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
           .map((messageDetails) => (
-            <ChatBubble
+            <MessageBubble
               key={messageDetails._id}
               messageDetails={messageDetails}
             />
@@ -21,4 +21,4 @@ function Chats() {
   );
 }
 
-export default Chats;
+export default Messages;
