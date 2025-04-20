@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import UsersSidebar from "./UsersSidebar";
-import MessageContainer from "./MessageContainer";
 import { useDispatch, useSelector } from "react-redux";
 import {
   initializeSocket,
   setOnlineUsers,
 } from "../../store/slices/socket/socket.slice";
 import { addNewMessage } from "../../store/slices/message/message.slice";
-import { Header } from "../../components";
-import SidebarTools from "./SidebarTools";
+import {
+  Header,
+  SidebarTools,
+  MessageContainer,
+  UsersSidebar,
+} from "../../components";
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -32,6 +34,7 @@ function HomePage() {
       dispatch(addNewMessage(message));
     });
     return () => {
+      console.log("hoi gol");
       socket.close();
     };
   }, [socket]);

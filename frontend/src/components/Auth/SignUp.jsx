@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUserThunk } from "../store/slices/user/user.thunk";
+import { registerUserThunk } from "../../store/slices/user/user.thunk";
 function SignUp() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();

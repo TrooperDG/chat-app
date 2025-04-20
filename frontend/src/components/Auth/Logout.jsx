@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { logoutUserThunk } from "../store/slices/user/user.thunk";
+import { logoutUserThunk } from "../../store/slices/user/user.thunk";
 
 function Logout() {
   const dispatch = useDispatch();
