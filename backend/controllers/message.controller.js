@@ -1,8 +1,13 @@
 import Message from "../models/message.model.js";
 import Conversation from "../models/conversation.model.js";
-import { asyncHandler } from "../utilities/asyncHandler.utility.js";
-import { errorHandler } from "../utilities/errorHandler.utility.js";
-import { responseHandler } from "../utilities/responseHandler.utility.js";
+
+import {
+  responseHandler,
+  errorHandler,
+  asyncHandler,
+  getIO,
+  getSocketId,
+} from "../utilities/index.js";
 import mongoose from "mongoose";
 
 const sendMessage = asyncHandler(async (req, res, next) => {
@@ -40,6 +45,13 @@ const sendMessage = asyncHandler(async (req, res, next) => {
       participants: [senderId, receiverId],
       messages: [newMessage._id],
     });
+  }
+
+  //socket setup
+  const io = getIO();
+  const receiverSocketId = getSocketId(receiverId);
+  if (receiverSocketId) {
+    io.to(receiverSocketId).emit("newMessage", newMessage);
   }
 
   //send response
