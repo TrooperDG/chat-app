@@ -8,13 +8,12 @@ const initialState = {
 };
 
 export const messageSlice = createSlice({
-  name: "user",
+  name: "message",
   initialState,
   reducers: {
-    // setSelectedUser: (state, action) => {
-    //   state.selectedUserData = action.payload;
-    //   console.log(state.selectedUserData);
-    // },
+    addNewMessage: (state, action) => {
+      state.messages = [...state.messages, action.payload];
+    },
   },
   extraReducers: (builder) => {
     //sendMessage Thunk
@@ -22,8 +21,10 @@ export const messageSlice = createSlice({
       state.messageLoading = true;
     });
     builder.addCase(sendMessageThunk.fulfilled, (state, action) => {
-      state.messages =
-        action.payload?.responseData?.conversation?.messages || null;
+      state.messages = [
+        ...state.messages,
+        action.payload?.responseData?.newMessage,
+      ];
       state.messageLoading = false;
     });
     builder.addCase(sendMessageThunk.rejected, (state, action) => {
@@ -46,5 +47,5 @@ export const messageSlice = createSlice({
   },
 });
 
-export const {} = messageSlice.actions;
+export const { addNewMessage } = messageSlice.actions;
 export default messageSlice.reducer;
