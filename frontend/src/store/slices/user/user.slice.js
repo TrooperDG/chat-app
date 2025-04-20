@@ -30,7 +30,7 @@ export const userSlice = createSlice({
       state.userLoading = true;
     });
     builder.addCase(loginUserThunk.fulfilled, (state, action) => {
-      state.userData = action.payload.responseData;
+      state.userData = action.payload.responseData.user;
       state.isAuthenticated = true;
       state.userLoading = false;
     });
@@ -44,7 +44,8 @@ export const userSlice = createSlice({
       state.userLoading = true;
     });
     builder.addCase(registerUserThunk.fulfilled, (state, action) => {
-      state.userData = action.payload.responseData;
+      state.userData = action.payload.responseData.user;
+
       state.isAuthenticated = true;
       state.userLoading = false;
     });
