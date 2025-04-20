@@ -1,30 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import UsersSidebar from "./UsersSidebar";
 import MessageContainer from "./MessageContainer";
-import { Logout } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   initializeSocket,
   setOnlineUsers,
 } from "../../store/slices/socket/socket.slice";
 import { addNewMessage } from "../../store/slices/message/message.slice";
+import { Header } from "../../components";
+import SidebarTools from "./SidebarTools";
 
 function HomePage() {
   const dispatch = useDispatch();
+
+  // Intitializing Socket
   const { userData, isAuthenticated } = useSelector(
     (state) => state.userReducer
   );
-  // console.log(userData);
-  const { socket } = useSelector((state) => state.socketReducer);
 
   useEffect(() => {
     if (isAuthenticated) dispatch(initializeSocket(userData?._id));
   }, [isAuthenticated]);
 
+  const { socket } = useSelector((state) => state.socketReducer);
   useEffect(() => {
     if (!socket) return;
     socket.on("onlineUsers", (onlineUsers) => {
-      // console.log(onlineUsers);
       dispatch(setOnlineUsers(onlineUsers));
     });
     socket.on("newMessage", (message) => {
@@ -35,14 +36,20 @@ function HomePage() {
     };
   }, [socket]);
 
+  const [isUsersSidebarOpen, setIsUsersSidebarOpen] = useState(true);
+  const handleOpenUserSidebar = () => {
+    setIsUsersSidebarOpen((prev) => !prev);
+  };
+
   return (
     <div className="h-screen flex flex-col">
-      <div className="flex border-b border-b-gray-300 dark:border-b-gray-700">
-        <h1 className="text-2xl font-semibold p-2 ">TalkNest</h1>
-        <Logout />
-      </div>
+      <Header />
       <main className="flex w-full h-full overflow-auto">
-        <UsersSidebar />
+        <SidebarTools
+          isUsersSidebarOpen={isUsersSidebarOpen}
+          handleOpenUserSidebar={handleOpenUserSidebar}
+        />
+        {isUsersSidebarOpen && <UsersSidebar />}
         <MessageContainer />
       </main>
     </div>
