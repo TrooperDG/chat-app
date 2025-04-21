@@ -8,9 +8,10 @@ import SearchUsers from "./SearchUsers";
 import MessageUser from "./MessageUser";
 
 function UsersSidebar() {
-  const { otherUsersData } = useSelector((state) => state.userReducer);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
+  const { otherUsersData } = useSelector((state) => state.userReducer);
   const [otherUsers, setOtherUsers] = useState([]);
 
   const handleSearchUser = (e) => {
@@ -27,11 +28,14 @@ function UsersSidebar() {
       setOtherUsers(otherUsersData);
     }
   };
+  const handleRefreshOtherUsers = async () => {
+    setLoading(true);
+    await dispatch(getOtherUsersThunk());
+    setLoading(false);
+  };
 
   useEffect(() => {
-    (async () => {
-      await dispatch(getOtherUsersThunk());
-    })();
+    handleRefreshOtherUsers();
   }, []);
 
   useEffect(() => {
@@ -40,10 +44,16 @@ function UsersSidebar() {
 
   return (
     <div className="w-full max-w-[20rem] p-3 flex flex-col border-r border-r-gray-300 dark:border-r-gray-700 gap-2">
-      <div className="flex">
+      <div className="flex gap-0.5">
         <SearchUsers handleSearchUser={handleSearchUser} />
-        <button className="rounded-[4px] border-1 border-[#454E57]">
-          <MdRefresh size={22} className="text-gray-500" />
+        <button
+          onClick={handleRefreshOtherUsers}
+          className="rounded-[4px] duration-100 px-2 border-1 border-[#454E57] hover:bg-gray-400 dark:hover:bg-gray-600"
+        >
+          <MdRefresh
+            size={22}
+            className={`text-gray-400 ${loading && "animate-spin"}`}
+          />
         </button>
       </div>
       <ul className="h-full overflow-y-auto pt-1 flex flex-col">
