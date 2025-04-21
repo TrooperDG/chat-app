@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdOutlineSettings } from "react-icons/md";
 import { LuUsers } from "react-icons/lu";
+import SettingsWindow from "./SettingsWindow";
 
 function SidebarTools({ handleOpenUserSidebar, isUsersSidebarOpen }) {
+  const [isSettingsWindowOpen, setIsSettingsWindowOpen] = useState(false);
   return (
-    <div className="flex flex-col items-center justify-between border-r border-r-gray-300 dark:border-r-gray-700 gap-2 p-1">
+    <div className="relative flex flex-col items-center justify-between border-r border-r-gray-300 dark:border-r-gray-700 gap-2 p-1">
       <div id="top">
         <button
           onClick={handleOpenUserSidebar}
@@ -12,18 +14,26 @@ function SidebarTools({ handleOpenUserSidebar, isUsersSidebarOpen }) {
             isUsersSidebarOpen && " border-primary bg-gray-400 dark:bg-gray-700"
           }`}
         >
-          <LuUsers size={22} className={`text-gray-700 dark:text-gray-300 `} />
+          <LuUsers size={22} className={`text-gray-600 dark:text-gray-400 `} />
         </button>
       </div>
 
       <div id="bottom">
-        <button className=" w-10 h-10 flex justify-center items-center hover:bg-gray-300 dark:hover:bg-gray-700 duration-100 rounded-sm">
+        <button
+          onClick={() => setIsSettingsWindowOpen(true)}
+          className=" w-10 h-10 flex justify-center items-center hover:bg-gray-300 dark:hover:bg-gray-700 duration-100 rounded-sm"
+        >
           <MdOutlineSettings
             size={22}
-            className="text-gray-700 dark:text-gray-300"
+            className="text-gray-600 dark:text-gray-400"
           />
         </button>
       </div>
+
+      {/* fixed window */}
+      {isSettingsWindowOpen && (
+        <SettingsWindow handleClose={() => setIsSettingsWindowOpen(false)} />
+      )}
     </div>
   );
 }
