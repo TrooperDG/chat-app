@@ -23,11 +23,11 @@ function MessageContainer() {
           getMessagesThunk({ otherParticipantId: selectedUserData?._id })
         );
       }
-
       setLoading(false);
     };
     getMessages();
   }, [selectedUserData]);
+
   return selectedUserData ? (
     <div className="w-full h-full flex flex-col">
       <div className="p-3 border-b border-b-gray-300 dark:border-b-gray-700  flex justify-between">

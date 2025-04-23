@@ -14,6 +14,8 @@ function SendMessage() {
         message: message.trim(),
       })
     );
+    // const sendSound = new Audio("/sounds/tup.wav");
+    // sendSound.play();
     setMessage("");
   };
   return (
