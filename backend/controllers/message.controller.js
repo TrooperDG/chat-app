@@ -47,7 +47,7 @@ const sendMessage = asyncHandler(async (req, res, next) => {
     });
   }
 
-  //socket setup
+  //socket
   const io = getIO();
   const receiverSocketId = getSocketId(receiverId);
   if (receiverSocketId) {
@@ -82,4 +82,26 @@ const getMessages = asyncHandler(async (req, res, next) => {
   responseHandler(res, 200, conversation);
 });
 
-export { sendMessage, getMessages };
+const updateMessagesSeen = asyncHandler(async (req, res, next) => {
+  const myId = req.userId;
+  const senderId = req.params.senderId;
+  if (!myId || !req.params.senderId) {
+    return next(new errorHandler("all fields are necessary", 400));
+  }
+
+  const result = await Message.updateMany(
+    { senderId, receiverId: myId, isSeen: false },
+    { $set: { isSeen: true } }
+  );
+
+  // socket
+  const io = getIO();
+  const receiverSocketId = getSocketId(senderId); // the msg sender will recieve if msges are seen or not
+  if (receiverSocketId) {
+    io.to(receiverSocketId).emit("seenMessages", result);
+  }
+
+  responseHandler(res, 200, result);
+});
+
+export { sendMessage, getMessages, updateMessagesSeen };
