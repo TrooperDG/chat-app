@@ -32,7 +32,7 @@ function SettingsWindow({ handleClose }) {
           SelectedTab={SelectedTab}
         />
       </div>
-      <div id="settings" className="px-2 ">
+      <div id="settings" className="px-2 w-3/5">
         {SelectedTab === "Theme" && <ThemeSettings />}
         {SelectedTab === "Sound" && <SoundSettings />}
         {SelectedTab === "Notification" && <NotificationSettings />}

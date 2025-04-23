@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import "./App.css";
 import { Outlet } from "react-router-dom";
-import { ThemeChanger } from "./components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getOtherUsersThunk,
@@ -14,18 +13,22 @@ function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
+  const htmlElement = document.querySelector("html");
+  const { theme } = useSelector((state) => state.settingsReducer);
+
   useEffect(() => {
     const getUser = async () => {
       setLoading(true);
       await dispatch(getUserThunk());
-      // if (user?.payload?.success) {
-      //   await dispatch(getOtherUsersThunk());
-      // }
-
       setLoading(false);
     };
     getUser();
   }, []);
+
+  useEffect(() => {
+    // setting the theme
+    htmlElement.setAttribute("data-theme", theme || "dark");
+  }, [theme]);
 
   if (loading) {
     return (
