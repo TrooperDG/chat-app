@@ -4,7 +4,10 @@ import {
   initializeSocket,
   setOnlineUsers,
 } from "../../store/slices/socket/socket.slice";
-import { addNewMessage } from "../../store/slices/message/message.slice";
+import {
+  addNewMessage,
+  updateMessagesAfterSeen,
+} from "../../store/slices/message/message.slice";
 import {
   Header,
   SidebarTools,
@@ -30,11 +33,15 @@ function HomePage() {
     socket.on("onlineUsers", (onlineUsers) => {
       dispatch(setOnlineUsers(onlineUsers));
     });
-    socket.on("newMessage", (message) => {
-      dispatch(addNewMessage(message));
-    });
+    // socket.on("newMessage", (message) => {
+    //   dispatch(addNewMessage(message));
+    // });
+    // socket.on("seenMessages", (messages) => {
+    //   if (messages && messages.acknowledged) {
+    //     dispatch(updateMessagesAfterSeen(userData._id));
+    //   }
+    // });
     return () => {
-      console.log("hoi gol");
       socket.close();
     };
   }, [socket]);

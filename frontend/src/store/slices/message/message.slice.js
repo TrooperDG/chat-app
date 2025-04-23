@@ -1,9 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { sendMessageThunk, getMessagesThunk } from "./message.thunk.js";
+import {
+  sendMessageThunk,
+  getMessagesThunk,
+  seenMessagesThunk,
+} from "./message.thunk.js";
 
 const initialState = {
   messages: null,
   // buttonLoading: false,
+  isSeen: false,
   messageLoading: false,
 };
 
@@ -11,8 +16,25 @@ export const messageSlice = createSlice({
   name: "message",
   initialState,
   reducers: {
+    // for socket
     addNewMessage: (state, action) => {
-      state.messages = [...state.messages, action.payload];
+      if (state.messages) {
+        state.messages = [...state.messages, action.payload];
+      } else {
+        state.messages = [action.payload];
+      }
+    },
+    updateMessagesAfterSeen: (state, action) => {
+      // after the messages sent by me(sender) are seen by the otherParticipant(receiver) ::  then set isSeen:true
+      //payload = myId(userId,senderId)
+      if (state.messages) {
+        const updatedMesages = state.messages.map((message) =>
+          message.senderId === action.payload
+            ? { ...message, isSeen: true }
+            : message
+        );
+        state.messages = updatedMesages;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -21,10 +43,15 @@ export const messageSlice = createSlice({
       state.messageLoading = true;
     });
     builder.addCase(sendMessageThunk.fulfilled, (state, action) => {
-      state.messages = [
-        ...state.messages,
-        action.payload?.responseData?.newMessage,
-      ];
+      if (state.messages) {
+        state.messages = [
+          ...state.messages,
+          action.payload?.responseData?.newMessage,
+        ];
+      } else {
+        state.messages = [action.payload?.responseData?.newMessage];
+      }
+
       state.messageLoading = false;
     });
     builder.addCase(sendMessageThunk.rejected, (state, action) => {
@@ -44,8 +71,20 @@ export const messageSlice = createSlice({
       state.messageLoading = false;
       console.log("get-messages-rejected", action.payload);
     });
+
+    //seenMessages thunk
+    builder.addCase(seenMessagesThunk.pending, (state, action) => {
+      state.messageLoading = true;
+    });
+    builder.addCase(seenMessagesThunk.fulfilled, (state, action) => {
+      state.messageLoading = false;
+    });
+    builder.addCase(seenMessagesThunk.rejected, (state, action) => {
+      state.messageLoading = false;
+      console.log("get-messages-rejected", action.payload);
+    });
   },
 });
 
-export const { addNewMessage } = messageSlice.actions;
+export const { addNewMessage, updateMessagesAfterSeen } = messageSlice.actions;
 export default messageSlice.reducer;
