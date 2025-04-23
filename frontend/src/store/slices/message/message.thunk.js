@@ -30,5 +30,17 @@ const getMessagesThunk = createAsyncThunk(
     }
   }
 );
+const seenMessagesThunk = createAsyncThunk(
+  "message/seenMessages",
+  async ({ senderId }, { rejectWithValue }) => {
+    try {
+      const response = await api.put(`/message/seen/${senderId}`);
+      return response?.data || null;
+    } catch (error) {
+      const errMessage = error?.response?.data?.errorMessage;
+      return rejectWithValue(errMessage || "something went wrong");
+    }
+  }
+);
 
-export { sendMessageThunk, getMessagesThunk };
+export { sendMessageThunk, getMessagesThunk, seenMessagesThunk };
