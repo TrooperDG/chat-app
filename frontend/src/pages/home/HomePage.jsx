@@ -33,14 +33,9 @@ function HomePage() {
     socket.on("onlineUsers", (onlineUsers) => {
       dispatch(setOnlineUsers(onlineUsers));
     });
-    // socket.on("newMessage", (message) => {
-    //   dispatch(addNewMessage(message));
-    // });
-    // socket.on("seenMessages", (messages) => {
-    //   if (messages && messages.acknowledged) {
-    //     dispatch(updateMessagesAfterSeen(userData._id));
-    //   }
-    // });
+    socket.on("newMessage", (message) => {
+      dispatch(addNewMessage(message));
+    });
     return () => {
       socket.close();
     };

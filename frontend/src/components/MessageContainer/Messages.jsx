@@ -2,12 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble";
 import { useDispatch, useSelector } from "react-redux";
 import { seenMessagesThunk } from "../../store/slices/message/message.thunk";
-import {
-  addNewMessage,
-  updateMessagesAfterSeen,
-} from "../../store/slices/message/message.slice";
+import { updateMessagesAfterSeen } from "../../store/slices/message/message.slice";
 
 function Messages() {
+  const { sound } = useSelector((state) => state.settingsReducer);
+  const seenSoundEnabledRef = useRef(sound.seenMessage);
+
   const { messages } = useSelector((state) => state.messageReducer);
   const { selectedUserData, userData } = useSelector(
     (state) => state.userReducer
@@ -25,13 +25,13 @@ function Messages() {
 
       if (recievedMessages.length > 0) {
         await dispatch(seenMessagesThunk({ senderId: selectedUserData._id }));
+        dispatch(updateMessagesAfterSeen(selectedUserData._id));
       }
     }
   };
 
   useEffect(() => {
     if (selectedUserData) handleSeenMessages();
-    // console.log(messages);
   }, [selectedUserData]);
 
   useEffect(() => {
@@ -41,21 +41,28 @@ function Messages() {
     }
   }, [messages]);
 
+  const playSeenSound = () => {
+    if (seenSoundEnabledRef.current) {
+      const seenSound = new Audio("/sounds/message-seen.mp3");
+      seenSound.volume = 0.3;
+      seenSound.play();
+    }
+  };
+
   const { socket } = useSelector((state) => state.socketReducer);
   useEffect(() => {
     if (!socket) return;
-    socket.on("newMessage", (message) => {
-      dispatch(addNewMessage(message));
-    });
     socket.on("seenMessages", (messages) => {
       if (messages && messages.acknowledged) {
         dispatch(updateMessagesAfterSeen(userData._id));
-        // const seenSound = new Audio("/sounds/message-seen.mp3");
-        // seenSound.volume = 0.3;
-        // seenSound.play();
+        playSeenSound();
       }
     });
   }, [socket]);
+
+  useEffect(() => {
+    seenSoundEnabledRef.current = sound.seenMessage;
+  }, [sound.seenMessage]);
 
   return (
     <div className="flex flex-col-reverse gap-0.5 h-full overflow-auto px-5">
@@ -70,5 +77,4 @@ function Messages() {
   );
 }
 
-// 6808fb19769ce03748dd2ff7
 export default Messages;
