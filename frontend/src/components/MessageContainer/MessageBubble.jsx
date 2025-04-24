@@ -5,6 +5,7 @@ function MessageBubble({ messageDetails }) {
   const { userData, selectedUserData } = useSelector(
     (state) => state.userReducer
   );
+  const { sound } = useSelector((state) => state.settingsReducer);
   const isMeSender = userData?._id === messageDetails?.senderId;
   const time = new Date(messageDetails.createdAt).toLocaleTimeString([], {
     hour: "2-digit",
@@ -14,15 +15,12 @@ function MessageBubble({ messageDetails }) {
 
   useEffect(() => {
     if (!messageDetails) return;
-    if (!messageDetails.isSeen && !isMeSender) {
+    if (!messageDetails.isSeen && !isMeSender && sound.receiveMessage) {
       const receivedSound = new Audio("/sounds/message-received.mp3");
       receivedSound.volume = 0.2;
       receivedSound.play();
-    } else if (messageDetails.isSeen && isMeSender) {
-      // const seenSound = new Audio("/sounds/message-seen.mp3");
-      // seenSound.volume = 0.5;
-      // seenSound.play();
-    } else if (!messageDetails.isSeen && isMeSender) {
+      console.log("received");
+    } else if (!messageDetails.isSeen && isMeSender && sound.sendMessage) {
       const sendSound = new Audio("/sounds/message-send.wav");
       sendSound.play();
     }
