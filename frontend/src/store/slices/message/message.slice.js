@@ -25,8 +25,8 @@ export const messageSlice = createSlice({
       }
     },
     updateMessagesAfterSeen: (state, action) => {
-      // after the messages sent by me(sender) are seen by the otherParticipant(receiver) ::  then set isSeen:true
-      //payload = myId(userId,senderId)
+      //after the messages sent by the sender are seen by the receiver ::  then set isSeen:true
+      //payload = myId if my msgs are seen :/or/: otherGuy Id if i've seen his messages
       if (state.messages) {
         const updatedMesages = state.messages.map((message) =>
           message.senderId === action.payload
