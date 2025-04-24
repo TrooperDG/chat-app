@@ -13,7 +13,7 @@ function ThemeSettings() {
   return (
     <div className="px-2.5 py-3  w-full ">
       <h1 className="text-xl ">Theme Settings</h1>
-      <div className="mt-3 w">
+      <div className="mt-3 p-2">
         <p>Change Theme</p>
         <select
           onChange={handleChangeTheme}
