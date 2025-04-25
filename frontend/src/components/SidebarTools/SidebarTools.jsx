@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { MdOutlineSettings } from "react-icons/md";
 import { LuUsers } from "react-icons/lu";
 import SettingsWindow from "./SettingsWindow";
 
 function SidebarTools({ handleOpenUserSidebar, isUsersSidebarOpen }) {
   const [isSettingsWindowOpen, setIsSettingsWindowOpen] = useState(false);
+  const settingsButtonRef = useRef(null);
   return (
     <div className="relative flex flex-col items-center justify-between border-r border-r-gray-300 dark:border-r-gray-700 gap-2 p-1">
       <div id="top">
@@ -20,7 +21,8 @@ function SidebarTools({ handleOpenUserSidebar, isUsersSidebarOpen }) {
 
       <div id="bottom">
         <button
-          onClick={() => setIsSettingsWindowOpen(true)}
+          ref={settingsButtonRef}
+          onClick={() => setIsSettingsWindowOpen((prev) => !prev)}
           className=" w-10 h-10 flex justify-center items-center hover:bg-gray-300 dark:hover:bg-gray-700 duration-100 rounded-sm"
         >
           <MdOutlineSettings
@@ -32,7 +34,10 @@ function SidebarTools({ handleOpenUserSidebar, isUsersSidebarOpen }) {
 
       {/* fixed window */}
       {isSettingsWindowOpen && (
-        <SettingsWindow handleClose={() => setIsSettingsWindowOpen(false)} />
+        <SettingsWindow
+          settingsButtonRef={settingsButtonRef}
+          handleClose={() => setIsSettingsWindowOpen(false)}
+        />
       )}
     </div>
   );

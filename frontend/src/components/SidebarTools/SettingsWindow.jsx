@@ -1,21 +1,31 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SettingsTabs from "./SettingsTabs";
 import ThemeSettings from "./SettingsTabContents/ThemeSettings";
-import SoundSettings from "./SettingsTabContents/SoundSettings";
+import MessageSettings from "./SettingsTabContents/MessageSettings";
 import NotificationSettings from "./SettingsTabContents/NotificationSettings";
 
-function SettingsWindow({ handleClose }) {
+function SettingsWindow({ settingsButtonRef, handleClose }) {
   const [SelectedTab, setSelectedTab] = useState(null);
   const settingsWindowRef = useRef(null);
 
-  document.addEventListener("mousedown", (e) => {
-    if (
-      settingsWindowRef.current &&
-      !settingsWindowRef.current.contains(e.target)
-    ) {
-      handleClose();
-    }
-  });
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      //using settingsButtonRef  so that is does not reopen when this runs
+      if (
+        settingsWindowRef.current &&
+        !settingsWindowRef.current.contains(e.target) &&
+        !settingsButtonRef.current.contains(e.target)
+      ) {
+        handleClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div
@@ -34,8 +44,8 @@ function SettingsWindow({ handleClose }) {
       </div>
       <div id="settings" className="px-2 w-3/5">
         {SelectedTab === "Theme" && <ThemeSettings />}
-        {SelectedTab === "Sound" && <SoundSettings />}
-        {SelectedTab === "Notification" && <NotificationSettings />}
+        {SelectedTab === "Messages" && <MessageSettings />}
+        {SelectedTab === "Notifications" && <NotificationSettings />}
       </div>
     </div>
   );
