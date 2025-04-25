@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   initializeSocket,
@@ -14,33 +14,74 @@ import {
   MessageContainer,
   UsersSidebar,
 } from "../../components";
+import toast from "react-hot-toast";
 
 function HomePage() {
   const dispatch = useDispatch();
+  // adding seen sound------------------------------------------------------------
+  const { messageSettings } = useSelector((state) => state.settingsReducer);
+  const seenSoundEnabledRef = useRef(messageSettings.seenSound);
+  const playSeenSound = () => {
+    if (seenSoundEnabledRef.current) {
+      const seenSound = new Audio("/sounds/message-seen.mp3");
+      seenSound.volume = 0.3;
+      seenSound.play();
+    }
+  };
 
-  // Intitializing Socket
-  const { userData, isAuthenticated } = useSelector(
+  // Intitializing Socket------------------------------------------------------------
+  const { userData, isAuthenticated, selectedUserData } = useSelector(
     (state) => state.userReducer
   );
+  const { socket } = useSelector((state) => state.socketReducer);
+  const selectedUserId = useRef(selectedUserData?._id);
 
   useEffect(() => {
     if (isAuthenticated) dispatch(initializeSocket(userData?._id));
   }, [isAuthenticated]);
 
-  const { socket } = useSelector((state) => state.socketReducer);
+  // listening socket --------------------------------------
   useEffect(() => {
     if (!socket) return;
+
     socket.on("onlineUsers", (onlineUsers) => {
       dispatch(setOnlineUsers(onlineUsers));
     });
+
     socket.on("newMessage", (message) => {
-      dispatch(addNewMessage(message));
+      if (message?.senderId === selectedUserId.current) {
+        dispatch(addNewMessage(message));
+      } else {
+        toast.success(message.message);
+      }
+    });
+
+    socket.on("seenMessages", (messages) => {
+      // console.log("i see you have seen");
+      if (messages && messages.acknowledged) {
+        dispatch(updateMessagesAfterSeen(userData._id));
+        if (selectedUserId.current) playSeenSound();
+      }
     });
     return () => {
       socket.close();
     };
   }, [socket]);
 
+  // updateding selectedUserId-Ref for socket new-message
+  useEffect(() => {
+    // console.log("changed", selectedUserId.current, selectedUserData?._id);
+    selectedUserId.current = selectedUserData?._id;
+  }, [selectedUserData?._id]);
+
+  //updateding seenSound-Ref for socket seen-message
+  useEffect(() => {
+    seenSoundEnabledRef.current = messageSettings.seenSound;
+  }, [messageSettings.seenSound]);
+
+  //------------------------------------------------------------------------
+
+  // sidebar open close
   const [isUsersSidebarOpen, setIsUsersSidebarOpen] = useState(true);
   const handleOpenUserSidebar = () => {
     setIsUsersSidebarOpen((prev) => !prev);

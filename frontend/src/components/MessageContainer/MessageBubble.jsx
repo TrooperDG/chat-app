@@ -23,14 +23,13 @@ function MessageBubble({ messageDetails }) {
       const receivedSound = new Audio("/sounds/message-received.mp3");
       receivedSound.volume = 0.2;
       receivedSound.play();
-      console.log("received");
     } else if (
       !messageDetails.isSeen &&
       isMeSender &&
       messageSettings.sendSound
     ) {
-      const sendSound = new Audio("/sounds/message-send.wav");
-      sendSound.play();
+      // const sendSound = new Audio("/sounds/message-send.wav");
+      // sendSound.play();
     }
   }, [messageDetails]);
 

@@ -37,6 +37,7 @@ function App() {
       </div>
     );
   }
+  console.log("app");
 
   return (
     <>

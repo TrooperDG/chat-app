@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
+
 import {
   sendMessageThunk,
   getMessagesThunk,
@@ -6,10 +8,12 @@ import {
 } from "./message.thunk.js";
 
 const initialState = {
+  // messagesArray: [], // object:{otherUser_id & conversation between us}
   messages: null,
   // buttonLoading: false,
-  isSeen: false,
+  // isSeen: false,
   messageLoading: false,
+  // newMessage: null,
 };
 
 export const messageSlice = createSlice({

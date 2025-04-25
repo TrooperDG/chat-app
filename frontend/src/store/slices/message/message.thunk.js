@@ -33,6 +33,7 @@ const getMessagesThunk = createAsyncThunk(
 const seenMessagesThunk = createAsyncThunk(
   "message/seenMessages",
   async ({ senderId }, { rejectWithValue }) => {
+    // console.log("you ", senderId, ":   i ve seen");
     try {
       const response = await api.put(`/message/seen/${senderId}`);
       return response?.data || null;
