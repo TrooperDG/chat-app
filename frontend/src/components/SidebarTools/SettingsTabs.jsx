@@ -2,12 +2,12 @@ import React from "react";
 
 // icons
 import { MdOutlineColorLens } from "react-icons/md";
-import { HiOutlineVolumeUp } from "react-icons/hi";
+import { IoChatbubblesOutline } from "react-icons/io5";
 import { IoNotificationsOutline } from "react-icons/io5";
 
 function SettingsTabs({ handleSelectTab, SelectedTab }) {
   const tabListClasses =
-    "flex gap-1 items-center cursor-pointer p-2 rounded-sm hover:bg-gray-600 duration-100";
+    "flex gap-2 items-center cursor-pointer p-2 rounded-sm hover:bg-gray-600 duration-100";
   return (
     <ul className="p-2 flex flex-col gap-1">
       <li
@@ -21,24 +21,24 @@ function SettingsTabs({ handleSelectTab, SelectedTab }) {
         <p className="">Theme</p>
       </li>
       <li
-        id="sound"
-        onClick={() => handleSelectTab("Sound")}
+        id="messages"
+        onClick={() => handleSelectTab("Messages")}
         className={`${tabListClasses} ${
-          SelectedTab === "Sound" && "bg-gray-700"
+          SelectedTab === "Messages" && "bg-gray-700"
         }`}
       >
-        <HiOutlineVolumeUp size={20} />
-        <p className="">Sound</p>
+        <IoChatbubblesOutline size={20} />
+        <p className="">Messages</p>
       </li>
       <li
-        id="notification"
-        onClick={() => handleSelectTab("Notification")}
+        id="notifications"
+        onClick={() => handleSelectTab("Notifications")}
         className={`${tabListClasses}  ${
           SelectedTab === "Notification" && "bg-gray-700"
         }`}
       >
         <IoNotificationsOutline size={20} />
-        <p className="">Notification</p>
+        <p className="">Notifications</p>
       </li>
     </ul>
   );

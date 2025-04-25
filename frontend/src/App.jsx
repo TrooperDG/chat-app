@@ -14,7 +14,7 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const htmlElement = document.querySelector("html");
-  const { theme } = useSelector((state) => state.settingsReducer);
+  const { themeSettings } = useSelector((state) => state.settingsReducer);
 
   useEffect(() => {
     const getUser = async () => {
@@ -27,8 +27,8 @@ function App() {
 
   useEffect(() => {
     // setting the theme
-    htmlElement.setAttribute("data-theme", theme || "dark");
-  }, [theme]);
+    htmlElement.setAttribute("data-theme", themeSettings.theme || "dark");
+  }, [themeSettings.theme]);
 
   if (loading) {
     return (

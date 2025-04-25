@@ -6,7 +6,7 @@ function SendMessage() {
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
   const { selectedUserData } = useSelector((state) => state.userReducer);
-  // const { sound } = useSelector((state) => state.settingsReducer);
+  // const { messageSettings } = useSelector((state) => state.settingsReducer);
 
   const handleSendMessage = () => {
     dispatch(
@@ -15,8 +15,8 @@ function SendMessage() {
         message: message.trim(),
       })
     );
-    //playing the send sound
-    // if (sound.sendMessage) {
+    //playing the send messageSettings
+    // if (messageSettings.sendSound) {
     // const sendSound = new Audio("/sounds/message-send.wav");
     // sendSound.play();
     // }

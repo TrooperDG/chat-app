@@ -5,8 +5,8 @@ import { seenMessagesThunk } from "../../store/slices/message/message.thunk";
 import { updateMessagesAfterSeen } from "../../store/slices/message/message.slice";
 
 function Messages() {
-  const { sound } = useSelector((state) => state.settingsReducer);
-  const seenSoundEnabledRef = useRef(sound.seenMessage);
+  const { messageSettings } = useSelector((state) => state.settingsReducer);
+  const seenSoundEnabledRef = useRef(messageSettings.seenSound);
 
   const { messages } = useSelector((state) => state.messageReducer);
   const { selectedUserData, userData } = useSelector(
@@ -61,8 +61,8 @@ function Messages() {
   }, [socket]);
 
   useEffect(() => {
-    seenSoundEnabledRef.current = sound.seenMessage;
-  }, [sound.seenMessage]);
+    seenSoundEnabledRef.current = messageSettings.seenSound;
+  }, [messageSettings.seenSound]);
 
   return (
     <div className="flex flex-col-reverse gap-0.5 h-full overflow-auto px-5">

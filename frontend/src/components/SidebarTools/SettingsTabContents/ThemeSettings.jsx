@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setTheme } from "../../../store/slices/settings/settings.silce";
+import { setThemeSettings } from "../../../store/slices/settings/settings.silce";
 
 function ThemeSettings() {
-  const { theme } = useSelector((state) => state.settingsReducer);
+  const { themeSettings } = useSelector((state) => state.settingsReducer);
   const dispatch = useDispatch();
 
   const handleChangeTheme = (e) => {
-    dispatch(setTheme(e.target.value));
+    dispatch(setThemeSettings({ theme: e.target.value }));
   };
 
   return (
@@ -17,7 +17,7 @@ function ThemeSettings() {
         <p>Change Theme</p>
         <select
           onChange={handleChangeTheme}
-          defaultValue={theme}
+          defaultValue={themeSettings.theme}
           className="bg-gray-700  mt-2.5 select select-ghost select-s h-7 w-28 "
         >
           <option value={"dark"} className="bg-gray-700 ">
