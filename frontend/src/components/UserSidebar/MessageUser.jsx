@@ -5,6 +5,19 @@ import { setSelectedUser } from "../../store/slices/user/user.slice";
 function MessageUser({ userData = {} }) {
   const dispatch = useDispatch();
   const { onlineUsers } = useSelector((state) => state.socketReducer);
+  const { notifications } = useSelector((state) => state.messageReducer);
+  const userNotifications = notifications.filter(
+    (message) => message.senderId === userData._id
+  );
+  // console.log("--------", userNotifications);
+  const latestMessage =
+    userNotifications && userNotifications?.length > 0
+      ? userNotifications.reduce((latest, message) =>
+          new Date(message.createdAt) > new Date(latest.createdAt)
+            ? message
+            : latest
+        )
+      : null;
 
   const isOnline = onlineUsers?.includes(userData?._id);
   // console.log(isOnline, onlineUsers);
@@ -29,7 +42,9 @@ function MessageUser({ userData = {} }) {
         </div>
         <div className="overflow-x-hidden">
           <h3>{userData?.username}</h3>
-          <p className="text-sm opacity-70">now msg hey bro whats up</p>
+          <p className="text-sm opacity-70">
+            {latestMessage?.message || "naiga"}
+          </p>
         </div>
       </div>
     </li>
