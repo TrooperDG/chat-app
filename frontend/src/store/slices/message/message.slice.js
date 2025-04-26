@@ -9,11 +9,9 @@ import {
 
 const initialState = {
   // messagesArray: [], // object:{otherUser_id & conversation between us}
-  messages: null,
-  // buttonLoading: false,
-  // isSeen: false,
+  messages: [],
   messageLoading: false,
-  // newMessage: null,
+  notifications: [], // messages from other users that are not seen
 };
 
 export const messageSlice = createSlice({
@@ -28,17 +26,26 @@ export const messageSlice = createSlice({
         state.messages = [action.payload];
       }
     },
-    updateMessagesAfterSeen: (state, action) => {
-      //after the messages sent by the sender are seen by the receiver ::  then set isSeen:true
-      //payload = myId if my msgs are seen :/or/: otherGuy Id if i've seen his messages
-      if (state.messages) {
-        const updatedMesages = state.messages.map((message) =>
-          message.senderId === action.payload
-            ? { ...message, isSeen: true }
-            : message
-        );
-        state.messages = updatedMesages;
-      }
+    addNewNotification: (state, action) => {
+      state.notifications.push(action.payload.message);
+    },
+    myMessagesAreSeen: (state, action) => {
+      state.messages = state.messages.map((message) =>
+        message.senderId === action.payload.myId
+          ? { ...message, isSeen: true }
+          : message
+      );
+    },
+    otherParticipantMessagesAreSeen: (state, action) => {
+      state.messages = state.messages.map((message) =>
+        message.senderId === action.payload.otherParticipantId
+          ? { ...message, isSeen: true }
+          : message
+      );
+      // removing the seen notifications
+      state.notifications = state.notifications.filter(
+        (message) => message.senderId !== action.payload.otherParticipantId
+      );
     },
   },
   extraReducers: (builder) => {
@@ -90,5 +97,11 @@ export const messageSlice = createSlice({
   },
 });
 
-export const { addNewMessage, updateMessagesAfterSeen } = messageSlice.actions;
+export const {
+  addNewMessage,
+  updateMessagesAfterSeen,
+  myMessagesAreSeen,
+  addNewNotification,
+  otherParticipantMessagesAreSeen,
+} = messageSlice.actions;
 export default messageSlice.reducer;
