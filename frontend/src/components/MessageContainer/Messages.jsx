@@ -2,12 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble";
 import { useDispatch, useSelector } from "react-redux";
 import { seenMessagesThunk } from "../../store/slices/message/message.thunk";
-import { updateMessagesAfterSeen } from "../../store/slices/message/message.slice";
+import {
+  otherParticipantMessagesAreSeen,
+  updateMessagesAfterSeen,
+} from "../../store/slices/message/message.slice";
 
 function Messages() {
   const dispatch = useDispatch();
 
-  const { messages } = useSelector((state) => state.messageReducer);
+  const { messages, notifications } = useSelector(
+    (state) => state.messageReducer
+  );
+  // console.log("]]]]]", notifications);
   const { selectedUserData, userData } = useSelector(
     (state) => state.userReducer
   );
@@ -26,7 +32,11 @@ function Messages() {
 
       if (recievedMessages.length > 0) {
         await dispatch(seenMessagesThunk({ senderId: selectedUserData._id })); //sending that i have seen your msg
-        dispatch(updateMessagesAfterSeen(selectedUserData._id)); // saving that i have seen your msg
+        dispatch(
+          otherParticipantMessagesAreSeen({
+            otherParticipantId: selectedUserData._id,
+          })
+        ); // saving that i have seen your msg
       }
     }
   };

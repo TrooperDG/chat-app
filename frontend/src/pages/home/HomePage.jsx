@@ -6,6 +6,8 @@ import {
 } from "../../store/slices/socket/socket.slice";
 import {
   addNewMessage,
+  addNewNotification,
+  myMessagesAreSeen,
   updateMessagesAfterSeen,
 } from "../../store/slices/message/message.slice";
 import {
@@ -15,12 +17,14 @@ import {
   UsersSidebar,
 } from "../../components";
 import toast from "react-hot-toast";
+import { moveNewNotificationSenderToTop } from "../../store/slices/user/user.slice";
 
 function HomePage() {
   const dispatch = useDispatch();
   // adding seen sound------------------------------------------------------------
   const { messageSettings } = useSelector((state) => state.settingsReducer);
   const seenSoundEnabledRef = useRef(messageSettings.seenSound);
+
   const playSeenSound = () => {
     if (seenSoundEnabledRef.current) {
       const seenSound = new Audio("/sounds/message-seen.mp3");
@@ -30,11 +34,11 @@ function HomePage() {
   };
 
   // Intitializing Socket------------------------------------------------------------
-  const { userData, isAuthenticated, selectedUserData } = useSelector(
-    (state) => state.userReducer
-  );
+  const { userData, isAuthenticated, selectedUserData, otherUsersData } =
+    useSelector((state) => state.userReducer);
   const { socket } = useSelector((state) => state.socketReducer);
-  const selectedUserId = useRef(selectedUserData?._id);
+  const selectedUserIdRef = useRef(selectedUserData?._id);
+  const otherUsersDataRef = useRef(otherUsersData);
 
   useEffect(() => {
     if (isAuthenticated) dispatch(initializeSocket(userData?._id));
@@ -49,18 +53,33 @@ function HomePage() {
     });
 
     socket.on("newMessage", (message) => {
-      if (message?.senderId === selectedUserId.current) {
+      if (message?.senderId === selectedUserIdRef.current) {
         dispatch(addNewMessage(message));
       } else {
-        toast.success(message.message);
+        const sender = otherUsersDataRef.current.find(
+          (user) => user._id === message.senderId
+        );
+        // console.log(message, sender);
+
+        if (sender) {
+          toast.success(`${sender.username} : ${message.message}`);
+          dispatch(addNewNotification({ message }));
+          dispatch(
+            moveNewNotificationSenderToTop({ senderId: message.senderId })
+          );
+        } else {
+          // if no sender available in our otherUsersData , that mean a new user is created , need to add it later
+          //  might need to call other usersThunk
+        }
       }
     });
 
     socket.on("seenMessages", (messages) => {
       // console.log("i see you have seen");
       if (messages && messages.acknowledged) {
-        dispatch(updateMessagesAfterSeen(userData._id));
-        if (selectedUserId.current) playSeenSound();
+        // dispatch(updateMessagesAfterSeen(userData._id));
+        dispatch(myMessagesAreSeen({ myId: userData._id }));
+        if (selectedUserIdRef.current) playSeenSound();
       }
     });
     return () => {
@@ -68,16 +87,21 @@ function HomePage() {
     };
   }, [socket]);
 
-  // updateding selectedUserId-Ref for socket new-message
+  // updateding selectedUserIdRef-Ref for socket new-message
   useEffect(() => {
-    // console.log("changed", selectedUserId.current, selectedUserData?._id);
-    selectedUserId.current = selectedUserData?._id;
+    // console.log("changed", selectedUserIdRef.current, selectedUserData?._id);
+    selectedUserIdRef.current = selectedUserData?._id;
   }, [selectedUserData?._id]);
 
   //updateding seenSound-Ref for socket seen-message
   useEffect(() => {
     seenSoundEnabledRef.current = messageSettings.seenSound;
   }, [messageSettings.seenSound]);
+
+  //updateding otherUsersData-Ref for socket new-message
+  useEffect(() => {
+    otherUsersDataRef.current = otherUsersData;
+  }, [otherUsersData]);
 
   //------------------------------------------------------------------------
 
