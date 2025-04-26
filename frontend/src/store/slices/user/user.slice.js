@@ -9,8 +9,8 @@ import {
 
 const initialState = {
   isAuthenticated: false,
-  userData: null,
-  otherUsersData: null,
+  userData: [],
+  otherUsersData: [],
   selectedUserData: JSON.parse(localStorage.getItem("selectedUserData")),
   userLoading: false,
 };
@@ -22,6 +22,15 @@ export const userSlice = createSlice({
     setSelectedUser: (state, action) => {
       state.selectedUserData = action.payload;
       localStorage.setItem("selectedUserData", JSON.stringify(action.payload));
+    },
+    moveNewNotificationSenderToTop: (state, action) => {
+      const index = state.otherUsersData.findIndex(
+        (user) => user._id === action.payload.senderId
+      );
+      if (index !== -1) {
+        const [user] = state.otherUsersData.splice(index, 1);
+        state.otherUsersData.unshift(user);
+      }
     },
   },
   extraReducers: (builder) => {
@@ -101,5 +110,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setSelectedUser } = userSlice.actions;
+export const { setSelectedUser, moveNewNotificationSenderToTop } =
+  userSlice.actions;
 export default userSlice.reducer;
