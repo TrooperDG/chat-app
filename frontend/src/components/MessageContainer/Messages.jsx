@@ -2,21 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble";
 import { useDispatch, useSelector } from "react-redux";
 import { seenMessagesThunk } from "../../store/slices/message/message.thunk";
-import {
-  otherParticipantMessagesAreSeen,
-  updateMessagesAfterSeen,
-} from "../../store/slices/message/message.slice";
+import { otherParticipantMessagesAreSeen } from "../../store/slices/message/message.slice";
+import { seenMessageAtUserSideBar } from "../../store/slices/user/user.slice";
 
 function Messages() {
   const dispatch = useDispatch();
 
-  const { messages, notifications } = useSelector(
-    (state) => state.messageReducer
-  );
-  // console.log("]]]]]", notifications);
-  const { selectedUserData, userData } = useSelector(
-    (state) => state.userReducer
-  );
+  const { messages } = useSelector((state) => state.messageReducer);
+
+  const { selectedUserData } = useSelector((state) => state.userReducer);
 
   // setting prev-selectedUser, and prev-messagesCount
   const prevMessagesCount = useRef(0);
@@ -37,6 +31,11 @@ function Messages() {
             otherParticipantId: selectedUserData._id,
           })
         ); // saving that i have seen your msg
+        // dispatch(
+        //   seenMessageAtUserSideBar({
+        //     otherParticipantId: selectedUserData._id,
+        //   })
+        // );
       }
     }
   };

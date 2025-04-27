@@ -6,9 +6,7 @@ import {
 } from "../../store/slices/socket/socket.slice";
 import {
   addNewMessage,
-  addNewNotification,
   myMessagesAreSeen,
-  updateMessagesAfterSeen,
 } from "../../store/slices/message/message.slice";
 import {
   Header,
@@ -17,7 +15,10 @@ import {
   UsersSidebar,
 } from "../../components";
 import toast from "react-hot-toast";
-import { moveNewNotificationSenderToTop } from "../../store/slices/user/user.slice";
+import {
+  moveNewNotificationSenderToTop,
+  seenMessageAtUserSideBar,
+} from "../../store/slices/user/user.slice";
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -63,10 +64,7 @@ function HomePage() {
 
         if (sender) {
           toast.success(`${sender.username} : ${message.message}`);
-          dispatch(addNewNotification({ message }));
-          dispatch(
-            moveNewNotificationSenderToTop({ senderId: message.senderId })
-          );
+          dispatch(moveNewNotificationSenderToTop({ message }));
         } else {
           // if no sender available in our otherUsersData , that mean a new user is created , need to add it later
           //  might need to call other usersThunk
@@ -74,12 +72,14 @@ function HomePage() {
       }
     });
 
-    socket.on("seenMessages", (messages) => {
+    socket.on("seenMessages", (response) => {
       // console.log("i see you have seen");
-      if (messages && messages.acknowledged) {
-        // dispatch(updateMessagesAfterSeen(userData._id));
+      if (response?.result?.acknowledged) {
         dispatch(myMessagesAreSeen({ myId: userData._id }));
         if (selectedUserIdRef.current) playSeenSound();
+        dispatch(
+          seenMessageAtUserSideBar({ otherParticipantId: response.receiverId })
+        );
       }
     });
     return () => {

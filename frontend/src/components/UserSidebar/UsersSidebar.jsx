@@ -2,16 +2,21 @@ import React, { useEffect, useState } from "react";
 import { MdRefresh } from "react-icons/md";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getOtherUsersThunk } from "../../store/slices/user/user.thunk";
+import {
+  getAllLatestUserMessagesThunk,
+  getOtherUsersThunk,
+} from "../../store/slices/user/user.thunk";
 
 import SearchUsers from "./SearchUsers";
 import MessageUser from "./MessageUser";
+import { getAllLatesMessagesThunk } from "../../store/slices/message/message.thunk";
 
 function UsersSidebar() {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const { otherUsersData } = useSelector((state) => state.userReducer);
+  // const { latesMessages } = useSelector((state) => state.messageReducer);
   const [otherUsers, setOtherUsers] = useState([]);
 
   const handleSearchUser = (e) => {
@@ -31,15 +36,34 @@ function UsersSidebar() {
   const handleRefreshOtherUsers = async () => {
     setLoading(true);
     await dispatch(getOtherUsersThunk());
+    await dispatch(getAllLatestUserMessagesThunk()); // least chat the is shown in the userSidebar
     setLoading(false);
   };
 
   useEffect(() => {
     handleRefreshOtherUsers();
+    // console.log("kitni");
   }, []);
 
   useEffect(() => {
-    if (otherUsersData?.length > 0) setOtherUsers(otherUsersData);
+    if (otherUsersData?.length > 0) {
+      const sortedUsersWithLatestMessages = otherUsersData
+        .filter((user) => user?.latestMessage)
+        .sort(
+          (a, b) =>
+            new Date(b.latestMessage?.createdAt) -
+            new Date(a.latestMessage?.createdAt)
+        );
+
+      const usersWithNoLatestMessages = otherUsersData.filter(
+        (user) => !user?.latestMessage
+      );
+
+      setOtherUsers([
+        ...sortedUsersWithLatestMessages,
+        ...usersWithNoLatestMessages,
+      ]);
+    }
   }, [otherUsersData]);
 
   return (
