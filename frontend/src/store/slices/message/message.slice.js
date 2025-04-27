@@ -8,10 +8,8 @@ import {
 } from "./message.thunk.js";
 
 const initialState = {
-  // messagesArray: [], // object:{otherUser_id & conversation between us}
   messages: [],
   messageLoading: false,
-  notifications: [], // messages from other users that are not seen
 };
 
 export const messageSlice = createSlice({
@@ -26,9 +24,6 @@ export const messageSlice = createSlice({
         state.messages = [action.payload];
       }
     },
-    addNewNotification: (state, action) => {
-      state.notifications.push(action.payload.message);
-    },
     myMessagesAreSeen: (state, action) => {
       state.messages = state.messages.map((message) =>
         message.senderId === action.payload.myId
@@ -41,10 +36,6 @@ export const messageSlice = createSlice({
         message.senderId === action.payload.otherParticipantId
           ? { ...message, isSeen: true }
           : message
-      );
-      // removing the seen notifications
-      state.notifications = state.notifications.filter(
-        (message) => message.senderId !== action.payload.otherParticipantId
       );
     },
   },
@@ -92,7 +83,7 @@ export const messageSlice = createSlice({
     });
     builder.addCase(seenMessagesThunk.rejected, (state, action) => {
       state.messageLoading = false;
-      console.log("get-messages-rejected", action.payload);
+      console.log("seen-messages-rejected", action.payload);
     });
   },
 });

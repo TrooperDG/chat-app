@@ -5,6 +5,7 @@ import {
   logoutUserThunk,
   getUserThunk,
   getOtherUsersThunk,
+  getAllLatestUserMessagesThunk,
 } from "./user.thunk.js";
 
 const initialState = {
@@ -24,12 +25,28 @@ export const userSlice = createSlice({
       localStorage.setItem("selectedUserData", JSON.stringify(action.payload));
     },
     moveNewNotificationSenderToTop: (state, action) => {
+      // console.log("slice", action.payload.message);
       const index = state.otherUsersData.findIndex(
-        (user) => user._id === action.payload.senderId
+        (user) =>
+          user._id === action.payload.message.senderId ||
+          user._id === action.payload.message.receiverId // {senderId} when new msg received , and {receiverId} when i send a new msg
       );
       if (index !== -1) {
         const [user] = state.otherUsersData.splice(index, 1);
-        state.otherUsersData.unshift(user);
+        state.otherUsersData.unshift({
+          ...user,
+          latestMessage: action.payload.message,
+        });
+      }
+    },
+    seenMessageAtUserSideBar: (state, action) => {
+      const user = state.otherUsersData.find(
+        (user) => user._id === action.payload.otherParticipantId
+      );
+      if (user) {
+        if (user && user.latestMessage) {
+          user.latestMessage.isSeen = true;
+        }
       }
     },
   },
@@ -107,9 +124,40 @@ export const userSlice = createSlice({
       state.userLoading = false;
       console.log("get-other-users-rejected", action.payload);
     });
+    //getOtherUsers Thunk
+    builder.addCase(getAllLatestUserMessagesThunk.pending, (state, action) => {
+      state.userLoading = true;
+    });
+    builder.addCase(
+      getAllLatestUserMessagesThunk.fulfilled,
+      (state, action) => {
+        // state.otherUsersData = action.payload.responseData;
+        const latestMessages = action.payload?.responseData;
+
+        if (latestMessages?.length > 0 && state.otherUsersData?.length > 0) {
+          const newOtherUsersData = state.otherUsersData.map((user) => {
+            const latestMessage = latestMessages.find(
+              (message) =>
+                message.senderId === user._id || message.receiverId === user._id
+            );
+            if (latestMessage) return { ...user, latestMessage: latestMessage };
+            return { ...user, latestMessage: null };
+          });
+          state.otherUsersData = newOtherUsersData;
+        }
+        state.userLoading = false;
+      }
+    );
+    builder.addCase(getAllLatestUserMessagesThunk.rejected, (state, action) => {
+      state.userLoading = false;
+      console.log("get-all-latest-user-messages-rejected", action.payload);
+    });
   },
 });
 
-export const { setSelectedUser, moveNewNotificationSenderToTop } =
-  userSlice.actions;
+export const {
+  setSelectedUser,
+  moveNewNotificationSenderToTop,
+  seenMessageAtUserSideBar,
+} = userSlice.actions;
 export default userSlice.reducer;

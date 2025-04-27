@@ -73,10 +73,24 @@ const getOtherUsersThunk = createAsyncThunk(
   }
 );
 
+const getAllLatestUserMessagesThunk = createAsyncThunk(
+  "message/getAllLatestUserMessages",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/message/get-latest-messages`);
+      return response?.data || null;
+    } catch (error) {
+      const errMessage = error?.response?.data?.errorMessage;
+      return rejectWithValue(errMessage || "something went wrong");
+    }
+  }
+);
+
 export {
   loginUserThunk,
   registerUserThunk,
   logoutUserThunk,
   getUserThunk,
   getOtherUsersThunk,
+  getAllLatestUserMessagesThunk,
 };
