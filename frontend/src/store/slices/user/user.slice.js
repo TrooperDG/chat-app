@@ -25,7 +25,6 @@ export const userSlice = createSlice({
       localStorage.setItem("selectedUserData", JSON.stringify(action.payload));
     },
     moveNewNotificationSenderToTop: (state, action) => {
-      // console.log("slice", action.payload.message);
       const index = state.otherUsersData.findIndex(
         (user) =>
           user._id === action.payload.message.senderId ||

@@ -54,17 +54,17 @@ function HomePage() {
     });
 
     socket.on("newMessage", (message) => {
+      dispatch(moveNewNotificationSenderToTop({ message }));
+
       if (message?.senderId === selectedUserIdRef.current) {
         dispatch(addNewMessage(message));
       } else {
         const sender = otherUsersDataRef.current.find(
           (user) => user._id === message.senderId
         );
-        // console.log(message, sender);
 
         if (sender) {
           toast.success(`${sender.username} : ${message.message}`);
-          dispatch(moveNewNotificationSenderToTop({ message }));
         } else {
           // if no sender available in our otherUsersData , that mean a new user is created , need to add it later
           //  might need to call other usersThunk

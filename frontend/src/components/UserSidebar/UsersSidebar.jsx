@@ -9,7 +9,6 @@ import {
 
 import SearchUsers from "./SearchUsers";
 import MessageUser from "./MessageUser";
-import { getAllLatesMessagesThunk } from "../../store/slices/message/message.thunk";
 
 function UsersSidebar() {
   const [loading, setLoading] = useState(false);
