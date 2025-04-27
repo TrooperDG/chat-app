@@ -4,6 +4,7 @@ import {
   sendMessage,
   getMessages,
   updateMessagesSeen,
+  getLatestMessages,
 } from "../controllers/message.controller.js";
 
 const messageRouter = express.Router();
@@ -15,5 +16,6 @@ messageRouter.get(
   getMessages
 );
 messageRouter.put("/seen/:senderId", isAuthenticated, updateMessagesSeen);
+messageRouter.get("/get-latest-messages", isAuthenticated, getLatestMessages);
 
 export default messageRouter;

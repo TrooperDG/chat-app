@@ -83,14 +83,14 @@ const getMessages = asyncHandler(async (req, res, next) => {
 });
 
 const updateMessagesSeen = asyncHandler(async (req, res, next) => {
-  const myId = req.userId;
+  const receiverId = req.userId; // it me who received the messages and seen them
   const senderId = req.params.senderId;
-  if (!myId || !req.params.senderId) {
+  if (!receiverId || !req.params.senderId) {
     return next(new errorHandler("all fields are necessary", 400));
   }
 
   const result = await Message.updateMany(
-    { senderId, receiverId: myId, isSeen: false },
+    { senderId, receiverId, isSeen: false },
     { $set: { isSeen: true } }
   );
 
@@ -98,10 +98,39 @@ const updateMessagesSeen = asyncHandler(async (req, res, next) => {
   const io = getIO();
   const receiverSocketId = getSocketId(senderId); // the msg sender will recieve if msges are seen or not
   if (receiverSocketId) {
-    io.to(receiverSocketId).emit("seenMessages", result);
+    io.to(receiverSocketId).emit("seenMessages", { result, receiverId });
   }
 
-  responseHandler(res, 200, result);
+  responseHandler(res, 200, { result, receiverId });
 });
 
-export { sendMessage, getMessages, updateMessagesSeen };
+// for getting the latest message from every conversation to show it in the userSidebar
+const getLatestMessages = asyncHandler(async (req, res, next) => {
+  const myId = req.userId;
+  const conversations = await Conversation.find({
+    participants: myId,
+  }).populate("messages");
+
+  const latestMessages = conversations
+    .map((conversation) => {
+      if (conversation.messages.length === 0) return null;
+
+      const latestMessage = conversation.messages.reduce((latest, current) => {
+        return new Date(current.createdAt) > new Date(latest.createdAt)
+          ? current
+          : latest;
+      });
+
+      return latestMessage;
+    })
+    .filter((message) => message !== null);
+
+  //   .populate({
+  //   path: "messages",
+  //   options: { sort: { createdAt: -1 }, limit: 1 }, // get only latest message
+  // });
+
+  responseHandler(res, 200, latestMessages);
+});
+
+export { sendMessage, getMessages, updateMessagesSeen, getLatestMessages };
