@@ -40,14 +40,13 @@ function MessageUser({ userData = {} }) {
   return (
     <li
       onClick={handleSelectUser}
-      className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2"
+      className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2 flex justify-between items-center"
     >
       <div className="flex gap-3  cursor-pointer ">
         <div
           className={`avatar ${isOnline ? "avatar-online" : "avatar-offline"} `}
         >
           <div className="w-12  rounded-full">
-            {/* <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" /> */}
             <img src={userData?.avatar} />
           </div>
         </div>
@@ -72,6 +71,11 @@ function MessageUser({ userData = {} }) {
           </p>
         </div>
       </div>
+      {userData?.unseenMesageCount > 0 && (
+        <div className="bg-green-400 px-1.5  h-5 min-w-5 rounded-full flex justify-center items-center text-sm text-black font-semibold">
+          {userData?.unseenMesageCount}
+        </div>
+      )}
     </li>
   );
 }

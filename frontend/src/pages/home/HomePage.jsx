@@ -16,6 +16,7 @@ import {
 } from "../../components";
 import toast from "react-hot-toast";
 import {
+  addUnseenMessageCount,
   moveNewNotificationSenderToTop,
   seenMessageAtUserSideBar,
 } from "../../store/slices/user/user.slice";
@@ -65,6 +66,7 @@ function HomePage() {
 
         if (sender) {
           toast.success(`${sender.username} : ${message.message}`);
+          dispatch(addUnseenMessageCount({ otherUserId: sender._id }));
         } else {
           // if no sender available in our otherUsersData , that mean a new user is created , need to add it later
           //  might need to call other usersThunk

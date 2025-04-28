@@ -3,7 +3,10 @@ import MessageBubble from "./MessageBubble";
 import { useDispatch, useSelector } from "react-redux";
 import { seenMessagesThunk } from "../../store/slices/message/message.thunk";
 import { otherParticipantMessagesAreSeen } from "../../store/slices/message/message.slice";
-import { seenMessageAtUserSideBar } from "../../store/slices/user/user.slice";
+import {
+  removeUnseenMessageCount,
+  seenMessageAtUserSideBar,
+} from "../../store/slices/user/user.slice";
 
 function Messages() {
   const dispatch = useDispatch();
@@ -31,6 +34,11 @@ function Messages() {
             otherParticipantId: selectedUserData._id,
           })
         ); // saving that i have seen your msg
+
+        dispatch(
+          removeUnseenMessageCount({ otherUserId: selectedUserData._id })
+        ); // removing the unseen message count
+
         // dispatch(
         //   seenMessageAtUserSideBar({
         //     otherParticipantId: selectedUserData._id,

@@ -48,6 +48,28 @@ export const userSlice = createSlice({
         }
       }
     },
+
+    addUnseenMessageCount: (state, action) => {
+      const user = state.otherUsersData.find(
+        (user) => user._id === action.payload.otherUserId
+      );
+      if (user) {
+        if (user && user.unseenMesageCount !== undefined) {
+          user.unseenMesageCount = user.unseenMesageCount + 1;
+        }
+      }
+    },
+    removeUnseenMessageCount: (state, action) => {
+      const user = state.otherUsersData.find(
+        (user) => user._id === action.payload.otherUserId
+      );
+      if (user) {
+        if (user && user.unseenMesageCount !== undefined) {
+          // user?.unseenMesageCount = 0;
+          user.unseenMesageCount = 0;
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     //Login Thunk
@@ -130,20 +152,55 @@ export const userSlice = createSlice({
     builder.addCase(
       getAllLatestUserMessagesThunk.fulfilled,
       (state, action) => {
-        // state.otherUsersData = action.payload.responseData;
-        const latestMessages = action.payload?.responseData;
+        if (state.otherUsersData?.length <= 0) return;
 
-        if (latestMessages?.length > 0 && state.otherUsersData?.length > 0) {
+        // for  unseen message count in userSIdeBar
+        const unseenIncomingMessages =
+          action.payload?.responseData?.unseenIncomingMessages;
+
+        // setting the latest message
+        const latestMessages = action.payload?.responseData?.latestMessages;
+
+        if (latestMessages?.length > 0) {
           const newOtherUsersData = state.otherUsersData.map((user) => {
             const latestMessage = latestMessages.find(
               (message) =>
                 message.senderId === user._id || message.receiverId === user._id
             );
-            if (latestMessage) return { ...user, latestMessage: latestMessage };
-            return { ...user, latestMessage: null };
+
+            let unseenMesageCount = 0;
+            if (latestMessage) {
+              unseenIncomingMessages.forEach((message) => {
+                message?.senderId === user._id && unseenMesageCount++;
+              });
+
+              return {
+                ...user,
+                latestMessage: latestMessage,
+                unseenMesageCount,
+              };
+            }
+            return { ...user, latestMessage: null, unseenMesageCount };
           });
           state.otherUsersData = newOtherUsersData;
         }
+
+        // unseenIncomingMessages.forEach((message) => {
+        //   const user = state.otherUsersData.find(
+        //     (user) => user._id === message.senderId
+        //   );
+        //   if (user) {
+        //     user = {
+        //       ...user,
+        //       unseenMesageCount: user.unseenMesageCount
+        //         ? user.unseenMesageCount + 1
+        //         : 1,
+        //     };
+        //   }
+        // });
+
+        // console.log(unseenIncomingMessages);
+
         state.userLoading = false;
       }
     );
@@ -158,5 +215,7 @@ export const {
   setSelectedUser,
   moveNewNotificationSenderToTop,
   seenMessageAtUserSideBar,
+  addUnseenMessageCount,
+  removeUnseenMessageCount,
 } = userSlice.actions;
 export default userSlice.reducer;
