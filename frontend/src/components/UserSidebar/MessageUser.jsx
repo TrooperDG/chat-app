@@ -6,9 +6,6 @@ import { setSelectedUser } from "../../store/slices/user/user.slice";
 import { IoCheckmark } from "react-icons/io5";
 import { IoCheckmarkDone } from "react-icons/io5";
 
-import { IoMdCheckmark } from "react-icons/io";
-import { IoMdCheckmarkCircleOutline } from "react-icons/io";
-
 function MessageUser({ userData = {} }) {
   const dispatch = useDispatch();
   const { onlineUsers } = useSelector((state) => state.socketReducer);
@@ -61,12 +58,9 @@ function MessageUser({ userData = {} }) {
               <span className="">
                 {/* if i am the sender ie. other guy is the reciever then show ✔✔ */}
                 {userData?.latestMessage?.isSeen ? (
-                  <IoMdCheckmarkCircleOutline
-                    size={16}
-                    className="text-cyan-400 "
-                  />
+                  <IoCheckmarkDone size={16} className="text-cyan-400 " />
                 ) : (
-                  <IoMdCheckmark size={16} className="text-gray-400 mt-1" />
+                  <IoCheckmark size={16} className="text-gray-400 mt-1" />
                 )}
               </span>
             )}
