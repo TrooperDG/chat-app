@@ -125,12 +125,20 @@ const getLatestMessages = asyncHandler(async (req, res, next) => {
     })
     .filter((message) => message !== null);
 
-  //   .populate({
-  //   path: "messages",
-  //   options: { sort: { createdAt: -1 }, limit: 1 }, // get only latest message
-  // });
+  const unseenIncomingMessages = conversations
+    .map((conversation) =>
+      conversation.messages.filter(
+        (message) =>
+          message?.isSeen === false && message?.receiverId?.toString() === myId
+      )
+    )
+    .flat();
 
-  responseHandler(res, 200, latestMessages);
+  responseHandler(res, 200, {
+    myId,
+    latestMessages,
+    unseenIncomingMessages,
+  });
 });
 
 export { sendMessage, getMessages, updateMessagesSeen, getLatestMessages };
