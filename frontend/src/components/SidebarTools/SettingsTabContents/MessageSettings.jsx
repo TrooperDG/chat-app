@@ -7,59 +7,63 @@ function MessageSettings() {
 
   const dispatch = useDispatch();
 
-  const handleChangeSound = (e) => {
-    dispatch(
-      setMessageSettings({
-        ...messageSettings,
-        [e.target.name]: e.target.checked,
-      })
-    );
+  const handleChangeMessageSettings = (e) => {
+    if (e.target && e.target.checked !== undefined) {
+      dispatch(
+        setMessageSettings({
+          ...messageSettings,
+          [e.target.name]: e.target.checked,
+        })
+      );
+    } else {
+      //other settings that don't have boolean value
+    }
   };
 
   return (
     <div className="px-2.5 py-3 ">
       <h1 className="text-xl font-semibold">Messages</h1>
       <div id="message-sound" className="mt-5 ">
-        <h3 className="mb-1 text-lg font-semibold">Sound</h3>
+        {/* <h3 className="mb-1 text-lg font-semibold">Sound</h3> */}
         <div className="flex items-center p-2 border-b border-gray-700  hover:bg-gray-700 duration-100 hover:rounded-sm">
           <span>Send sound</span>
           <input
-            onChange={handleChangeSound}
+            onChange={handleChangeMessageSettings}
             type="checkbox"
             name="sendSound"
-            checked={messageSettings.sendSound}
+            checked={messageSettings?.sendSound}
             className="ml-auto mt-1 toggle toggle-primary toggle-sm outline-primary-content hover:outline-2"
           />
           <span className=" ml-2 w-5">
-            {messageSettings.sendSound ? "on" : "off"}
+            {messageSettings?.sendSound ? "on" : "off"}
           </span>
         </div>
         {/* <hr className="text-gray-700" /> */}
         <div className="flex items-center p-2 border-b border-gray-700  hover:bg-gray-700 duration-100 hover:rounded-sm ">
           <span>Received sound</span>
           <input
-            onChange={handleChangeSound}
+            onChange={handleChangeMessageSettings}
             type="checkbox"
             name="receivedSound"
-            checked={messageSettings.receivedSound}
+            checked={messageSettings?.receivedSound}
             className="ml-auto mt-1 toggle toggle-primary toggle-sm outline-primary-content hover:outline-2"
           />
           <span className=" ml-2 w-5">
-            {messageSettings.receivedSound ? "on" : "off"}
+            {messageSettings?.receivedSound ? "on" : "off"}
           </span>
         </div>
         {/* <hr className="text-gray-700" /> */}
         <div className="flex items-center p-2 border-b border-gray-700  hover:bg-gray-700 duration-100 hover:rounded-sm">
           <span>Seen sound</span>
           <input
-            onChange={handleChangeSound}
+            onChange={handleChangeMessageSettings}
             type="checkbox"
             name="seenSound"
-            checked={messageSettings.seenSound}
+            checked={messageSettings?.seenSound}
             className="ml-auto mt-1 toggle toggle-primary toggle-sm outline-primary-content hover:outline-2"
           />
           <span className=" ml-2 w-5">
-            {messageSettings.seenSound ? "on" : "off"}
+            {messageSettings?.seenSound ? "on" : "off"}
           </span>
         </div>
       </div>

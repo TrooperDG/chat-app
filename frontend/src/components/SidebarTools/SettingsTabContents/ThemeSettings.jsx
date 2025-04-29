@@ -8,6 +8,7 @@ function ThemeSettings() {
 
   const handleChangeTheme = (e) => {
     dispatch(setThemeSettings({ theme: e.target.value }));
+    // take reference from messageSettings if future upgrade is needed, now i kept it simple
   };
 
   return (
@@ -17,7 +18,7 @@ function ThemeSettings() {
         <p>Change Theme</p>
         <select
           onChange={handleChangeTheme}
-          defaultValue={themeSettings.theme}
+          defaultValue={themeSettings?.theme}
           className="bg-gray-700  mt-2.5 select select-ghost select-s h-7 w-28 "
         >
           <option value={"dark"} className="bg-gray-700 ">

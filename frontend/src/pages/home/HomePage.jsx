@@ -20,20 +20,27 @@ import {
   moveNewNotificationSenderToTop,
   seenMessageAtUserSideBar,
 } from "../../store/slices/user/user.slice";
+import {
+  playNotificationSound,
+  playSendSound,
+} from "../../components/utilities";
 
 function HomePage() {
   const dispatch = useDispatch();
-  // adding seen sound------------------------------------------------------------
-  const { messageSettings } = useSelector((state) => state.settingsReducer);
+  // adding seen sound --and-- notification sound and on/off  -----------------------------
+  const { messageSettings, notificationSettings } = useSelector(
+    (state) => state.settingsReducer
+  );
   const seenSoundEnabledRef = useRef(messageSettings.seenSound);
+  const notificationSettingsRef = useRef(notificationSettings);
 
-  const playSeenSound = () => {
-    if (seenSoundEnabledRef.current) {
-      const seenSound = new Audio("/sounds/message-seen.mp3");
-      seenSound.volume = 0.3;
-      seenSound.play();
-    }
-  };
+  // const playSeenSound = () => {
+  //   if (seenSoundEnabledRef.current) {
+  //     const seenSound = new Audio("/sounds/message-seen.mp3");
+  //     seenSound.volume = 0.3;
+  //     seenSound.play();
+  //   }
+  // };
 
   // Intitializing Socket------------------------------------------------------------
   const { userData, isAuthenticated, selectedUserData, otherUsersData } =
@@ -65,7 +72,13 @@ function HomePage() {
         );
 
         if (sender) {
-          toast.success(`${sender.username} : ${message.message}`);
+          if (notificationSettingsRef.current.showNotification) {
+            toast.success(`${sender.username} : ${message.message}`); //! update it to jsx
+            if (notificationSettingsRef.current.notificationSound) {
+              playNotificationSound();
+            }
+          }
+
           dispatch(addUnseenMessageCount({ otherUserId: sender._id }));
         } else {
           // if no sender available in our otherUsersData , that mean a new user is created , need to add it later
@@ -78,7 +91,7 @@ function HomePage() {
       // console.log("i see you have seen");
       if (response?.result?.acknowledged) {
         dispatch(myMessagesAreSeen({ myId: userData._id }));
-        if (selectedUserIdRef.current) playSeenSound();
+        if (selectedUserIdRef.current) playSendSound();
         dispatch(
           seenMessageAtUserSideBar({ otherParticipantId: response.receiverId })
         );
@@ -95,10 +108,13 @@ function HomePage() {
     selectedUserIdRef.current = selectedUserData?._id;
   }, [selectedUserData?._id]);
 
-  //updateding seenSound-Ref for socket seen-message
+  //updateding seenSound-Ref for socket seen-message,  and notification
   useEffect(() => {
     seenSoundEnabledRef.current = messageSettings.seenSound;
   }, [messageSettings.seenSound]);
+  useEffect(() => {
+    notificationSettingsRef.current = notificationSettings;
+  }, [notificationSettings]);
 
   //updateding otherUsersData-Ref for socket new-message
   useEffect(() => {

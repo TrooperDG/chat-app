@@ -2,21 +2,22 @@ import { createSlice } from "@reduxjs/toolkit";
 const htmlElement = document.querySelector("html");
 
 const initialState = {
-  // sound: JSON.parse(localStorage.getItem("sound")) || {
-  //   sendMessage: true,
-  //   receiveMessage: true,
-  //   notification: true,
-  //   seenMessage: true,
-  // },
-
   messageSettings: JSON.parse(localStorage.getItem("messageSettings")) || {
     sendSound: true,
     receivedSound: true,
     seenSound: true,
   },
+
   themeSettings: JSON.parse(localStorage.getItem("themeSettings")) || {
     theme: "dark",
     //customization
+  },
+
+  notificationSettings: JSON.parse(
+    localStorage.getItem("notificationSettings")
+  ) || {
+    notificationSound: true,
+    showNotification: true,
   },
 };
 
@@ -32,8 +33,16 @@ export const settingsSlice = createSlice({
       state.themeSettings = action.payload;
       localStorage.setItem("themeSettings", JSON.stringify(action.payload));
     },
+    setNotificationSettings: (state, action) => {
+      state.notificationSettings = action.payload;
+      localStorage.setItem(
+        "notificationSettings",
+        JSON.stringify(action.payload)
+      );
+    },
   },
 });
 
-export const { setMessageSettings, setThemeSettings } = settingsSlice.actions;
+export const { setMessageSettings, setThemeSettings, setNotificationSettings } =
+  settingsSlice.actions;
 export default settingsSlice.reducer;
