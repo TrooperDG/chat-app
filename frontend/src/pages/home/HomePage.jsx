@@ -34,14 +34,6 @@ function HomePage() {
   const seenSoundEnabledRef = useRef(messageSettings.seenSound);
   const notificationSettingsRef = useRef(notificationSettings);
 
-  // const playSeenSound = () => {
-  //   if (seenSoundEnabledRef.current) {
-  //     const seenSound = new Audio("/sounds/message-seen.mp3");
-  //     seenSound.volume = 0.3;
-  //     seenSound.play();
-  //   }
-  // };
-
   // Intitializing Socket------------------------------------------------------------
   const { userData, isAuthenticated, selectedUserData, otherUsersData } =
     useSelector((state) => state.userReducer);
