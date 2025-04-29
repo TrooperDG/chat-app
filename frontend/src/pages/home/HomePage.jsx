@@ -1,33 +1,48 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+//------------------------------------------------------
+import { popNotification } from "./popNotification";
+
+//------------------------------------------------------
 import {
   initializeSocket,
   setOnlineUsers,
 } from "../../store/slices/socket/socket.slice";
+
+//------------------------------------------------------
 import {
   addNewMessage,
   myMessagesAreSeen,
 } from "../../store/slices/message/message.slice";
+
+//------------------------------------------------------
 import {
   Header,
   SidebarTools,
   MessageContainer,
   UsersSidebar,
 } from "../../components";
-import toast from "react-hot-toast";
+
+//------------------------------------------------------
 import {
   addUnseenMessageCount,
   moveNewNotificationSenderToTop,
   seenMessageAtUserSideBar,
 } from "../../store/slices/user/user.slice";
+
+//------------------------------------------------------
 import {
   playNotificationSound,
   playSendSound,
 } from "../../components/utilities";
 
+//========================================================================================
+
 function HomePage() {
   const dispatch = useDispatch();
-  // adding seen sound --and-- notification sound and on/off  -----------------------------
+  // adding seen sound --and-- notification sound and on/off  -----------------------
+
   const { messageSettings, notificationSettings } = useSelector(
     (state) => state.settingsReducer
   );
@@ -45,7 +60,9 @@ function HomePage() {
     if (isAuthenticated) dispatch(initializeSocket(userData?._id));
   }, [isAuthenticated]);
 
-  // listening socket --------------------------------------
+  //.......................................................
+
+  // listening socket -----------------------------------------
   useEffect(() => {
     if (!socket) return;
 
@@ -65,12 +82,13 @@ function HomePage() {
 
         if (sender) {
           if (notificationSettingsRef.current.showNotification) {
-            toast.success(`${sender.username} : ${message.message}`); //! update it to jsx
+            // toast.success(`${sender.username} : ${message.message}`); //! update it to jsx
+            popNotification(sender, message.message);
+
             if (notificationSettingsRef.current.notificationSound) {
               playNotificationSound();
             }
           }
-
           dispatch(addUnseenMessageCount({ otherUserId: sender._id }));
         } else {
           // if no sender available in our otherUsersData , that mean a new user is created , need to add it later
@@ -94,13 +112,12 @@ function HomePage() {
     };
   }, [socket]);
 
-  // updateding selectedUserIdRef-Ref for socket new-message
+  // updateding selectedUserIdRef-Ref for socket new-message---------------------------
   useEffect(() => {
-    // console.log("changed", selectedUserIdRef.current, selectedUserData?._id);
     selectedUserIdRef.current = selectedUserData?._id;
   }, [selectedUserData?._id]);
 
-  //updateding seenSound-Ref for socket seen-message,  and notification
+  //updateding seenSound-Ref for socket seen-message,  and notification-----------------
   useEffect(() => {
     seenSoundEnabledRef.current = messageSettings.seenSound;
   }, [messageSettings.seenSound]);
@@ -108,14 +125,14 @@ function HomePage() {
     notificationSettingsRef.current = notificationSettings;
   }, [notificationSettings]);
 
-  //updateding otherUsersData-Ref for socket new-message
+  //updateding otherUsersData-Ref for socket new-message--------------------------------
   useEffect(() => {
     otherUsersDataRef.current = otherUsersData;
   }, [otherUsersData]);
 
   //------------------------------------------------------------------------
 
-  // sidebar open close
+  // sidebar open close-----------------------------------------------------
   const [isUsersSidebarOpen, setIsUsersSidebarOpen] = useState(true);
   const handleOpenUserSidebar = () => {
     setIsUsersSidebarOpen((prev) => !prev);
