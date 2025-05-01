@@ -7,9 +7,12 @@ import { getMessagesThunk } from "../../store/slices/message/message.thunk";
 import { setSelectedUser } from "../../store/slices/user/user.slice";
 
 function MessageContainer() {
-  const { selectedUserData } = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+
+  const { selectedUserData } = useSelector((state) => state.userReducer);
+  const { onlineUsers } = useSelector((state) => state.socketReducer);
+
+  const isOnline = onlineUsers?.includes(selectedUserData?._id);
 
   const handleCloseChat = () => {
     dispatch(setSelectedUser(null));
@@ -17,13 +20,11 @@ function MessageContainer() {
 
   useEffect(() => {
     const getMessages = async () => {
-      setLoading(true);
       if (selectedUserData) {
         await dispatch(
           getMessagesThunk({ otherParticipantId: selectedUserData?._id })
         );
       }
-      setLoading(false);
     };
     getMessages();
   }, [selectedUserData]);
@@ -40,7 +41,11 @@ function MessageContainer() {
           <div className="overflow-x-hidden">
             <h3>{selectedUserData?.username}</h3>
             <p className="text-sm opacity-70 mt-1">
-              {selectedUserData?.isTyping ? "typing..." : "sleeping"}
+              {isOnline
+                ? selectedUserData?.isTyping
+                  ? "typing..."
+                  : "online"
+                : "offline"}
             </p>
           </div>
         </div>
