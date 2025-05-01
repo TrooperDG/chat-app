@@ -13,10 +13,19 @@ export const socketConnection = (httpServer) => {
     const userId = socket.handshake.query.userId;
     if (!userId) return;
 
+    //getting other online users---------------
     socketUserMap.set(userId, socket.id);
-    // console.log(Array.from(socketUserMap.keys()));
     io.emit("onlineUsers", Array.from(socketUserMap.keys()));
 
+    // user is typing or not --------------------------
+    socket.on("typingStatus", ({ to, typing }) => {
+      io.to(getSocketId(to)).emit("typingStatus", {
+        from: userId,
+        typing,
+      });
+    });
+
+    // disconnecting socket ---------------------------
     socket.on("disconnect", () => {
       socketUserMap.delete(userId);
       io.emit("onlineUsers", Array.from(socketUserMap.keys()));
