@@ -29,11 +29,13 @@ import {
   addUnseenMessageCount,
   moveNewNotificationSenderToTop,
   seenMessageAtUserSideBar,
+  setSelectedUser,
 } from "../../store/slices/user/user.slice";
 
 //------------------------------------------------------
 import {
   playNotificationSound,
+  playSeenSound,
   playSendSound,
 } from "../../components/utilities";
 
@@ -53,7 +55,9 @@ function HomePage() {
   const { userData, isAuthenticated, selectedUserData, otherUsersData } =
     useSelector((state) => state.userReducer);
   const { socket } = useSelector((state) => state.socketReducer);
-  const selectedUserIdRef = useRef(selectedUserData?._id);
+  // const selectedUserIdRef = useRef(selectedUserData?._id);
+  const selectedUserRef = useRef(selectedUserData);
+
   const otherUsersDataRef = useRef(otherUsersData);
 
   useEffect(() => {
@@ -73,7 +77,7 @@ function HomePage() {
     socket.on("newMessage", (message) => {
       dispatch(moveNewNotificationSenderToTop({ message }));
 
-      if (message?.senderId === selectedUserIdRef.current) {
+      if (message?.senderId === selectedUserRef.current?._id) {
         dispatch(addNewMessage(message));
       } else {
         const sender = otherUsersDataRef.current.find(
@@ -101,12 +105,27 @@ function HomePage() {
       // console.log("i see you have seen");
       if (response?.result?.acknowledged) {
         dispatch(myMessagesAreSeen({ myId: userData._id }));
-        if (selectedUserIdRef.current) playSendSound();
+
+        if (selectedUserRef.current?._id && seenSoundEnabledRef.current) {
+          playSeenSound();
+        }
+
         dispatch(
           seenMessageAtUserSideBar({ otherParticipantId: response.receiverId })
         );
       }
     });
+    socket.on("typingStatus", (response) => {
+      if (response.from === selectedUserRef.current?._id) {
+        dispatch(
+          setSelectedUser({
+            ...selectedUserRef.current,
+            isTyping: response.typing,
+          })
+        );
+      }
+    });
+
     return () => {
       socket.close();
     };
@@ -114,8 +133,8 @@ function HomePage() {
 
   // updateding selectedUserIdRef-Ref for socket new-message---------------------------
   useEffect(() => {
-    selectedUserIdRef.current = selectedUserData?._id;
-  }, [selectedUserData?._id]);
+    selectedUserRef.current = selectedUserData;
+  }, [selectedUserData]);
 
   //updateding seenSound-Ref for socket seen-message,  and notification-----------------
   useEffect(() => {

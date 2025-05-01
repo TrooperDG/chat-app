@@ -39,7 +39,9 @@ function MessageContainer() {
           </div>
           <div className="overflow-x-hidden">
             <h3>{selectedUserData?.username}</h3>
-            <p className="text-sm opacity-70 mt-1">typing...</p>
+            <p className="text-sm opacity-70 mt-1">
+              {selectedUserData?.isTyping ? "typing..." : "sleeping"}
+            </p>
           </div>
         </div>
         <div>
