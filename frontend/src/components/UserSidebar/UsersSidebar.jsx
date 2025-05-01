@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MdRefresh } from "react-icons/md";
+import { RxCross2 } from "react-icons/rx";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,12 +11,11 @@ import {
 import SearchUsers from "./SearchUsers";
 import MessageUser from "./MessageUser";
 
-function UsersSidebar() {
+function UsersSidebar({ option, handleCloseUserSidebar }) {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const { otherUsersData } = useSelector((state) => state.userReducer);
-  // const { latesMessages } = useSelector((state) => state.messageReducer);
   const [otherUsers, setOtherUsers] = useState([]);
 
   const handleSearchUser = (e) => {
@@ -58,15 +58,28 @@ function UsersSidebar() {
         (user) => !user?.latestMessage
       );
 
-      setOtherUsers([
-        ...sortedUsersWithLatestMessages,
-        ...usersWithNoLatestMessages,
-      ]);
+      if (option === "Chats") {
+        setOtherUsers([...sortedUsersWithLatestMessages]);
+      } else if (option === "All") {
+        setOtherUsers([
+          ...sortedUsersWithLatestMessages,
+          ...usersWithNoLatestMessages,
+        ]);
+      }
     }
-  }, [otherUsersData]);
+  }, [otherUsersData, option]);
 
   return (
     <div className="w-full max-w-[20rem] p-3 flex flex-col border-r border-r-gray-300 dark:border-r-gray-700 gap-2">
+      <div className="flex justify-between mb-2">
+        <h1 className="text-lg font-semibold">{option}</h1>
+        <button
+          onClick={handleCloseUserSidebar}
+          className="rounded-[4px] duration-100 hover:bg-gray-400 dark:hover:bg-gray-700"
+        >
+          <RxCross2 size={22} />
+        </button>
+      </div>
       <div className="flex gap-0.5">
         <SearchUsers handleSearchUser={handleSearchUser} />
         <button
@@ -80,10 +93,15 @@ function UsersSidebar() {
         </button>
       </div>
       <ul className="h-full w-full overflow-y-auto pt-1 flex flex-col overflow-x-hidden">
-        {otherUsers &&
+        {otherUsers && otherUsers.length > 0 ? (
           otherUsers.map((userData) => (
             <MessageUser key={userData?._id} userData={userData} />
-          ))}
+          ))
+        ) : (
+          <h1 className="w-full text-center text-lg">
+            Click on ALL users to find new friends!
+          </h1>
+        )}
       </ul>
     </div>
   );

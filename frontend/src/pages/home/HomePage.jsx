@@ -151,10 +151,18 @@ function HomePage() {
 
   //------------------------------------------------------------------------
 
-  // sidebar open close-----------------------------------------------------
+  //user- sidebar open close-----------------------------------------------------
   const [isUsersSidebarOpen, setIsUsersSidebarOpen] = useState(true);
+  const [option, setOption] = useState("Chats"); // and "All" , in future -> "favourites", "archived"
+
   const handleOpenUserSidebar = () => {
-    setIsUsersSidebarOpen((prev) => !prev);
+    setIsUsersSidebarOpen(true);
+  };
+  const handleCloseUserSidebar = () => {
+    setIsUsersSidebarOpen(false);
+  };
+  const setUserSideBarOption = (option) => {
+    setOption(option);
   };
 
   return (
@@ -162,10 +170,17 @@ function HomePage() {
       <Header />
       <main className="flex w-full h-full overflow-auto">
         <SidebarTools
+          option={option}
           isUsersSidebarOpen={isUsersSidebarOpen}
           handleOpenUserSidebar={handleOpenUserSidebar}
+          setUserSideBarOption={setUserSideBarOption}
         />
-        {isUsersSidebarOpen && <UsersSidebar />}
+        {isUsersSidebarOpen && (
+          <UsersSidebar
+            option={option}
+            handleCloseUserSidebar={handleCloseUserSidebar}
+          />
+        )}
         <MessageContainer />
       </main>
     </div>
