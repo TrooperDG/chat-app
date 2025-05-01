@@ -19,9 +19,9 @@ function MessageUser({ userData = {} }) {
   return (
     <li
       onClick={handleSelectUser}
-      className=" border-b border-b-gray-300 dark:border-b-gray-700  p-2 flex justify-between items-center"
+      className=" w-full  border-b border-b-gray-300 dark:border-b-gray-700  p-2 flex justify-between items-center"
     >
-      <div className="flex gap-3  cursor-pointer ">
+      <div className="flex gap-3 w-full items-center  cursor-pointer">
         <div
           className={`avatar ${isOnline ? "avatar-online" : "avatar-offline"} `}
         >
@@ -49,12 +49,13 @@ function MessageUser({ userData = {} }) {
             </span>
           </p>
         </div>
+
+        {userData?.unseenMesageCount > 0 && (
+          <div className="bg-green-400 px-1.5  h-5 min-w-5 rounded-full flex justify-center items-center text-sm text-black font-semibold">
+            {userData?.unseenMesageCount}
+          </div>
+        )}
       </div>
-      {userData?.unseenMesageCount > 0 && (
-        <div className="bg-green-400 px-1.5  h-5 min-w-5 rounded-full flex justify-center items-center text-sm text-black font-semibold">
-          {userData?.unseenMesageCount}
-        </div>
-      )}
     </li>
   );
 }

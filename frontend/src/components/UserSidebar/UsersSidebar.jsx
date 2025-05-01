@@ -79,7 +79,7 @@ function UsersSidebar() {
           />
         </button>
       </div>
-      <ul className="h-full overflow-y-auto pt-1 flex flex-col">
+      <ul className="h-full w-full overflow-y-auto pt-1 flex flex-col overflow-x-hidden">
         {otherUsers &&
           otherUsers.map((userData) => (
             <MessageUser key={userData?._id} userData={userData} />
