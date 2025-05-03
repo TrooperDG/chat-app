@@ -70,6 +70,17 @@ export const userSlice = createSlice({
         }
       }
     },
+    setLastSeenAfterUserGoesOffline: (state, action) => {
+      const user = state.otherUsersData.find(
+        (user) => user._id === action.payload.userId
+      );
+      if (user) {
+        if (user && user.lastSeen) {
+          // user?.unseenMesageCount = 0;
+          user.lastSeen = new Date().toISOString();
+        }
+      }
+    },
   },
   extraReducers: (builder) => {
     //Login Thunk
@@ -217,5 +228,6 @@ export const {
   seenMessageAtUserSideBar,
   addUnseenMessageCount,
   removeUnseenMessageCount,
+  setLastSeenAfterUserGoesOffline,
 } = userSlice.actions;
 export default userSlice.reducer;
