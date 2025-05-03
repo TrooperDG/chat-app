@@ -1,4 +1,6 @@
 import { Server } from "socket.io";
+import User from "../models/user.model.js";
+
 let io;
 const socketUserMap = new Map();
 
@@ -26,9 +28,18 @@ export const socketConnection = (httpServer) => {
     });
 
     // disconnecting socket ---------------------------
-    socket.on("disconnect", () => {
+    socket.on("disconnect", async () => {
       socketUserMap.delete(userId);
+      io.emit("goneOffline", userId);
       io.emit("onlineUsers", Array.from(socketUserMap.keys()));
+
+      try {
+        await User.findByIdAndUpdate(userId, {
+          lastSeen: new Date(),
+        });
+      } catch (err) {
+        console.error("Failed to update lastSeen:", err);
+      }
     });
 
     // console.log(Object.keys(socketUserMap));
