@@ -29,6 +29,7 @@ import {
   addUnseenMessageCount,
   moveNewNotificationSenderToTop,
   seenMessageAtUserSideBar,
+  setLastSeenAfterUserGoesOffline,
   setSelectedUser,
 } from "../../store/slices/user/user.slice";
 
@@ -72,6 +73,9 @@ function HomePage() {
 
     socket.on("onlineUsers", (onlineUsers) => {
       dispatch(setOnlineUsers(onlineUsers));
+    });
+    socket.on("goneOffline", (userId) => {
+      dispatch(setLastSeenAfterUserGoesOffline({ userId }));
     });
 
     socket.on("newMessage", (message) => {

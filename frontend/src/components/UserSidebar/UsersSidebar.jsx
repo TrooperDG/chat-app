@@ -98,7 +98,7 @@ function UsersSidebar({ option, handleCloseUserSidebar }) {
             <MessageUser key={userData?._id} userData={userData} />
           ))
         ) : (
-          <h1 className="w-full text-center text-lg">
+          <h1 className="w-full text-center text-lg text-gray-500">
             Click on ALL users to find new friends!
           </h1>
         )}
