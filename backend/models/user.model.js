@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
     },
+    about: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
     lastSeen: {
       type: Date,
       default: Date.now,
