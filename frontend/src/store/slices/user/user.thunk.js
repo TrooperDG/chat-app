@@ -47,6 +47,18 @@ const getUserThunk = createAsyncThunk(
     }
   }
 );
+const updateUserThunk = createAsyncThunk(
+  "user/updateUser",
+  async ({ data }, { rejectWithValue }) => {
+    try {
+      const response = await api.patch("/user/update-user", { ...data });
+      return response?.data || null;
+    } catch (error) {
+      const errMessage = error?.response?.data?.errorMessage;
+      return rejectWithValue(errMessage || "something went wrong");
+    }
+  }
+);
 const logoutUserThunk = createAsyncThunk(
   "user/logout",
   async (_, { rejectWithValue }) => {
@@ -91,6 +103,7 @@ export {
   registerUserThunk,
   logoutUserThunk,
   getUserThunk,
+  updateUserThunk,
   getOtherUsersThunk,
   getAllLatestUserMessagesThunk,
 };
