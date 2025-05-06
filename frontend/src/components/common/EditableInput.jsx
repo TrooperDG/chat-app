@@ -2,7 +2,10 @@ import React, { useEffect, useRef, useState, forwardRef } from "react";
 import { MdOutlineEdit } from "react-icons/md";
 
 const EditableInput = forwardRef(
-  ({ type = "text", label = "", className = "", ...props }, externalRef) => {
+  (
+    { type = "text", isDisabled = false, label = "", className = "", ...props },
+    externalRef
+  ) => {
     const [isEditable, setEditable] = useState(false);
     const containerRef = useRef(null);
     const localRef = useRef(null);
@@ -47,6 +50,7 @@ const EditableInput = forwardRef(
         >
           <input
             type={type}
+            disabled={isDisabled}
             readOnly={!isEditable}
             {...props} // ✅ RHF props go first
             ref={setRefs} // ✅ Merged ref here
@@ -54,12 +58,15 @@ const EditableInput = forwardRef(
               isEditable ? "border-gray-600" : "border-transparent"
             }`}
           />
-          <button
-            onClick={() => setEditable(true)}
-            className="rounded-xs outline-2 outline-offset-2 outline-transparent hover:outline-gray-500 duration-100"
-          >
-            <MdOutlineEdit />
-          </button>
+          {!isDisabled && (
+            <button
+              type="button" // so that if it does not submit a form
+              onClick={() => setEditable(true)}
+              className="rounded-xs outline-2 ml-2 outline-offset-2 outline-transparent hover:outline-gray-500 duration-100"
+            >
+              <MdOutlineEdit />
+            </button>
+          )}
         </div>
       </label>
     );
