@@ -74,6 +74,14 @@ const getProfile = asyncHandler(async (req, res, next) => {
   const userData = await User.findById(req.userId);
   if (userData) responseHandler(res, 200, userData);
 });
+const updateProfile = asyncHandler(async (req, res, next) => {
+  const updatedUser = await await User.findByIdAndUpdate(
+    req.userId,
+    { $set: req.body },
+    { new: true }
+  );
+  if (updatedUser) responseHandler(res, 200, updatedUser);
+});
 
 const logout = asyncHandler(async (req, res, next) => {
   cookieSender(res, "", true);
@@ -86,4 +94,4 @@ const getOtherUsers = asyncHandler(async (req, res, next) => {
   responseHandler(res, 200, otherUsers);
 });
 
-export { login, register, getProfile, logout, getOtherUsers };
+export { login, register, getProfile, updateProfile, logout, getOtherUsers };

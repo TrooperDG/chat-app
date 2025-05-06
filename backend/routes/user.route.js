@@ -3,6 +3,7 @@ import {
   login,
   register,
   getProfile,
+  updateProfile,
   logout,
   getOtherUsers,
 } from "../controllers/user.controller.js";
@@ -13,6 +14,7 @@ const userRouter = express.Router();
 userRouter.post("/login", login);
 userRouter.post("/register", register);
 userRouter.get("/get-user", isAuthenticated, getProfile);
+userRouter.patch("/update-user", isAuthenticated, updateProfile);
 userRouter.post("/logout", isAuthenticated, logout);
 userRouter.get("/get-other-users", isAuthenticated, getOtherUsers);
 
