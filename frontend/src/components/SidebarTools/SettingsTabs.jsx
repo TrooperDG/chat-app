@@ -1,9 +1,12 @@
 import React from "react";
 
-// icons
+// icons -----------------------------------------------
 import { MdOutlineColorLens } from "react-icons/md";
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { IoNotificationsOutline } from "react-icons/io5";
+import { AiOutlineUser } from "react-icons/ai";
+
+//---------------------------------------------------
 
 function SettingsTabs({ handleSelectTab, SelectedTab }) {
   const tabListClasses =
@@ -39,6 +42,16 @@ function SettingsTabs({ handleSelectTab, SelectedTab }) {
       >
         <IoNotificationsOutline size={20} />
         <p className="">Notifications</p>
+      </li>
+      <li
+        id="account"
+        onClick={() => handleSelectTab("Account")}
+        className={`${tabListClasses}  ${
+          SelectedTab === "Account" && "bg-gray-700"
+        }`}
+      >
+        <AiOutlineUser size={20} />
+        <p className="">Account</p>
       </li>
     </ul>
   );

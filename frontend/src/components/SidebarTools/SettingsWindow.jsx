@@ -3,6 +3,7 @@ import SettingsTabs from "./SettingsTabs";
 import ThemeSettings from "./SettingsTabContents/ThemeSettings";
 import MessageSettings from "./SettingsTabContents/MessageSettings";
 import NotificationSettings from "./SettingsTabContents/NotificationSettings";
+import Account from "./SettingsTabContents/Account";
 
 function SettingsWindow({ settingsButtonRef, handleClose }) {
   const [SelectedTab, setSelectedTab] = useState(null);
@@ -46,6 +47,7 @@ function SettingsWindow({ settingsButtonRef, handleClose }) {
         {SelectedTab === "Theme" && <ThemeSettings />}
         {SelectedTab === "Messages" && <MessageSettings />}
         {SelectedTab === "Notifications" && <NotificationSettings />}
+        {SelectedTab === "Account" && <Account />}
       </div>
     </div>
   );
