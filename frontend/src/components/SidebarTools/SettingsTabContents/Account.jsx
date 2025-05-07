@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { MdOutlinePhotoCamera } from "react-icons/md";
 import { EditableInput } from "../../common";
 import { updateUserThunk } from "../../../store/slices/user/user.thunk";
+import Logout from "../../Auth/Logout";
 
 function Account() {
   const dispatch = useDispatch();
@@ -99,6 +100,10 @@ function Account() {
           </div>
         </form>
       )}
+      <hr className="text-gray-600" />
+      <div className="p-2">
+        <Logout />
+      </div>
     </div>
   );
 }

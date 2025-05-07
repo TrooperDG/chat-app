@@ -8,7 +8,6 @@ function Header() {
     <div className="flex justify-between border-b border-b-gray-300 dark:border-b-gray-700">
       <div id="logo" className="flex items-center">
         <h1 className="text-2xl font-semibold p-2 ">TalkNest</h1>
-        <Logout />
       </div>
       <div id="userProfile-settings" className="p-2 flex gap-2 items-center">
         <p className="">{userData?.username}</p>
