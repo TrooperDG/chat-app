@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-const htmlElement = document.querySelector("html");
 
 const initialState = {
   messageSettings: JSON.parse(localStorage.getItem("messageSettings")) || {
@@ -18,6 +17,10 @@ const initialState = {
   ) || {
     notificationSound: true,
     showNotification: true,
+  },
+
+  accountSettings: {
+    isAccountTabOpen: false,
   },
 };
 
@@ -40,9 +43,16 @@ export const settingsSlice = createSlice({
         JSON.stringify(action.payload)
       );
     },
+    setAccountSettings: (state, action) => {
+      state.accountSettings.isAccountTabOpen = action.payload?.isAccountTabOpen;
+    },
   },
 });
 
-export const { setMessageSettings, setThemeSettings, setNotificationSettings } =
-  settingsSlice.actions;
+export const {
+  setMessageSettings,
+  setThemeSettings,
+  setNotificationSettings,
+  setAccountSettings,
+} = settingsSlice.actions;
 export default settingsSlice.reducer;
