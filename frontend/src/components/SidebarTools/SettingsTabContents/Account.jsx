@@ -15,7 +15,7 @@ function Account() {
   const {
     register,
     handleSubmit,
-    formState: { dirtyFields },
+    formState: { dirtyFields, isDirty },
     getValues,
     resetField,
   } = useForm({
@@ -40,7 +40,7 @@ function Account() {
     // sending to backend
     if (Object.keys(changedData).length !== 0) {
       dispatch(updateUserThunk({ data: changedData }));
-      // console.log("HALA", changedData);
+      // console.log( changedData);
     }
   };
 
@@ -52,9 +52,14 @@ function Account() {
           onSubmit={handleSubmit(handleSave)}
           className="mt-5 p-2 relative "
         >
-          <button type="submit" className="absolute right-0 hover:outline-2 ">
-            Save
-          </button>
+          {isDirty && (
+            <button
+              type="submit"
+              className="btn btn-success btn-sm absolute right-0 "
+            >
+              Save
+            </button>
+          )}
           <div id="user-avatar" className="relative inline-block">
             <img
               className="w-20 h-20 border-2 border-primary rounded-full"
