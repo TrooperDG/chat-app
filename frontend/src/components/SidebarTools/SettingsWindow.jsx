@@ -4,8 +4,13 @@ import ThemeSettings from "./SettingsTabContents/ThemeSettings";
 import MessageSettings from "./SettingsTabContents/MessageSettings";
 import NotificationSettings from "./SettingsTabContents/NotificationSettings";
 import Account from "./SettingsTabContents/Account";
+import { useDispatch, useSelector } from "react-redux";
 
 function SettingsWindow({ settingsButtonRef, handleClose }) {
+  const { isAccountTabOpen } = useSelector(
+    (state) => state.settingsReducer?.accountSettings
+  );
+
   const [SelectedTab, setSelectedTab] = useState(null);
   const settingsWindowRef = useRef(null);
 
@@ -27,6 +32,11 @@ function SettingsWindow({ settingsButtonRef, handleClose }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // this use Effect to open the account tab from the top right corner user logo
+  useEffect(() => {
+    if (isAccountTabOpen) setSelectedTab("Account");
+  }, [isAccountTabOpen]);
 
   return (
     <div

@@ -1,8 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MdOutlineSettings } from "react-icons/md";
 import { LuUsers } from "react-icons/lu";
 import { BsChatLeftText } from "react-icons/bs";
 import SettingsWindow from "./SettingsWindow";
+import { useDispatch, useSelector } from "react-redux";
+import { setAccountSettings } from "../../store/slices/settings/settings.silce";
 
 function SidebarTools({
   option,
@@ -12,6 +14,16 @@ function SidebarTools({
 }) {
   const [isSettingsWindowOpen, setIsSettingsWindowOpen] = useState(false);
   const settingsButtonRef = useRef(null);
+
+  const { isAccountTabOpen } = useSelector(
+    (state) => state.settingsReducer?.accountSettings
+  );
+  const dispatch = useDispatch();
+
+  // this use Effect to open the SettingsWindow  from the top right corner user logo
+  useEffect(() => {
+    if (isAccountTabOpen) setIsSettingsWindowOpen(true);
+  }, [isAccountTabOpen]);
   return (
     <div className="relative flex flex-col items-center justify-between border-r border-r-gray-300 dark:border-r-gray-700 gap-2 p-1">
       <div id="top" className="flex flex-col gap-1">
@@ -51,7 +63,11 @@ function SidebarTools({
       <div id="bottom">
         <button
           ref={settingsButtonRef}
-          onClick={() => setIsSettingsWindowOpen((prev) => !prev)}
+          onClick={() => {
+            setIsSettingsWindowOpen((prev) => !prev);
+            isSettingsWindowOpen &&
+              dispatch(setAccountSettings({ isAccountTabOpen: false }));
+          }}
           className=" w-10 h-10 flex justify-center items-center hover:bg-gray-300 dark:hover:bg-gray-700 duration-100 rounded-sm"
         >
           <MdOutlineSettings
@@ -65,7 +81,10 @@ function SidebarTools({
       {isSettingsWindowOpen && (
         <SettingsWindow
           settingsButtonRef={settingsButtonRef}
-          handleClose={() => setIsSettingsWindowOpen(false)}
+          handleClose={() => {
+            setIsSettingsWindowOpen(false);
+            dispatch(setAccountSettings({ isAccountTabOpen: false }));
+          }}
         />
       )}
     </div>

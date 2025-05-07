@@ -39,7 +39,7 @@ function Account() {
     }
 
     // sending to backend
-    if (Object.keys(changedData).length !== 0) {
+    if (Object.keys(changedData)?.length !== 0) {
       dispatch(updateUserThunk({ data: changedData }));
       // console.log( changedData);
     }
