@@ -1,6 +1,5 @@
 import SignUp from "./Auth/SignUp.jsx";
 import Login from "./Auth/Login.jsx";
-import ThemeChanger from "./ThemeChanger.jsx";
 import Logout from "./Auth/Logout.jsx";
 import Protected from "./Auth/AuthLayout.jsx";
 import Header from "./Header/Header.jsx";
@@ -11,7 +10,6 @@ import UsersSidebar from "./UserSidebar/UsersSidebar.jsx";
 export {
   SignUp,
   Login,
-  ThemeChanger,
   Logout,
   Protected,
   Header,
