@@ -54,7 +54,7 @@ export const settingsSlice = createSlice({
     setUISettings: (state, action) => {
       state.UISettings = { ...state.UISettings, ...action.payload }; // !  need to make others like this
 
-      console.log(state.UISettings);
+      // console.log(state.UISettings);
     },
   },
 });
