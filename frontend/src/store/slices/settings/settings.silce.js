@@ -22,6 +22,11 @@ const initialState = {
   accountSettings: {
     isAccountTabOpen: false,
   },
+
+  UISettings: {
+    isMobile: false,
+    isChatOpen: false,
+  },
 };
 
 export const settingsSlice = createSlice({
@@ -46,6 +51,11 @@ export const settingsSlice = createSlice({
     setAccountSettings: (state, action) => {
       state.accountSettings.isAccountTabOpen = action.payload?.isAccountTabOpen;
     },
+    setUISettings: (state, action) => {
+      state.UISettings = { ...state.UISettings, ...action.payload }; // !  need to make others like this
+
+      console.log(state.UISettings);
+    },
   },
 });
 
@@ -54,5 +64,6 @@ export const {
   setThemeSettings,
   setNotificationSettings,
   setAccountSettings,
+  setUISettings,
 } = settingsSlice.actions;
 export default settingsSlice.reducer;
