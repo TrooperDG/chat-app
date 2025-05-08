@@ -169,23 +169,52 @@ function HomePage() {
     setOption(option);
   };
 
+  // for mobile view ---------------------------------------------------------
+  const { isMobile, isChatOpen } = useSelector(
+    (state) => state.settingsReducer?.UISettings
+  );
+
+  const [showSideBars, setShowSideBars] = useState(true);
+  const [showMessageContainer, setShowMessageContainer] = useState(true);
+
+  useEffect(() => {
+    if (isMobile) {
+      if (isChatOpen) {
+        setShowSideBars(false);
+        setShowMessageContainer(true);
+      } else {
+        setShowMessageContainer(false);
+        setShowSideBars(true);
+      }
+    } else {
+      setShowMessageContainer(true);
+      setShowSideBars(true);
+    }
+  }, [isMobile, isChatOpen]);
+
+  //--------------------------------------------------------------------
+
   return (
     <div className="h-screen flex flex-col">
       <Header />
       <main className="flex w-full h-full overflow-auto">
-        <SidebarTools
-          option={option}
-          isUsersSidebarOpen={isUsersSidebarOpen}
-          handleOpenUserSidebar={handleOpenUserSidebar}
-          setUserSideBarOption={setUserSideBarOption}
-        />
-        {isUsersSidebarOpen && (
-          <UsersSidebar
-            option={option}
-            handleCloseUserSidebar={handleCloseUserSidebar}
-          />
+        {showSideBars && (
+          <>
+            <SidebarTools
+              option={option}
+              isUsersSidebarOpen={isUsersSidebarOpen}
+              handleOpenUserSidebar={handleOpenUserSidebar}
+              setUserSideBarOption={setUserSideBarOption}
+            />
+            {isUsersSidebarOpen && (
+              <UsersSidebar
+                option={option}
+                handleCloseUserSidebar={handleCloseUserSidebar}
+              />
+            )}
+          </>
         )}
-        <MessageContainer />
+        {showMessageContainer && <MessageContainer />}
       </main>
     </div>
   );

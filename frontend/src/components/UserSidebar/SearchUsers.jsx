@@ -2,7 +2,7 @@ import React from "react";
 
 function SearchUsers({ handleSearchUser }) {
   return (
-    <label className="input">
+    <label className="input w-full">
       <svg
         className="h-[1em] opacity-50"
         xmlns="http://www.w3.org/2000/svg"

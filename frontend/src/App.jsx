@@ -8,6 +8,7 @@ import {
   getUserThunk,
 } from "./store/slices/user/user.thunk";
 import { Toaster } from "react-hot-toast";
+import { setUISettings } from "./store/slices/settings/settings.silce";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,10 +26,23 @@ function App() {
     getUser();
   }, []);
 
+  // setting the theme
   useEffect(() => {
-    // setting the theme
     htmlElement.setAttribute("data-theme", themeSettings.theme || "dark");
   }, [themeSettings.theme]);
+
+  // checking if its mobile view
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        dispatch(setUISettings({ isMobile: true }));
+      } else {
+        dispatch(setUISettings({ isMobile: false }));
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+  }, []);
 
   if (loading) {
     return (
@@ -37,6 +51,7 @@ function App() {
       </div>
     );
   }
+
   console.log("app");
 
   return (

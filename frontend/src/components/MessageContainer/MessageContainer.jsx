@@ -5,6 +5,7 @@ import SendMessage from "./SendMessage";
 import Messages from "./Messages";
 import { getMessagesThunk } from "../../store/slices/message/message.thunk";
 import { setSelectedUser } from "../../store/slices/user/user.slice";
+import { setUISettings } from "../../store/slices/settings/settings.silce";
 
 function MessageContainer() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function MessageContainer() {
 
   const handleCloseChat = () => {
     dispatch(setSelectedUser(null));
+    dispatch(setUISettings({ isChatOpen: false })); //! need to make :: if user clicks back button **
   };
 
   useEffect(() => {
@@ -36,6 +38,9 @@ function MessageContainer() {
       }
     };
     getMessages();
+    if (selectedUserData !== null) {
+      dispatch(setUISettings({ isChatOpen: true }));
+    }
   }, [selectedUserData]);
 
   // since we are getiing the selected user from localStorage so updating the last seen

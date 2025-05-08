@@ -69,16 +69,28 @@ function UsersSidebar({ option, handleCloseUserSidebar }) {
     }
   }, [otherUsersData, option]);
 
+  // for mobile view --------------------------------------------------------
+  const { isMobile } = useSelector(
+    (state) => state.settingsReducer?.UISettings
+  );
+
+  //---------------------------------------------------------------------------
   return (
-    <div className="w-full max-w-[20rem] p-3 flex flex-col border-r border-r-gray-300 dark:border-r-gray-700 gap-2">
+    <div
+      className={`w-full ${
+        !isMobile && "max-w-[20rem]"
+      } p-3 flex flex-col border-r border-r-gray-300 dark:border-r-gray-700 gap-2`}
+    >
       <div className="flex justify-between mb-2">
         <h1 className="text-lg font-semibold">{option}</h1>
-        <button
-          onClick={handleCloseUserSidebar}
-          className="rounded-[4px] duration-100 hover:bg-gray-400 dark:hover:bg-gray-700"
-        >
-          <RxCross2 size={22} />
-        </button>
+        {!isMobile && (
+          <button
+            onClick={handleCloseUserSidebar}
+            className="rounded-[4px] duration-100 hover:bg-gray-400 dark:hover:bg-gray-700"
+          >
+            <RxCross2 size={22} />
+          </button>
+        )}
       </div>
       <div className="flex gap-0.5">
         <SearchUsers handleSearchUser={handleSearchUser} />

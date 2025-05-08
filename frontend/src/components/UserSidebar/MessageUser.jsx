@@ -5,6 +5,7 @@ import { setSelectedUser } from "../../store/slices/user/user.slice";
 //checkmark icons
 import { IoCheckmark } from "react-icons/io5";
 import { IoCheckmarkDone } from "react-icons/io5";
+import { setUISettings } from "../../store/slices/settings/settings.silce";
 
 function MessageUser({ userData = {} }) {
   const dispatch = useDispatch();
@@ -14,6 +15,7 @@ function MessageUser({ userData = {} }) {
 
   const handleSelectUser = () => {
     dispatch(setSelectedUser(userData));
+    dispatch(setUISettings({ isChatOpen: true }));
   };
 
   return (
