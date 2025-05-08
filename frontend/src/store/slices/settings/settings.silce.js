@@ -24,7 +24,7 @@ const initialState = {
   },
 
   UISettings: {
-    isMobile: false,
+    isMobile: window.innerWidth <= 768,
     isChatOpen: false,
   },
 };
