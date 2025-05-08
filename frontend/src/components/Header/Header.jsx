@@ -7,7 +7,7 @@ function Header() {
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.userReducer);
   return (
-    <div className="flex justify-between border-b border-b-gray-300 dark:border-b-gray-700">
+    <div className="flex justify-between bg-base-300 border-b border-b-gray-300 dark:border-b-gray-700">
       <div id="logo" className="flex items-center">
         <h1 className="text-2xl font-semibold p-2 ">TalkNest</h1>
       </div>
