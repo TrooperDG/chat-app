@@ -9,14 +9,19 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [isInvalid, setisInvalid] = useState(false);
   // console.log(loading);
 
   async function submit(loginData) {
     setLoading(true);
     const response = await dispatch(loginUserThunk(loginData));
-    if (response.payload.success) {
+    if (response?.payload?.success) {
+      setisInvalid(false);
       navigate("/");
+    } else {
+      setisInvalid(true);
     }
+
     setLoading(false);
   }
   return (
@@ -28,8 +33,13 @@ function Login() {
         Login
       </h1>
       <form className="flex gap-2 flex-col w-full">
+        {isInvalid && (
+          <div className=" text-red-500 text-center">
+            Enter valid Email or Password
+          </div>
+        )}
         <div>
-          <label className="input validator w-full ">
+          <label className="input  w-full ">
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -53,11 +63,10 @@ function Login() {
               {...register("email", { required: true })}
             />
           </label>
-          <div className="validator-hint hidden">Enter valid email address</div>
         </div>
 
         <div>
-          <label className="input validator w-full">
+          <label className="input  w-full">
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -84,6 +93,7 @@ function Login() {
             />
           </label>
         </div>
+
         <button
           onClick={handleSubmit(submit)}
           type="submit"

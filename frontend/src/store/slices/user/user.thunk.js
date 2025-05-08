@@ -11,8 +11,8 @@ const loginUserThunk = createAsyncThunk(
       toast.success("Logged in succesfully");
       return response?.data || null;
     } catch (error) {
-      const errMessage = error?.response?.data?.errorMessage;
-      return rejectWithValue(errMessage || "something went wrong");
+      const errData = error?.response?.data;
+      return rejectWithValue(errData || "something went wrong"); //! make others also errData
     }
   }
 );

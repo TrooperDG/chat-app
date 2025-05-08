@@ -46,7 +46,7 @@ function SettingsWindow({ settingsButtonRef, handleClose }) {
     >
       <div
         id="tabs"
-        className="w-2/5 border-r border-r-gray-300 dark:border-r-gray-700 "
+        className="w-2/5 border-r border-r-gray-300 dark:border-r-gray-700 overflow-y-scroll "
       >
         <SettingsTabs
           handleSelectTab={(name) => setSelectedTab(name)}
