@@ -22,6 +22,9 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
     },
+    avatarPublicId: {
+      type: String,
+    },
     about: {
       type: String,
     },

@@ -10,6 +10,8 @@ import {
 import { tokenGenerator } from "./tokenGenerator.utility.js";
 socketConnection;
 
+import { cloudinary } from "./cloudinary.utility.js";
+
 export {
   asyncHandler,
   cookieSender,
@@ -19,4 +21,5 @@ export {
   socketConnection,
   getIO,
   getSocketId,
+  cloudinary,
 };
