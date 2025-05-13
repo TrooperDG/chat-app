@@ -7,7 +7,7 @@ function Header() {
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.userReducer);
   return (
-    <div className="flex justify-between bg-base-300 border-b border-b-gray-300 dark:border-b-gray-700">
+    <div className="flex justify-between gap-4 bg-base-300 border-b border-b-gray-300 dark:border-b-gray-700">
       <div id="logo" className="flex items-center">
         <img
           src="https://res.cloudinary.com/dlzdikyzx/image/upload/v1747145592/image2_hdzmpj.png"
@@ -16,8 +16,10 @@ function Header() {
         />
         <h1 className="text-md font-semibold ">TalkNest</h1>
       </div>
-      <div id="userProfile-settings" className="p-2 flex gap-2 items-center">
-        <p className="truncate">{userData?.username}</p>
+      <div id="userProfile-settings" className="p-2 flex gap-2 items-center ">
+        <p className=" max-w-30 md:max-w-40 lg:max-w-60 truncate">
+          {userData?.username}
+        </p>
         <button
           onMouseDown={() =>
             dispatch(setAccountSettings({ isAccountTabOpen: true }))
