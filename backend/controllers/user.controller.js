@@ -1,11 +1,13 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
+import fs from "fs";
 import {
   asyncHandler,
   errorHandler,
   cookieSender,
   tokenGenerator,
   responseHandler,
+  // cloudinary,
 } from "../utilities/index.js";
 
 const login = asyncHandler(async (req, res, next) => {
@@ -75,12 +77,13 @@ const getProfile = asyncHandler(async (req, res, next) => {
   if (userData) responseHandler(res, 200, userData);
 });
 const updateProfile = asyncHandler(async (req, res, next) => {
-  const updatedUser = await await User.findByIdAndUpdate(
+  const updatedUser = await User.findByIdAndUpdate(
     req.userId,
     { $set: req.body },
     { new: true }
   );
   if (updatedUser) responseHandler(res, 200, updatedUser);
+  res.end();
 });
 
 const logout = asyncHandler(async (req, res, next) => {
@@ -94,4 +97,49 @@ const getOtherUsers = asyncHandler(async (req, res, next) => {
   responseHandler(res, 200, otherUsers);
 });
 
-export { login, register, getProfile, updateProfile, logout, getOtherUsers };
+//----------------------------------------------------------
+
+import { v2 as cloudinary } from "cloudinary";
+
+const uploadUserAvatar = asyncHandler(async (req, res, next) => {
+  //! using the cloudinary config here , because process.en.CLOUDINARY_* shows undifined in cloudinary.utility.js
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
+
+  // Get current user and their existing avatar public_id
+  const user = await User.findById(req.userId);
+
+  // Upload new avatar
+  const cldResponse = await cloudinary.uploader.upload(req.file.path, {
+    folder: "home",
+  });
+  fs.unlinkSync(req.file.path); // Delete local file after upload
+
+  // Save new avatar URL and public_id to the database
+  if (cldResponse) {
+    await User.findByIdAndUpdate(req.userId, {
+      avatar: cldResponse.url,
+      avatarPublicId: cldResponse.public_id,
+    });
+  }
+
+  // Delete old avatar from Cloudinary if it exists
+  if (user?.avatarPublicId) {
+    await cloudinary.uploader.destroy(user.avatarPublicId);
+  }
+
+  responseHandler(res, 200, { avatar: cldResponse.url });
+});
+
+export {
+  login,
+  register,
+  getProfile,
+  updateProfile,
+  logout,
+  getOtherUsers,
+  uploadUserAvatar,
+};
