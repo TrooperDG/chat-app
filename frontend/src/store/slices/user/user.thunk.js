@@ -52,13 +52,31 @@ const updateUserThunk = createAsyncThunk(
   async ({ data }, { rejectWithValue }) => {
     try {
       const response = await api.patch("/user/update-user", { ...data });
-      return response?.data || null;
+      return response?.data?.responseData || null;
     } catch (error) {
       const errMessage = error?.response?.data?.errorMessage;
       return rejectWithValue(errMessage || "something went wrong");
     }
   }
 );
+
+const updateUserAvatarThunk = createAsyncThunk(
+  "user/updateUserAvatar",
+  async ({ avatarFormData }, { rejectWithValue }) => {
+    try {
+      const response = await api.post(`/user/upload/avatar`, avatarFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response?.data?.responseData?.avatar || null;
+    } catch (error) {
+      const errMessage = error?.response?.data?.errorMessage;
+      return rejectWithValue(errMessage || "something went wrong");
+    }
+  }
+);
+
 const logoutUserThunk = createAsyncThunk(
   "user/logout",
   async (_, { rejectWithValue }) => {
@@ -106,4 +124,5 @@ export {
   updateUserThunk,
   getOtherUsersThunk,
   getAllLatestUserMessagesThunk,
+  updateUserAvatarThunk,
 };

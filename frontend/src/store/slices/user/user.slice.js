@@ -5,6 +5,7 @@ import {
   logoutUserThunk,
   getUserThunk,
   updateUserThunk,
+  updateUserAvatarThunk,
   getOtherUsersThunk,
   getAllLatestUserMessagesThunk,
 } from "./user.thunk.js";
@@ -145,16 +146,30 @@ export const userSlice = createSlice({
       console.log("get-user-rejected", action.payload);
     });
 
-    //getUser Thunk
+    //updateUser Thunk
     builder.addCase(updateUserThunk.pending, (state, action) => {
       state.userLoading = true;
     });
     builder.addCase(updateUserThunk.fulfilled, (state, action) => {
       state.isAuthenticated = true;
-      state.userData = action.payload.responseData;
+      state.userData = action.payload; //! need to change other builders with only payload
       state.userLoading = false;
     });
     builder.addCase(updateUserThunk.rejected, (state, action) => {
+      state.userLoading = false;
+      console.log("get-user-rejected", action.payload);
+    });
+
+    //updateUserAvatar Thunk
+    builder.addCase(updateUserAvatarThunk.pending, (state, action) => {
+      state.userLoading = true;
+    });
+    builder.addCase(updateUserAvatarThunk.fulfilled, (state, action) => {
+      state.isAuthenticated = true;
+      state.userData.avatar = action.payload; //! need to change other builders with only payload
+      state.userLoading = false;
+    });
+    builder.addCase(updateUserAvatarThunk.rejected, (state, action) => {
       state.userLoading = false;
       console.log("get-user-rejected", action.payload);
     });
