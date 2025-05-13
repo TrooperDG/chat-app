@@ -9,10 +9,15 @@ function Header() {
   return (
     <div className="flex justify-between bg-base-300 border-b border-b-gray-300 dark:border-b-gray-700">
       <div id="logo" className="flex items-center">
-        <h1 className="text-2xl font-semibold p-2 ">TalkNest</h1>
+        <img
+          src="https://res.cloudinary.com/dlzdikyzx/image/upload/v1747145592/image2_hdzmpj.png"
+          alt="Logo"
+          className="w-10 h-10 bg-transparent"
+        />
+        <h1 className="text-md font-semibold ">TalkNest</h1>
       </div>
       <div id="userProfile-settings" className="p-2 flex gap-2 items-center">
-        <p className="">{userData?.username}</p>
+        <p className="truncate">{userData?.username}</p>
         <button
           onMouseDown={() =>
             dispatch(setAccountSettings({ isAccountTabOpen: true }))
