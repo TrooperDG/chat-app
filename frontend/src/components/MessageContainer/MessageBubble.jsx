@@ -50,7 +50,9 @@ function MessageBubble({ messageDetails }) {
         </div>
         <div
           className={`chat-bubble ${
-            isMeSender ? "chat-bubble-primary" : "chat-bubble-neutral"
+            isMeSender
+              ? "chat-bubble-primary"
+              : " chat-bubble-primary-content dark:chat-bubble-neutral"
           }`}
         >
           {messageDetails.message}

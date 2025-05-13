@@ -19,12 +19,12 @@ function ThemeSettings() {
         <select
           onChange={handleChangeTheme}
           defaultValue={themeSettings?.theme}
-          className="bg-gray-700  mt-2.5 select select-ghost select-s h-7 w-28 "
+          className="bg-gray-300 dark:bg-gray-700  mt-2.5 select select-ghost select-s h-7 w-28 "
         >
-          <option value={"dark"} className="bg-gray-700 ">
+          <option value={"dark"} className="bg-gray-300 dark:bg-gray-700 ">
             Dark
           </option>
-          <option value={"light"} className="bg-gray-700 ">
+          <option value={"light"} className="bg-gray-300 dark:bg-gray-700 ">
             Light
           </option>
         </select>

@@ -10,14 +10,14 @@ import { AiOutlineUser } from "react-icons/ai";
 
 function SettingsTabs({ handleSelectTab, SelectedTab }) {
   const tabListClasses =
-    "flex gap-2 items-center cursor-pointer p-2 rounded-sm hover:bg-gray-600 duration-100";
+    "flex gap-2 items-center cursor-pointer p-2 rounded-sm  hover:bg-gray-300 dark:hover:bg-gray-600  duration-100";
   return (
     <ul className="p-2 flex flex-col gap-1">
       <li
         id="theme"
         onClick={() => handleSelectTab("Theme")}
         className={` ${tabListClasses} ${
-          SelectedTab === "Theme" && "bg-gray-700"
+          SelectedTab === "Theme" && "bg-gray-300 dark:bg-gray-700"
         }`}
       >
         <MdOutlineColorLens size={20} />
@@ -27,7 +27,7 @@ function SettingsTabs({ handleSelectTab, SelectedTab }) {
         id="messages"
         onClick={() => handleSelectTab("Messages")}
         className={`${tabListClasses} ${
-          SelectedTab === "Messages" && "bg-gray-700"
+          SelectedTab === "Messages" && "bg-gray-300 dark:bg-gray-700"
         }`}
       >
         <IoChatbubblesOutline size={20} />
@@ -37,7 +37,7 @@ function SettingsTabs({ handleSelectTab, SelectedTab }) {
         id="notifications"
         onClick={() => handleSelectTab("Notifications")}
         className={`${tabListClasses}  ${
-          SelectedTab === "Notification" && "bg-gray-700"
+          SelectedTab === "Notifications" && "bg-gray-300 dark:bg-gray-700"
         }`}
       >
         <IoNotificationsOutline size={20} />
@@ -47,7 +47,7 @@ function SettingsTabs({ handleSelectTab, SelectedTab }) {
         id="account"
         onClick={() => handleSelectTab("Account")}
         className={`${tabListClasses}  ${
-          SelectedTab === "Account" && "bg-gray-700"
+          SelectedTab === "Account" && "bg-gray-300 dark:bg-gray-700"
         }`}
       >
         <AiOutlineUser size={20} />

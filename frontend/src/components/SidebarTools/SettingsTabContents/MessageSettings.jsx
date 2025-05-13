@@ -19,13 +19,15 @@ function MessageSettings() {
       //other settings that don't have boolean value
     }
   };
+  const toggleElemtclassess =
+    "flex items-center p-2 border-b border-gray-300 dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-gray-700 duration-100 hover:rounded-sm";
 
   return (
     <div className="px-2.5 py-3 ">
       <h1 className="text-xl font-semibold">Messages</h1>
       <div id="message-sound" className="mt-5 ">
         {/* <h3 className="mb-1 text-lg font-semibold">Sound</h3> */}
-        <div className="flex items-center p-2 border-b border-gray-700  hover:bg-gray-700 duration-100 hover:rounded-sm">
+        <div className={toggleElemtclassess}>
           <span>Send sound</span>
           <input
             onChange={handleChangeMessageSettings}
@@ -39,7 +41,7 @@ function MessageSettings() {
           </span>
         </div>
         {/* <hr className="text-gray-700" /> */}
-        <div className="flex items-center p-2 border-b border-gray-700  hover:bg-gray-700 duration-100 hover:rounded-sm ">
+        <div className={toggleElemtclassess}>
           <span>Received sound</span>
           <input
             onChange={handleChangeMessageSettings}
@@ -53,7 +55,7 @@ function MessageSettings() {
           </span>
         </div>
         {/* <hr className="text-gray-700" /> */}
-        <div className="flex items-center p-2 border-b border-gray-700  hover:bg-gray-700 duration-100 hover:rounded-sm">
+        <div className={toggleElemtclassess}>
           <span>Seen sound</span>
           <input
             onChange={handleChangeMessageSettings}

@@ -32,10 +32,10 @@ function SidebarTools({
             handleOpenUserSidebar();
             setUserSideBarOption("All");
           }}
-          className={` w-10 h-10 flex justify-center items-center hover:bg-gray-400 dark:hover:bg-gray-600 duration-100 rounded-sm border-b-2 border-base-100 ${
+          className={` w-10 h-10 flex justify-center items-center hover:bg-gray-300 dark:hover:bg-gray-600 duration-100 rounded-sm border-b-2 border-base-100 ${
             isUsersSidebarOpen &&
             option === "All" &&
-            " border-primary bg-gray-400 dark:bg-gray-700"
+            " border-primary bg-gray-300 dark:bg-gray-700"
           }`}
         >
           <LuUsers size={22} className={`text-gray-600 dark:text-gray-400 `} />
@@ -45,10 +45,10 @@ function SidebarTools({
             handleOpenUserSidebar();
             setUserSideBarOption("Chats");
           }}
-          className={` w-10 h-10 flex justify-center items-center hover:bg-gray-400 dark:hover:bg-gray-600 duration-100 rounded-sm border-b-2 border-base-100 ${
+          className={` w-10 h-10 flex justify-center items-center hover:bg-gray-300 dark:hover:bg-gray-600 duration-100 rounded-sm border-b-2 border-base-100 ${
             isUsersSidebarOpen &&
             option === "Chats" &&
-            " border-primary bg-gray-400 dark:bg-gray-700"
+            " border-primary bg-gray-300 dark:bg-gray-700"
           }`}
         >
           <BsChatLeftText

@@ -22,12 +22,15 @@ function NotificationSettings() {
     }
   };
 
+  const toggleElemtclassess =
+    "flex items-center p-2 border-b border-gray-300 dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-gray-700 duration-100 hover:rounded-sm";
+
   return (
     <div className="px-2.5 py-3 ">
       <h1 className="text-xl font-semibold">Notifications</h1>
       <div id="message-sound" className="mt-5 ">
         {/* <hr className="text-gray-700" /> */}
-        <div className="flex items-center p-2 border-b border-gray-700  hover:bg-gray-700 duration-100 hover:rounded-sm ">
+        <div className={toggleElemtclassess}>
           <span>Show Notification</span>
           <input
             onChange={handleChangeNotificationSettings}
@@ -40,7 +43,7 @@ function NotificationSettings() {
             {notificationSettings?.showNotification ? "on" : "off"}
           </span>
         </div>
-        <div className="flex items-center p-2 border-b border-gray-700  hover:bg-gray-700 duration-100 hover:rounded-sm">
+        <div className={toggleElemtclassess}>
           <span>Notification Sound</span>
           <input
             onChange={handleChangeNotificationSettings}

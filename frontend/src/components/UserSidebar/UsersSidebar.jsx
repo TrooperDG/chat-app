@@ -81,12 +81,12 @@ function UsersSidebar({ option, handleCloseUserSidebar }) {
         !isMobile && "max-w-[20rem]"
       } p-3 flex flex-col border-r border-r-gray-300 dark:border-r-gray-700 gap-2`}
     >
-      <div className="flex justify-between mb-2">
+      <div className="flex justify-between items-center mb-2">
         <h1 className="text-lg font-semibold">{option}</h1>
         {!isMobile && (
           <button
             onClick={handleCloseUserSidebar}
-            className="rounded-[4px] duration-100 hover:bg-gray-400 dark:hover:bg-gray-700"
+            className="rounded-[4px] duration-100 hover:bg-gray-300 dark:hover:bg-gray-700 p-0.5"
           >
             <RxCross2 size={22} />
           </button>
@@ -96,11 +96,13 @@ function UsersSidebar({ option, handleCloseUserSidebar }) {
         <SearchUsers handleSearchUser={handleSearchUser} />
         <button
           onClick={handleRefreshOtherUsers}
-          className="rounded-[4px] duration-100 px-2 border-1 border-[#454E57] hover:bg-gray-400 dark:hover:bg-gray-600"
+          className="btn btn-square btn-soft"
         >
           <MdRefresh
             size={22}
-            className={`text-gray-400 ${loading && "animate-spin"}`}
+            className={`text-gray-500 dark:text-gray-400 ${
+              loading && "animate-spin"
+            }`}
           />
         </button>
       </div>

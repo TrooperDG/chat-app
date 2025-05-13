@@ -21,7 +21,7 @@ function MessageUser({ userData = {} }) {
   return (
     <li
       onClick={handleSelectUser}
-      className=" w-full  border-b border-b-gray-300 dark:border-b-gray-700  p-2 flex  items-center"
+      className=" w-full rounded-sm  border-b border-b-gray-300 dark:border-b-gray-700 hover:bg-gray-300 dark:hover:bg-gray-700 duration-100 p-2 flex  items-center"
     >
       <div className="flex gap-3 w-full items-center  cursor-pointer">
         <div
