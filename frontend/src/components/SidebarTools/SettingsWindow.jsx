@@ -58,7 +58,7 @@ function SettingsWindow({ settingsButtonRef, handleClose }) {
         setShowTabs(true);
       }
     } else {
-      setShowSelectedTab(true);
+      setShowTabs(true);
       setShowSelectedTab(true);
     }
   }, [isMobile, SelectedTab]);
