@@ -114,7 +114,7 @@ const uploadUserAvatar = asyncHandler(async (req, res, next) => {
 
   // Upload new avatar
   const cldResponse = await cloudinary.uploader.upload(req.file.path, {
-    folder: "home",
+    folder: "/user-avatars",
   });
   fs.unlinkSync(req.file.path); // Delete local file after upload
 
