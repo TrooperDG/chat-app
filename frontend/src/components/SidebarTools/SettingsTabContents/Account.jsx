@@ -5,18 +5,22 @@ import { useForm } from "react-hook-form";
 // icons --------------------------
 import { MdOutlinePhotoCamera } from "react-icons/md";
 import { EditableInput } from "../../common";
-import { updateUserThunk } from "../../../store/slices/user/user.thunk";
+import {
+  updateUserAvatarThunk,
+  updateUserThunk,
+} from "../../../store/slices/user/user.thunk";
 import Logout from "../../Auth/Logout";
 
 function Account() {
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.userReducer);
+  const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { dirtyFields, isDirty },
+    formState: { dirtyFields },
     getValues,
     resetField,
   } = useForm({
@@ -29,7 +33,18 @@ function Account() {
     },
   });
 
-  const handleSave = (data) => {
+  const handleSave = async (data) => {
+    setLoading(true);
+
+    let avatarFormData = null; // for avatar upload
+    if (data.images.length > 0) {
+      avatarFormData = new FormData();
+      avatarFormData.append("avatar", data.images[0]);
+      delete data.images;
+    }
+
+    //--------------------------------
+
     const currentValues = getValues(); // get all current values
     const changedData = {};
     // Loop through dirtyFields to pick only changed values
@@ -40,8 +55,22 @@ function Account() {
 
     // sending to backend
     if (Object.keys(changedData)?.length !== 0) {
-      dispatch(updateUserThunk({ data: changedData }));
-      // console.log( changedData);
+      await dispatch(
+        updateUserThunk({
+          data: changedData,
+        })
+      );
+      if (avatarFormData)
+        await dispatch(updateUserAvatarThunk({ avatarFormData }));
+    }
+
+    setLoading(false);
+  };
+
+  const handleAvatarPreview = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
     }
   };
 
@@ -53,26 +82,41 @@ function Account() {
           onSubmit={handleSubmit(handleSave)}
           className="mt-5 p-2 relative "
         >
-          {isDirty && (
+          {Object.keys(dirtyFields).length > 0 || loading ? (
             <button
               type="submit"
               className="btn btn-success btn-sm absolute right-0 "
             >
-              Save
+              {loading ? (
+                <span>
+                  Saving
+                  <span className="ml-2 loading loading-spinner loading-xs text-white"></span>
+                </span>
+              ) : (
+                "Save"
+              )}
             </button>
-          )}
+          ) : null}
           <div id="user-avatar" className="relative inline-block">
             <img
               className="w-20 h-20 border-2 border-primary rounded-full"
-              src={userData?.avatar}
+              src={imagePreview || userData?.avatar}
               alt="user-avatar"
             />
-            <button className="group  absolute inset-0 rounded-full flex justify-center items-center hover:bg-black/60 transition-opacity duration-100 ">
+            <label className="group  absolute inset-0 rounded-full flex justify-center items-center hover:bg-black/60 transition-opacity duration-100 ">
               <MdOutlinePhotoCamera
                 size={20}
                 className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
               />
-            </button>
+              <input
+                type="file"
+                accept="image/*"
+                {...register("images", {
+                  onChange: (e) => handleAvatarPreview(e),
+                })}
+                className="hidden"
+              />
+            </label>
           </div>
 
           <div id="user-details" className="mt-1 ">
