@@ -26,12 +26,29 @@ function App() {
     getUser();
   }, []);
 
-  // setting the theme
+  // setting the theme------------------
   useEffect(() => {
     htmlElement.setAttribute("data-theme", themeSettings.theme || "dark");
   }, [themeSettings.theme]);
 
-  // checking if its mobile view
+  //* if the user changes the theme , immediately change it in the app
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    function handleThemeChange(e) {
+      if (e.matches) {
+        htmlElement.setAttribute("data-theme", "dark");
+      } else {
+        htmlElement.setAttribute("data-theme", "light");
+      }
+    }
+
+    mediaQuery.addEventListener("change", handleThemeChange);
+
+    return () => mediaQuery.removeEventListener("change", handleThemeChange);
+  }, []);
+
+  // checking if its mobile view---------------------------
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 768) {
@@ -42,6 +59,8 @@ function App() {
     };
 
     window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   if (loading) {

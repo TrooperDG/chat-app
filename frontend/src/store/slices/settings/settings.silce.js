@@ -8,7 +8,9 @@ const initialState = {
   },
 
   themeSettings: JSON.parse(localStorage.getItem("themeSettings")) || {
-    theme: "dark",
+    theme: window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light",
     //customization
   },
 
