@@ -3,7 +3,15 @@ import { MdOutlineEdit } from "react-icons/md";
 
 const EditableInput = forwardRef(
   (
-    { type = "text", isDisabled = false, label = "", className = "", ...props },
+    {
+      autoSize = false,
+      type = "text",
+      isDisabled = false,
+      label = "",
+      parentClass = "mt-2",
+      className = "",
+      ...props
+    },
     externalRef
   ) => {
     const [isEditable, setEditable] = useState(false);
@@ -42,27 +50,40 @@ const EditableInput = forwardRef(
     }, [isEditable]);
 
     return (
-      <label className="">
+      <label>
         {label && <small className="text-gray-400">{label}</small>}
         <div
           ref={containerRef}
-          className="w-full flex justify-between items-center"
+          className={`w-full  flex justify-between items-end ${parentClass}`}
         >
-          <input
-            type={type}
-            disabled={isDisabled}
-            readOnly={!isEditable}
-            {...props} // ✅ RHF props go first
-            ref={setRefs} // ✅ Merged ref here
-            className={`${className} ${
-              isEditable ? "border-gray-600" : "border-transparent"
-            }`}
-          />
+          {autoSize ? (
+            <textarea
+              type={type}
+              disabled={isDisabled}
+              readOnly={!isEditable}
+              {...props} // ✅ RHF props go first
+              ref={setRefs} // ✅ Merged ref here
+              className={` field-sizing-content resize-none ${className} ${
+                isEditable ? "border-gray-600" : "border-transparent"
+              }`}
+            />
+          ) : (
+            <input
+              type={type}
+              disabled={isDisabled}
+              readOnly={!isEditable}
+              {...props} // ✅ RHF props go first
+              ref={setRefs} // ✅ Merged ref here
+              className={`${className} ${
+                isEditable ? "border-gray-600" : "border-transparent"
+              }`}
+            />
+          )}
           {!isDisabled && (
             <button
               type="button" // so that if it does not submit a form
               onClick={() => setEditable(true)}
-              className="rounded-xs outline-2 ml-2 outline-offset-2 outline-transparent hover:outline-gray-500 duration-100"
+              className="rounded-xs outline-2 ml-2 mb-1 outline-offset-2 outline-transparent hover:outline-gray-500 duration-100"
             >
               <MdOutlineEdit />
             </button>

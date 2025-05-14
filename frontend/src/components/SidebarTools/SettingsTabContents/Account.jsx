@@ -121,24 +121,30 @@ function Account() {
 
           <div id="user-details" className="mt-1 ">
             <EditableInput
-              className="w-full mb-3 outline-0 border-b-2 text-xl font-semibold "
+              autoSize={true}
+              className="w-full  outline-0 border-b-2 text-xl font-semibold "
+              parentClass="mb-6"
               {...register("username", { required: true })}
             />
             <EditableInput
               isDisabled={true} // in future email will be editable
               label="email"
-              className="w-full mb-2 outline-0 border-b-2 "
+              className="w-full  outline-0 border-b-2 "
+              parentClass="mb-2.5"
               {...register("email", { required: true })}
             />
 
             <EditableInput
               label="phone"
-              className="w-full mb-2 outline-0 border-b-2 "
+              className="w-full  outline-0 border-b-2 "
+              parentClass="mb-2.5"
               {...register("phone", { required: true })}
             />
             <EditableInput
               label="about"
-              className="w-full mb-2 outline-0 border-b-2 "
+              autoSize={true}
+              className="w-full  outline-0 border-b-2 "
+              parentClass="mb-3"
               {...register("about", { required: true })}
             />
           </div>
