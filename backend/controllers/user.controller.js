@@ -51,9 +51,11 @@ const register = asyncHandler(async (req, res, next) => {
   //hash password
   const passwordHash = await bcrypt.hash(password, 10);
 
-  //avatar generate
-  const avatarType = gender === "male" ? "boy" : "girl";
-  const avatarURL = `https://avatar.iran.liara.run/public/${avatarType}?username=${email}`;
+  //generate avatar
+  const avatarURL =
+    gender === "male"
+      ? "https://res.cloudinary.com/dlzdikyzx/image/upload/v1747316994/male_avatar_ppiktx.png"
+      : "https://res.cloudinary.com/dlzdikyzx/image/upload/v1747316991/female_avatar_yaqtj8.png";
 
   //create new user
   const newUser = await User.create({
