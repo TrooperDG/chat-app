@@ -88,6 +88,7 @@ function UsersSidebar({ option, handleCloseUserSidebar }) {
           <button
             onClick={handleCloseUserSidebar}
             className="rounded-[4px] duration-100 hover:bg-gray-300 dark:hover:bg-gray-700 p-0.5"
+            title="close sidebar"
           >
             <RxCross2 size={22} />
           </button>
@@ -98,6 +99,7 @@ function UsersSidebar({ option, handleCloseUserSidebar }) {
         <button
           onClick={handleRefreshOtherUsers}
           className="btn btn-square btn-soft"
+          title="refresh users"
         >
           <MdRefresh
             size={22}

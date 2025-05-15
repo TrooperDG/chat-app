@@ -24,6 +24,7 @@ function Header() {
           onMouseDown={() =>
             dispatch(setAccountSettings({ isAccountTabOpen: true }))
           }
+          title="account"
         >
           <img
             className="w-8 h-8 border-2 border-primary rounded-full"

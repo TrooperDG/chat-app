@@ -39,6 +39,7 @@ function SidebarTools({
             option === "All" &&
             " border-primary bg-gray-300 dark:bg-gray-700"
           }`}
+          title="all users"
         >
           <LuUsers size={22} className={`text-gray-600 dark:text-gray-400 `} />
         </button>
@@ -52,6 +53,7 @@ function SidebarTools({
             option === "Chats" &&
             " border-primary bg-gray-300 dark:bg-gray-700"
           }`}
+          title="my chats"
         >
           <BsChatLeftText
             size={22}
@@ -71,6 +73,7 @@ function SidebarTools({
               dispatch(setAccountSettings({ isAccountTabOpen: false }));
           }}
           className=" w-10 h-10 flex justify-center items-center hover:bg-gray-300 dark:hover:bg-gray-700 duration-100 rounded-sm"
+          title="settings"
         >
           <MdOutlineSettings
             size={22}
