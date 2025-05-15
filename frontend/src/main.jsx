@@ -5,7 +5,8 @@ import App from "./App.jsx";
 import { HomePage, LoginPage, SignUpPage } from "./pages";
 import { store } from "./store/store.js";
 import { Provider } from "react-redux";
-import Kipu from "./store/slices/Kipu.jsx";
+// import Kipu from "./store/slices/Kipu.jsx";
+// import LoadingScreen from "./components/common/LoadingScreen.jsx";
 import { Protected } from "./components";
 
 createRoot(document.getElementById("root")).render(
@@ -37,7 +38,7 @@ createRoot(document.getElementById("root")).render(
               </Protected>
             }
           />
-          <Route path="kipu" element={<Kipu />} />
+          {/* <Route path="kipu" element={<LoadingScreen />} /> */}
         </Route>
         <Route
           path="*"

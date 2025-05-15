@@ -9,6 +9,7 @@ import {
 } from "./store/slices/user/user.thunk";
 import { Toaster } from "react-hot-toast";
 import { setUISettings } from "./store/slices/settings/settings.silce";
+import { LoadingScreen } from "./components/common";
 
 function App() {
   const dispatch = useDispatch();
@@ -64,11 +65,7 @@ function App() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="bg-amber-800 h-screen">
-        <span className="loading loading-spinner loading-xl"></span>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   console.log("app");
