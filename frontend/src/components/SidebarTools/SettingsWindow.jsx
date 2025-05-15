@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 //icons-----------------------------------
 import { RxCross2 } from "react-icons/rx";
 
+import { motion } from "framer-motion";
+
 function SettingsWindow({ settingsButtonRef, handleClose }) {
   const { isAccountTabOpen } = useSelector(
     (state) => state.settingsReducer?.accountSettings
@@ -66,7 +68,16 @@ function SettingsWindow({ settingsButtonRef, handleClose }) {
   //--------------------------------------------------------------------------
 
   return (
-    <div
+    <motion.div
+      initial={{ y: "50%", opacity: 0 }}
+      animate={{ y: "0%", opacity: 1 }}
+      exit={{ y: "100%", opacity: 0 }}
+      transition={{
+        type: "tween",
+        duration: 0.4,
+        // ease: [0.61, 0.29, 0.16, 0.93],
+        ease: [0.02, 1.06, 0.68, 0.94],
+      }}
       ref={settingsWindowRef}
       id="settings-window"
       className={`  ${
@@ -118,7 +129,7 @@ function SettingsWindow({ settingsButtonRef, handleClose }) {
           {SelectedTab === "Account" && <Account />}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }
 

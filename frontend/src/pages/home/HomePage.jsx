@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { AnimatePresence } from "framer-motion";
 
 //------------------------------------------------------
 import { popNotification } from "./popNotification";
@@ -192,7 +193,7 @@ function HomePage() {
     }
   }, [isMobile, isChatOpen]);
 
-  //--------------------------------------------------------------------
+  //------------------------------------------------------------
 
   return (
     <div className="h-screen flex flex-col">
@@ -206,12 +207,14 @@ function HomePage() {
               handleOpenUserSidebar={handleOpenUserSidebar}
               setUserSideBarOption={setUserSideBarOption}
             />
-            {isUsersSidebarOpen && (
-              <UsersSidebar
-                option={option}
-                handleCloseUserSidebar={handleCloseUserSidebar}
-              />
-            )}
+            <AnimatePresence>
+              {isUsersSidebarOpen && (
+                <UsersSidebar
+                  option={option}
+                  handleCloseUserSidebar={handleCloseUserSidebar}
+                />
+              )}
+            </AnimatePresence>
           </>
         )}
         {showMessageContainer && <MessageContainer />}

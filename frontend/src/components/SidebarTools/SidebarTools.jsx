@@ -6,6 +6,8 @@ import SettingsWindow from "./SettingsWindow";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccountSettings } from "../../store/slices/settings/settings.silce";
 
+import { AnimatePresence } from "framer-motion";
+
 function SidebarTools({
   option,
   isUsersSidebarOpen,
@@ -25,7 +27,7 @@ function SidebarTools({
     if (isAccountTabOpen) setIsSettingsWindowOpen(true);
   }, [isAccountTabOpen]);
   return (
-    <div className="relative flex flex-col items-center justify-between border-r border-r-gray-300 dark:border-r-gray-700 gap-2 p-1">
+    <div className="relative flex flex-col items-center justify-between border-r border-r-gray-300 dark:border-r-gray-700 gap-2 p-1 ">
       <div id="top" className="flex flex-col gap-1">
         <button
           onClick={() => {
@@ -78,15 +80,17 @@ function SidebarTools({
       </div>
 
       {/* fixed window */}
-      {isSettingsWindowOpen && (
-        <SettingsWindow
-          settingsButtonRef={settingsButtonRef}
-          handleClose={() => {
-            setIsSettingsWindowOpen(false);
-            dispatch(setAccountSettings({ isAccountTabOpen: false }));
-          }}
-        />
-      )}
+      <AnimatePresence>
+        {isSettingsWindowOpen && (
+          <SettingsWindow
+            settingsButtonRef={settingsButtonRef}
+            handleClose={() => {
+              setIsSettingsWindowOpen(false);
+              dispatch(setAccountSettings({ isAccountTabOpen: false }));
+            }}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

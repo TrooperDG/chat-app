@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { MdRefresh } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 
@@ -79,7 +80,7 @@ function UsersSidebar({ option, handleCloseUserSidebar }) {
     <div
       className={`w-full ${
         !isMobile && "max-w-[20rem]"
-      } p-3 flex flex-col border-r border-r-gray-300 dark:border-r-gray-700 gap-2`}
+      } p-3 flex flex-col border-r border-r-gray-300 dark:border-r-gray-700 gap-2 `}
     >
       <div className="flex justify-between items-center mb-2">
         <h1 className="text-lg font-semibold">{option}</h1>
@@ -106,7 +107,13 @@ function UsersSidebar({ option, handleCloseUserSidebar }) {
           />
         </button>
       </div>
-      <ul className="h-full w-full overflow-y-auto pt-1 flex flex-col overflow-x-hidden">
+      <motion.ul
+        initial={{ y: "20px", opacity: 0 }}
+        animate={{ y: "0px", opacity: 1 }}
+        exit={{ y: "20px", opacity: 0 }}
+        transition={{ type: "tween", duration: 0.5, ease: "easeInOut" }}
+        className="h-full w-full overflow-y-auto pt-1 flex flex-col overflow-x-hidden"
+      >
         {otherUsers && otherUsers.length > 0 ? (
           otherUsers.map((userData) => (
             <MessageUser key={userData?._id} userData={userData} />
@@ -116,7 +123,7 @@ function UsersSidebar({ option, handleCloseUserSidebar }) {
             Click on ALL users to find new friends!
           </h1>
         )}
-      </ul>
+      </motion.ul>
     </div>
   );
 }
