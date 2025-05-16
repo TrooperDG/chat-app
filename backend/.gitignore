@@ -5,4 +5,4 @@
 /.env
 
 # temp folder for file uploads by multer
-/uploads/No Salary.docx
+/uploads
