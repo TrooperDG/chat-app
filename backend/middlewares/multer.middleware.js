@@ -14,3 +14,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 export { upload };
+
+//* this could be used for memory storage
+// import multer from "multer";
+
+// const storage = multer.memoryStorage(); // keeps file in buffer
+// const upload = multer({ storage });
+
+// export { upload };

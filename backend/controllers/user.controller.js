@@ -104,6 +104,10 @@ const getOtherUsers = asyncHandler(async (req, res, next) => {
 import { v2 as cloudinary } from "cloudinary";
 
 const uploadUserAvatar = asyncHandler(async (req, res, next) => {
+  if (!req.file) {
+    return next(new errorHandler("file does not exist!", 400));
+  }
+
   //! using the cloudinary config here , because process.en.CLOUDINARY_* shows undifined in cloudinary.utility.js
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -114,11 +118,16 @@ const uploadUserAvatar = asyncHandler(async (req, res, next) => {
   // Get current user and their existing avatar public_id
   const user = await User.findById(req.userId);
 
+  //* when saving in memory  use this base64Image instead of req.file.path
+  // const base64Image = `data:${
+  //   req.file.mimetype
+  // };base64,${req.file.buffer.toString("base64")}`;
+
   // Upload new avatar
   const cldResponse = await cloudinary.uploader.upload(req.file.path, {
     folder: "/user-avatars",
   });
-  fs.unlinkSync(req.file.path); // Delete local file after upload
+  fs.unlinkSync(req.file.path); // Delete local file after upload // when using diskStorage
 
   // Save new avatar URL and public_id to the database
   if (cldResponse) {
