@@ -4,34 +4,48 @@ import { sendMessageThunk } from "../../store/slices/message/message.thunk";
 import { moveNewNotificationSenderToTop } from "../../store/slices/user/user.slice";
 import { useTypingStatus } from "../../hooks";
 import { playSendSound } from "../utilities";
+import { addNewMessage } from "../../store/slices/message/message.slice";
 
 function SendMessage() {
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
-  const { selectedUserData } = useSelector((state) => state.userReducer);
+  const { selectedUserData, userData } = useSelector(
+    (state) => state.userReducer
+  );
   const { messageSettings } = useSelector((state) => state.settingsReducer);
 
   const handleSendMessage = async () => {
-    const data = await dispatch(
+    //  sending to backend
+    dispatch(
       sendMessageThunk({
         receiverId: selectedUserData._id,
         message: message.trim(),
       })
     );
-    // console.log("...", data?.payload?.responseData?.newMessage);
-    if (data?.payload?.responseData?.newMessage) {
-      dispatch(
-        moveNewNotificationSenderToTop({
-          message: data?.payload?.responseData?.newMessage,
-        })
-      );
-    }
 
-    // playing the sendSound
+    //-----------------------------------------------------------------
+
+    // creating this custom message data to give the user a fast experience .
+    const messageData = {
+      createdAt: new Date().toISOString(),
+      isSeen: false,
+      message: message.trim(),
+      receiverId: selectedUserData._id,
+      senderId: userData._id,
+      _id: Date.now(), // temporary Id,
+    };
+
+    dispatch(addNewMessage(messageData));
+
+    dispatch(
+      moveNewNotificationSenderToTop({
+        message: messageData,
+      })
+    );
+
     if (messageSettings.sendSound) {
       playSendSound();
     }
-
     setMessage("");
   };
 

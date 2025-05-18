@@ -45,16 +45,16 @@ export const messageSlice = createSlice({
       state.messageLoading = true;
     });
     builder.addCase(sendMessageThunk.fulfilled, (state, action) => {
-      if (state.messages) {
-        state.messages = [
-          ...state.messages,
-          action.payload?.responseData?.newMessage,
-        ];
-      } else {
-        state.messages = [action.payload?.responseData?.newMessage];
-      }
-
-      state.messageLoading = false;
+      // if (state.messages) {
+      //   state.messages = [
+      //     ...state.messages,
+      //     action.payload?.responseData?.newMessage,
+      //   ];
+      // } else {
+      //   state.messages = [action.payload?.responseData?.newMessage];
+      // }
+      // state.messageLoading = false;
+      //! noo need to update as , it has already been updated in sendMessage, for faster experiences
     });
     builder.addCase(sendMessageThunk.rejected, (state, action) => {
       state.messageLoading = false;
