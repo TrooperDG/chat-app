@@ -28,7 +28,7 @@ function MessageUser({ userData = {} }) {
           className={`avatar ${isOnline ? "avatar-online" : "avatar-offline"} `}
         >
           <div className="w-12  rounded-full">
-            <img src={userData?.avatar} />
+            <img className="w-12 h-12" src={userData?.avatar} />
           </div>
         </div>
         <div className="overflow-x-hidden ">

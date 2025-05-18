@@ -38,7 +38,11 @@ function MessageBubble({ messageDetails }) {
     messageDetails?.message && (
       <div className={`chat ${isMeSender ? "chat-end" : "chat-start"}`}>
         <div className={`chat-image avatar`}>
-          <div className="w-10 rounded-full">
+          <div
+            className={`w-10 h-10 rounded-full outline-2 ${
+              isMeSender ? "outline-primary" : "outline-gray-400"
+            } `}
+          >
             <img
               alt="Tailwind CSS chat bubble component"
               src={isMeSender ? userData?.avatar : selectedUserData.avatar}
