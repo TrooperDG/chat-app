@@ -8,12 +8,10 @@ function Login() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const { userLoading } = useSelector((state) => state.userReducer);
   const [isInvalid, setisInvalid] = useState(false);
-  // console.log(loading);
 
   async function submit(loginData) {
-    setLoading(true);
     const response = await dispatch(loginUserThunk(loginData));
     if (response?.payload?.success) {
       setisInvalid(false);
@@ -21,8 +19,6 @@ function Login() {
     } else {
       setisInvalid(true);
     }
-
-    setLoading(false);
   }
   return (
     <div className=" w-md flex flex-col justify-center items-center bg-base-300 p-6 rounded-2xl">
@@ -99,8 +95,11 @@ function Login() {
           type="submit"
           className="btn  btn-primary"
         >
-          {loading ? (
-            <span className="loading loading-spinner loading-xs"></span>
+          {userLoading ? (
+            <p>
+              Loging in...{" "}
+              <span className="loading loading-spinner loading-xs"></span>
+            </p>
           ) : (
             "Login"
           )}

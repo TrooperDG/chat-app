@@ -7,7 +7,7 @@ function SignUp() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const loading = useSelector((state) => state.userReducer.buttonLoading);
+  const { userLoading } = useSelector((state) => state.userReducer);
   // console.log(loading);
   async function submit(signUpData) {
     const response = await dispatch(registerUserThunk(signUpData));
@@ -167,7 +167,15 @@ function SignUp() {
           type="submit"
           className="btn  btn-primary"
         >
-          Sign up
+          {userLoading ? (
+            <p>
+              {" "}
+              Signing up...{" "}
+              <span className="loading loading-spinner loading-xs"></span>
+            </p>
+          ) : (
+            "Sign up"
+          )}
         </button>
         <p className="text-gray-700 dark:text-gray-300 text-center">
           Already have an account? &nbsp;

@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUserThunk } from "../../store/slices/user/user.thunk";
 
 function Logout() {
   const dispatch = useDispatch();
   const [showPopUp, setShowPopUp] = useState(false);
   const [isLogout, setIsLogout] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { userLoading } = useSelector((state) => state.userReducer);
 
   const handleLogout = async () => {
-    setIsLoading(true);
     await dispatch(logoutUserThunk());
     setShowPopUp(false);
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -36,8 +34,11 @@ function Logout() {
           className="bg-primary-content/30 fixed inset-0 flex justify-center items-center
          "
         >
-          {isLoading ? (
-            <div>Loading....</div>
+          {userLoading ? (
+            <div>
+              Logging out...{" "}
+              <span className="loading loading-spinner loading-xs"></span>
+            </div>
           ) : (
             <div className="bg-base-300 p-3 rounded-md   ">
               <h2 className="text-center mb-3 text-lg font-semibold">
