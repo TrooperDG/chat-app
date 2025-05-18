@@ -54,7 +54,8 @@ export const messageSlice = createSlice({
       //   state.messages = [action.payload?.responseData?.newMessage];
       // }
       // state.messageLoading = false;
-      //! noo need to update as , it has already been updated in sendMessage, for faster experiences
+      //! noo need to update !
+      //! it has already been updated in sendMessage, for faster experiences
     });
     builder.addCase(sendMessageThunk.rejected, (state, action) => {
       state.messageLoading = false;

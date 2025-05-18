@@ -12,7 +12,10 @@ function Header() {
         <img
           src="https://res.cloudinary.com/dlzdikyzx/image/upload/v1747145592/image2_hdzmpj.png"
           alt="Logo"
-          className="w-10 h-10 bg-transparent"
+          className="w-10 h-10 bg-transparent "
+          style={{
+            filter: "drop-shadow(0px 1px 1px  white)",
+          }}
         />
         <h1 className="text-md font-semibold ">TalkNest</h1>
       </div>
