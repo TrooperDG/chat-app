@@ -76,7 +76,12 @@ const register = asyncHandler(async (req, res, next) => {
 
 const getProfile = asyncHandler(async (req, res, next) => {
   const userData = await User.findById(req.userId);
-  if (userData) responseHandler(res, 200, userData);
+
+  if (userData) {
+    responseHandler(res, 200, userData);
+  } else {
+    return next(new errorHandler("User not available", 404));
+  }
 });
 const updateProfile = asyncHandler(async (req, res, next) => {
   const updatedUser = await User.findByIdAndUpdate(
