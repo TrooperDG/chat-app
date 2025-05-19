@@ -6,6 +6,7 @@ import Messages from "./Messages";
 import { getMessagesThunk } from "../../store/slices/message/message.thunk";
 import { setSelectedUser } from "../../store/slices/user/user.slice";
 import { setUISettings } from "../../store/slices/settings/settings.silce";
+import { formatLastSeen } from "../utilities";
 
 function MessageContainer() {
   const dispatch = useDispatch();
@@ -16,13 +17,6 @@ function MessageContainer() {
   const { onlineUsers } = useSelector((state) => state.socketReducer);
 
   const isOnline = onlineUsers?.includes(selectedUserData?._id);
-  const formateLastSeen = new Date(
-    selectedUserData?.lastSeen
-  ).toLocaleTimeString("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true, // change to true if you want AM/PM
-  });
 
   const handleCloseChat = () => {
     dispatch(setSelectedUser(null));
@@ -44,7 +38,6 @@ function MessageContainer() {
   }, [selectedUserData]);
 
   // since we are getiing the selected user from localStorage so updating the last seen
-  // const isOnlineRef = useRef(onlineUsers?.includes(selectedUserData?._id));
   useEffect(() => {
     if (otherUsersData?.length > 0) {
       const user = otherUsersData.find(
@@ -57,24 +50,6 @@ function MessageContainer() {
       }
     }
   }, [otherUsersData]);
-
-  // setting lastSeen = new Date() when the user goes online to offline
-  // useEffect(() => {
-  //   if (isOnlineRef?.current && !isOnline) {
-  //     if (otherUsersData?.length > 0) {
-  //       const user = otherUsersData.find(
-  //         (user) => user?._id === selectedUserData?._id
-  //       );
-  //       if (user) {
-  //         dispatch(
-  //           setSelectedUser({ ...user, lastSeen: new Date().toISOString() })
-  //         );
-  //       }
-  //     }
-  //   }
-
-  //   isOnlineRef.current = isOnline;
-  // }, [isOnline]);
 
   return selectedUserData ? (
     <div className="w-full h-full flex flex-col">
@@ -92,7 +67,7 @@ function MessageContainer() {
                 ? selectedUserData?.isTyping
                   ? "typing..."
                   : "online"
-                : `last seen at ${formateLastSeen}` || "offline"}
+                : formatLastSeen(selectedUserData?.lastSeen)}
             </p>
           </div>
         </div>
