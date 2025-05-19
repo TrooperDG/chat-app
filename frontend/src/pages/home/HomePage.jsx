@@ -196,7 +196,7 @@ function HomePage() {
   //------------------------------------------------------------
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-[100dvh] flex flex-col">
       <Header />
       <main className="flex w-full h-full overflow-auto">
         {showSideBars && (

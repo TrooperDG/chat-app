@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sendMessageThunk } from "../../store/slices/message/message.thunk";
 import { moveNewNotificationSenderToTop } from "../../store/slices/user/user.slice";
@@ -14,7 +14,12 @@ function SendMessage() {
   );
   const { messageSettings } = useSelector((state) => state.settingsReducer);
 
+  const inputRef = useRef(null);
+
   const handleSendMessage = async () => {
+    //refocusing in the input
+    inputRef.current.focus();
+
     //  sending to backend
     dispatch(
       sendMessageThunk({
@@ -69,6 +74,7 @@ function SendMessage() {
   return (
     <div className="p-3 flex gap-2">
       <input
+        ref={inputRef}
         onChange={(e) => {
           setMessage(e.target.value);
           onType(); // calling the typing detector
