@@ -122,12 +122,10 @@ function UsersSidebar({ option, handleCloseUserSidebar }) {
             <MessageUser key={userData?._id} userData={userData} />
           ))
         ) : (
-          <h1 className="flex justify-center items-center w-full  text-lg text-gray-500">
-            <span>Click on</span>
-
-            <LuUsers className="ml-3 mr-1 text-primary" />
-
-            <span>ALL users to find new friends!</span>
+          <h1 className=" w-full  text-lg text-gray-500">
+            Click on
+            <LuUsers className="ml-3 mr-1 text-primary inline" />
+            ALL users to find new friends!
           </h1>
         )}
       </motion.ul>
