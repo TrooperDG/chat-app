@@ -40,7 +40,7 @@ function Logout() {
               <span className="loading loading-spinner loading-xs"></span>
             </div>
           ) : (
-            <div className="bg-base-300 p-3 rounded-md   ">
+            <div className="bg-base-300 px-10 py-6 rounded-md   ">
               <h2 className="text-center mb-3 text-lg font-semibold">
                 Are you sure ?
               </h2>
