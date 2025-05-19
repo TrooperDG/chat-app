@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUserThunk } from "../../store/slices/user/user.thunk";
+
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 function SignUp() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, watch } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userLoading } = useSelector((state) => state.userReducer);
+
+  const [showPassword, setShowPassword] = useState(false);
   // console.log(loading);
   async function submit(signUpData) {
     const response = await dispatch(registerUserThunk(signUpData));
@@ -16,6 +21,7 @@ function SignUp() {
     }
     // dispatch(getOtherUsersThunk());
   }
+
   return (
     <div className="w-md flex flex-col justify-center items-center bg-base-300 p-6 rounded-2xl">
       <h1
@@ -89,7 +95,7 @@ function SignUp() {
           <p className="validator-hint hidden">Enter valid email address</p>
         </div>
 
-        <div>
+        <div className="relative">
           <label className="input validator w-full">
             <svg
               className="h-[1em] opacity-50"
@@ -108,7 +114,7 @@ function SignUp() {
               </g>
             </svg>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               required
               placeholder="Password"
               minLength="8"
@@ -117,6 +123,23 @@ function SignUp() {
               title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
               {...register("password", { required: true })}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute  right-2 top-1 cursor-pointer p-1"
+            >
+              {showPassword ? (
+                <FaEye
+                  size={20}
+                  className="text-gray-500 dark:text-gray-400 "
+                />
+              ) : (
+                <FaEyeSlash
+                  size={20}
+                  className="text-gray-400 dark:text-gray-500"
+                />
+              )}
+            </button>
           </label>
           <p className="validator-hint hidden">
             Must be more than 8 characters, including

@@ -4,12 +4,16 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserThunk } from "../../store/slices/user/user.thunk";
 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 function Login() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userLoading } = useSelector((state) => state.userReducer);
   const [isInvalid, setisInvalid] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
 
   async function submit(loginData) {
     const response = await dispatch(loginUserThunk(loginData));
@@ -61,8 +65,8 @@ function Login() {
           </label>
         </div>
 
-        <div>
-          <label className="input  w-full">
+        <div className="relative">
+          <label className="input  w-full ">
             <svg
               className="h-[1em] opacity-50"
               xmlns="http://www.w3.org/2000/svg"
@@ -80,13 +84,30 @@ function Login() {
               </g>
             </svg>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               required
               placeholder="Password"
               autoComplete="current-password"
               title="Can not be empty"
               {...register("password", { required: true })}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute  right-2 top-1 cursor-pointer p-1"
+            >
+              {showPassword ? (
+                <FaEye
+                  size={20}
+                  className="text-gray-500 dark:text-gray-400 "
+                />
+              ) : (
+                <FaEyeSlash
+                  size={20}
+                  className="text-gray-400 dark:text-gray-500"
+                />
+              )}
+            </button>
           </label>
         </div>
 
