@@ -13,26 +13,6 @@ function MessageBubble({ messageDetails }) {
     hour12: true,
   });
 
-  useEffect(() => {
-    if (!messageDetails) return;
-    if (
-      !messageDetails.isSeen &&
-      !isMeSender &&
-      messageSettings.receivedSound
-    ) {
-      const receivedSound = new Audio("/sounds/message-received.mp3");
-      receivedSound.volume = 0.2;
-      receivedSound.play();
-    } else if (
-      !messageDetails.isSeen &&
-      isMeSender &&
-      messageSettings.sendSound
-    ) {
-      // const sendSound = new Audio("/sounds/message-send.wav");
-      // sendSound.play();
-    }
-  }, [messageDetails]);
-
   return (
     messageDetails &&
     messageDetails?.message && (

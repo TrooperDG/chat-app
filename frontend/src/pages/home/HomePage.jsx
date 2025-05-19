@@ -38,7 +38,7 @@ import {
 import {
   playNotificationSound,
   playSeenSound,
-  playSendSound,
+  playReceiveSound,
 } from "../../components/utilities";
 
 //========================================================================================
@@ -84,6 +84,7 @@ function HomePage() {
 
       if (message?.senderId === selectedUserRef.current?._id) {
         dispatch(addNewMessage(message));
+        playReceiveSound();
       } else {
         const sender = otherUsersDataRef.current.find(
           (user) => user._id === message.senderId
