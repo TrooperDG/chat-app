@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { MdRefresh } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
+import { LuUsers } from "react-icons/lu";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -121,8 +122,12 @@ function UsersSidebar({ option, handleCloseUserSidebar }) {
             <MessageUser key={userData?._id} userData={userData} />
           ))
         ) : (
-          <h1 className="w-full text-center text-lg text-gray-500">
-            Click on ALL users to find new friends!
+          <h1 className="flex justify-center items-center w-full  text-lg text-gray-500">
+            <span>Click on</span>
+
+            <LuUsers className="ml-3 mr-1 text-primary" />
+
+            <span>ALL users to find new friends!</span>
           </h1>
         )}
       </motion.ul>
