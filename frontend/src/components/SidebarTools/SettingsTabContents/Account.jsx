@@ -17,6 +17,11 @@ function Account() {
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // for mobile view ---------------------------------------------------------
+  const { isMobile } = useSelector(
+    (state) => state.settingsReducer?.UISettings
+  );
+
   const {
     register,
     handleSubmit,
@@ -97,16 +102,25 @@ function Account() {
               )}
             </button>
           ) : null}
-          <div id="user-avatar" className="relative inline-block">
+          <div
+            id="user-avatar"
+            className={`relative  ${isMobile ? "w-full" : "inline-block"} `}
+          >
             <img
               className="w-20 h-20 border-2 border-primary rounded-full"
               src={imagePreview || userData?.avatar}
               alt="user-avatar"
             />
-            <label className="group  absolute inset-0 rounded-full flex justify-center items-center hover:bg-black/60 transition-opacity duration-100 ">
+            <label
+              className={`group  absolute ${
+                isMobile
+                  ? "right-0 top-4 bottom-4  flex items-center"
+                  : "inset-0"
+              }  rounded-full flex justify-center items-center hover:bg-black/60 transition-opacity duration-100 `}
+            >
               <MdOutlinePhotoCamera
                 size={20}
-                className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                className="opacity-50 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
               />
               <input
                 type="file"
